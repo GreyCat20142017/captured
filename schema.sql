@@ -16,16 +16,17 @@ CREATE TABLE users (
   email             VARCHAR(128) NOT NULL UNIQUE DEFAULT '',
   name              CHAR(30)     NOT NULL        DEFAULT '',
   user_password     VARCHAR(254) NOT NULL        DEFAULT '',
+  info              TEXT         NOT NULL,
   avatar            CHAR(32)     NOT NULL        DEFAULT ''
 );
 
 CREATE TABLE posts (
-  id          INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  user_id     INT UNSIGNED NOT NULL DEFAULT 0,
-  category_id INT UNSIGNED NOT NULL DEFAULT 0,
-  title       VARCHAR(128) NOT NULL DEFAULT '',
-  hashtag     VARCHAR(255) NOT NULL DEFAULT '',
-  reviews     INT UNSIGNED          DEFAULT 0,
+  id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id       INT UNSIGNED NOT NULL DEFAULT 0,
+  category_id   INT UNSIGNED NOT NULL DEFAULT 0,
+  title         VARCHAR(128) NOT NULL DEFAULT '',
+  hashtag       VARCHAR(255) NOT NULL DEFAULT '',
+  reviews       INT UNSIGNED          DEFAULT 0,
   creation_date TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -45,16 +46,16 @@ CREATE TABLE comments (
 );
 
 CREATE TABLE photos (
-  id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  post_id       INT UNSIGNED NOT NULL DEFAULT 0,
-  filename      VARCHAR(32)  NOT NULL DEFAULT '',
+  id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  post_id           INT UNSIGNED NOT NULL DEFAULT 0,
+  filename          VARCHAR(32)  NOT NULL DEFAULT '',
   original_filename VARCHAR(32)  NOT NULL DEFAULT ''
 );
 
 CREATE TABLE videos (
-  id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  post_id       INT UNSIGNED NOT NULL DEFAULT 0,
-  filename      VARCHAR(32)  NOT NULL DEFAULT '',
+  id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  post_id           INT UNSIGNED NOT NULL DEFAULT 0,
+  filename          VARCHAR(32)  NOT NULL DEFAULT '',
   original_filename VARCHAR(32)  NOT NULL DEFAULT ''
 );
 
@@ -77,15 +78,33 @@ CREATE TABLE quotes (
   author  VARCHAR(32)
 );
 
+CREATE TABLE messages (
+  id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  from_id       INT UNSIGNED NOT NULL DEFAULT 0,
+  to_id         INT UNSIGNED NOT NULL DEFAULT 0,
+  creation_date TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  text          TEXT         NOT NULL
+);
+
+
+CREATE TABLE subscriptions (
+  id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  subscriber_id INT UNSIGNED NOT NULL DEFAULT 0,
+  blogger_id    INT UNSIGNED NOT NULL DEFAULT 0,
+  creation_date TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE banners (
+  id             INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  text           VARCHAR(255),
+  creation_date  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  reference      VARCHAR(255),
+  reference_text VARCHAR(32)
+);
+
 CREATE INDEX user_category_post ON posts (user_id, category_id, id);
 
 CREATE FULLTEXT INDEX post_ft_search ON posts (title);
-
-
-ALTER TABLE posts
-  ADD CONSTRAINT fk_user_posts FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
-ALTER TABLE posts
-  ADD CONSTRAINT fk_category_posts FOREIGN KEY (user_id) REFERENCES categories (id) ON DELETE CASCADE;
 
 ALTER TABLE likes
   ADD CONSTRAINT fk_post_likes FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE;
@@ -108,5 +127,20 @@ ALTER TABLE quotes
 ALTER TABLE texts
   ADD CONSTRAINT fk_post_texts FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE;
 
+ALTER TABLE subscriptions
+  ADD CONSTRAINT fk_user_subscriber FOREIGN KEY (subscriber_id) REFERENCES users (id) ON DELETE CASCADE;
+ALTER TABLE subscriptions
+  ADD CONSTRAINT fk_user_blogger FOREIGN KEY (blogger_id) REFERENCES users (id) ON DELETE CASCADE;
+
+CREATE UNIQUE INDEX subscriber_blogger ON subscriptions (subscriber_id, blogger_id);
+
+ALTER TABLE messages
+  ADD CONSTRAINT fk_user_msgs_from FOREIGN KEY (from_id) REFERENCES users (id) ON DELETE CASCADE;
+ALTER TABLE messages
+  ADD CONSTRAINT fk_user_msgs_to FOREIGN KEY (to_id) REFERENCES users (id) ON DELETE CASCADE;
 
 
+ALTER TABLE posts
+  ADD CONSTRAINT fk_user_posts FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
+ALTER TABLE posts
+  ADD CONSTRAINT fk_category_posts FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE;

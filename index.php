@@ -3,24 +3,38 @@
     session_start();
     require_once('init.php');
 
+    $errors = [];
+    $user = [];
+    $db_user = [];
+
     $is_ok = true;
-    $logo_content = include_template('logo.php', []);
+
+    require_once('login_script.php');
 
     if (is_auth_user()) {
-        $page_content = include_template('feed.php', []);
+
+        $page_content = include_template('feed.php', [
+            'user' => $user
+        ]);
+        $header_content = include_template('header_logged.php', [
+            'user_name' => get_auth_user_property('name')
+        ]);
+
     } else {
-        $page_content = include_template('main.php', []);
+
+        $page_content = include_template('main.php', ['user' => $user]);
+        $header_content = include_template('header_short.php', []);
+
     }
 
     $layout_content = include_template('layout.php',
         [
+            'header_content' => $header_content,
             'page_content' => $page_content,
             'title' => 'Readme: все',
             'is_auth' => is_auth_user(),
-            'body_classname' => is_auth_user() ? "page--main" : "",
+            'body_classname' => is_auth_user() ? 'page--main' : '',
             'user_name' => get_auth_user_property('name')
         ]);
 
     print($layout_content);
-
-
