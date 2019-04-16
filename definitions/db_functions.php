@@ -16,10 +16,10 @@
     /**
      * Функция принимает соединение, текст запроса и пользовательское сообщение для вывода в случае ошибки.
      * Возвращает либо данные, полученные из БД в виде массива, либо ассоциативный массив с описанием ошибки
-     * @param $connection
-     * @param $query
+     * @param        $connection
+     * @param        $query
      * @param string $user_error_message
-     * @param bool $single
+     * @param bool   $single
      * @return array|null
      */
     function get_data_from_db (&$connection, $query, $user_error_message, $single = false) {
@@ -55,48 +55,52 @@
     }
 
     /**
-     * Функция возвращает в виде ассоциативного массива список проектов либо пустой массив (в случае ошибки или отсутствия данных)
+     * Функция возвращает данные о постах или пустой массив
      * @param $connection
-     * @param $user_id
-     * @return array
-     */
-    function get_user_projects ($connection, $user_id) {
-        $sql = 'SELECT p.id, p.name, CASE WHEN tt.tasks_amount IS NULL THEN 0 ELSE tt.tasks_amount END AS tasks_amount
-                    FROM projects AS p
-                           LEFT OUTER JOIN (SELECT COUNT(*) AS tasks_amount, t.project_id
-                                            FROM tasks AS t
-                                            WHERE t.user_id = ' . mysqli_real_escape_string($connection, $user_id) . '
-                                            GROUP BY t.project_id) AS tt ON p.id = tt.project_id
-                    WHERE user_id =' . mysqli_real_escape_string($connection, $user_id) . ';';
-        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о проектах');
-        return (!$data || was_error($data)) ? [] : $data;
-    }
-
-    /**
-     * Функция возвращает в виде ассоциативного массива список задач либо пустой массив (в случае ошибки или отсутствия данных)
-     * @param $connection
-     * @param $user_id
-     * @param $show_completed
-     * @param $project_id
-     * @param $search_string
-     * @param string $filter_string
      * @return array|null
      */
-    function get_user_tasks ($connection, $user_id, $show_completed, $project_id, $search_string, $filter_string = 'none') {
-        $show_condition = $show_completed ? '' : ' AND status = 0 ';
-        $project_condition = $project_id ? ' AND project_id = ' . mysqli_real_escape_string($connection, $project_id) . ' ' : '';
-        $filter_condition = get_assoc_element(FILTER_CONDITION, mysqli_real_escape_string($connection, $filter_string));
-        $filter_condition = empty($filter_condition) ? '' : ' AND ' . $filter_condition;
-        $search_condition = empty($search_string) ? '' : ' AND  MATCH(name) AGAINST("' . $search_string . '" IN BOOLEAN MODE)';
-        $sql = 'SELECT id, name , file, expiration_date, status, 
-                      GREATEST(0, TIMESTAMPDIFF(SECOND, NOW(), expiration_date))  AS time_left FROM tasks 
-                      WHERE user_id = ' . mysqli_real_escape_string($connection, $user_id) .
-            $show_condition . $project_condition . $search_condition . $filter_condition .
-            ' ORDER BY id DESC;';
-        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о задачах');
+    function get_posts ($connection) {
+        $sql = 'SELECT  p.user_id, p.category_id, p.title, u.name AS username, u.avatar, c.content_type,
+                    IFNULL(ph.filename, IFNULL(v.filename, "") ) as filename,
+                    IFNULL(q.author, "") as author,
+                    IFNULL(l.reference, "") as ref,
+                    CASE WHEN t.text IS NOT NULL THEN t.text
+                     WHEN q.text IS NOT NULL THEN q.text
+                     WHEN l.description IS NOT NULL THEN l.description
+                    ELSE  "" END as text,
+                    IFNULL(lk.likes_count, 0) as likes_count, IFNULL(lk.comments_count, 0) as comments_count
+                    from posts AS p
+                    JOIN users u ON p.user_id = u.id
+                    JOIN categories c ON p.category_id = c.id
+                                        LEFT OUTER JOIN photos AS ph ON p.id = ph.post_id AND c.content_type="' . FILTER_PHOTOS . '"
+                                        LEFT OUTER JOIN videos AS v ON p.id = v.post_id AND c.content_type="' . FILTER_VIDEOS . '"
+                                        LEFT OUTER JOIN quotes AS q ON p.id = q.post_id AND c.content_type="' . FILTER_QUOTES . '"
+                                        LEFT OUTER JOIN links AS l ON p.id = l.post_id AND c.content_type="' . FILTER_LINKS . '"
+                                        LEFT OUTER JOIN texts AS t ON p.id = t.post_id AND c.content_type="' . FILTER_TEXTS . '"
+                    LEFT OUTER JOIN  (
+                    SELECT post_id, sum(likes_count) AS likes_count, sum(comments_count) AS comments_count
+                    FROM (SELECT post_id, COUNT(*) AS likes_count, 0 AS comments_count
+                          FROM likes AS l
+                          GROUP BY post_id
+                          UNION
+                          SELECT post_id, 0, COUNT(*) AS comments_count
+                          FROM comments AS l
+                          GROUP BY post_id) AS tmp
+                    GROUP BY post_id) as lk on p.id=lk.post_id  ORDER BY  p.creation_date DESC';
+
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о постах');
         return (!$data || was_error($data)) ? [] : $data;
     }
 
+    /** Функция возвращает даные о баннерах или пустой массив
+     * @param $connection
+     * @return array|null
+     */
+    function get_banners ($connection) {
+        $sql = 'SELECT id, text, reference, reference_text FROM banners ORDER BY creation_date DESC;';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о баннерах');
+        return (!$data || was_error($data)) ? [] : $data;
+    }
     /**
      * Функция проверяет существование ключа в указанной таблице БД
      * @param $connection
@@ -162,141 +166,17 @@
      * @return array|null
      */
     function get_user_by_email ($connection, $email) {
-        $sql = 'SELECT id, email, user_password, name FROM users WHERE email="' . mysqli_real_escape_string($connection, $email) . '" LIMIT 1;';
+        $sql = 'SELECT id, email, user_password, name, avatar FROM users WHERE email="' . mysqli_real_escape_string($connection,
+                $email) . '" LIMIT 1;';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные пользователя', true);
         if (!$data) {
             $result = ['status' => get_assoc_element(GET_DATA_STATUS, 'no_data'), 'data' => null];
-        } else if (was_error($data)) {
-            $result = ['status' => get_assoc_element(GET_DATA_STATUS, 'db_error'), 'data' => null];
         } else {
-            $result = ['status' => get_assoc_element(GET_DATA_STATUS, 'data_received'), 'data' => $data];
+            if (was_error($data)) {
+                $result = ['status' => get_assoc_element(GET_DATA_STATUS, 'db_error'), 'data' => null];
+            } else {
+                $result = ['status' => get_assoc_element(GET_DATA_STATUS, 'data_received'), 'data' => $data];
+            }
         }
         return $result;
-    }
-
-    /**
-     * Функция возвращает true или false в зависимости от результата добавления проекта. В случае наличия ошибок, добавбляет описание
-     * ошибки в соответствующий массив
-     * @param $connection
-     * @param $current_user
-     * @param $name
-     * @param $errors
-     * @return bool
-     */
-    function add_project ($connection, $current_user, $name, &$errors) {
-
-        $user_status = get_id_existance($connection, 'users', $current_user);
-        $project_status = get_project_status($connection, $current_user, $name);
-        $was_errors = false;
-
-        if (was_error($user_status) || was_error($project_status)) {
-            add_error_message($errors, 'name', 'Попытка использовать некорректные данные  или ошибка при проверке данных.');
-            $was_errors = true;
-        }
-
-        if ($project_status && !was_error($project_status)) {
-            add_error_message($errors, 'name', 'Проект с таким имененм уже есть в БД!');
-            $was_errors = true;
-        }
-
-        if ($was_errors) {
-            return false;
-        }
-
-        $sql = 'INSERT INTO projects (user_id, name) 
-                          VALUES ( ?, ?)';
-        $stmt = db_get_prepare_stmt($connection, $sql, [
-            $current_user,
-            $name
-        ]);
-        $res = mysqli_stmt_execute($stmt);
-        return $res ? true : false;
-    }
-
-    /**
-     * Функция возращает ошибку, если невозможно получить данные из БД, массив с id проекта, если проект
-     * с таким названием существует, null - если не было ошибки и такого пользователя нет в БД
-     * @param $connection
-     * @param $user_id
-     * @param $name
-     * @return null || array
-     */
-    function get_project_status ($connection, $user_id, $name) {
-        $sql = 'SELECT id FROM projects WHERE user_id = ' . mysqli_real_escape_string($connection, $user_id) .
-            ' AND name="' . mysqli_real_escape_string($connection, $name) . '" LIMIT 1;';
-        return get_data_from_db($connection, $sql, 'Невозможно получить id проекта по названию', true);
-    }
-
-    /**
-     * Функция принимает соединение и массив с данными формы. Возвращает либо массив с id добавленной записи задачи, либо массив с ошибкой
-     * В случае попытки использовать несуществующие id пользователя или id проекта возвращает ошибку
-     * @param $connection
-     * @param $task
-     * @param int $current_user
-     * @return array
-     */
-    function add_task ($connection, $task, $current_user = 1) {
-        $current_project = get_assoc_element($task, 'project');
-        $user_status = get_id_existance($connection, 'users', $current_user);
-        $project_status = get_id_existance($connection, 'projects', $current_project);
-
-        if (was_error($project_status) || was_error($user_status)) {
-            return ['error' => 'Попытка использовать несуществующие данные для добавления задачи. Задача не будет добавлена!'];
-        }
-
-        $sql = 'INSERT INTO tasks (project_id, user_id,  name, file, expiration_date) 
-                          VALUES ( ?, ?, ?, ?, ?)';
-        $stmt = db_get_prepare_stmt($connection, $sql, [
-            $current_project,
-            $current_user,
-            get_assoc_element($task, 'name'),
-            get_assoc_element($task, 'preview'),
-            date('Y-m-d H:i:s', strtotime(get_assoc_element($task, 'date')))
-        ]);
-        $res = mysqli_stmt_execute($stmt);
-        return ($res) ? ['id' => mysqli_insert_id($connection)] : ['error' => mysqli_error($connection)];
-    }
-
-    /**
-     * Функция инвертирует статус задачи
-     * @param $connection
-     * @param $task_id
-     * @return bool|mysqli_result
-     */
-    function update_task_status_by_id ($connection, $task_id) {
-        $sql = 'UPDATE tasks 
-                  SET status = (CASE WHEN status = 1 THEN 0 ELSE 1 END), completion_date = (CASE WHEN status = 1 THEN NOW() ELSE NULL END)
-                  WHERE id = ' . mysqli_real_escape_string($connection, $task_id) . ';';
-        return mysqli_query($connection, $sql);
-    }
-
-    /**
-     * Функция проверяет существование ключа в указанной таблице БД
-     * @param $connection
-     * @param $user_id
-     * @param $id
-     * @return bool
-     */
-    function get_project_existance ($connection, $user_id, $id) {
-        $sql = 'SELECT id FROM projects  WHERE id = ' . mysqli_real_escape_string($connection, $id) .
-            ' AND user_id = ' . mysqli_real_escape_string($connection, $user_id) . ' LIMIT 1;';
-        $result = get_data_from_db($connection, $sql, 'Невозможно получить id проекта для пользователя', true);
-        return $result ? true : false;
-    }
-
-    /**
-     * Функция возвращает список задач с данными пользователей для отправки оповещений либо пустой массив
-     * @param $connection
-     * return array
-     * @return array|null
-     */
-    function get_notify_list ($connection) {
-        $sql = 'SELECT t.id, t.name, t.expiration_date, u.name AS username, u.email
-                FROM tasks AS t
-                       JOIN users AS u ON t.user_id = u.id
-                WHERE status = 0
-                        AND t.expiration_date > NOW()
-                        AND t.expiration_date <= TIMESTAMPADD(HOUR, 1, NOW())';
-        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные для выявления победителей');
-        return (!$data || was_error($data)) ? [] : $data;
     }

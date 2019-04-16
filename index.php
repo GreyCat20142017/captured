@@ -13,9 +13,16 @@
 
     if (is_auth_user()) {
 
+        $posts = get_posts($connection);
+        $banners = get_banners($connection);
+
+
         $page_content = include_template('feed.php', [
-            'user' => $user
+            'user' => $user,
+            'posts_content'=> get_post_content($posts),
+            'promo_content'=> get_various_content($banners, 'promo.php', 'banner')
         ]);
+
         $header_content = include_template('header_logged.php', [
             'user_name' => get_auth_user_property('name')
         ]);

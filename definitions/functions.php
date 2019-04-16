@@ -6,37 +6,21 @@
     require_once('db_functions.php');
     require_once('validation_functions.php');
     require_once('session_functions.php');
-
-    /**
-     * Функция принимает два аргумента: имя файла шаблона и ассоциативный массив с данными для этого шаблона.
-     * Функция возвращает строку — итоговый HTML-код с подставленными данными или описание ошибки
-     * @param $name string
-     * @param $data array
-     * @return false|string
-     */
-    function include_template ($name, $data) {
-        $name = 'templates/' . $name;
-        if (!is_readable($name)) {
-            return 'Шаблон с именем ' . $name . ' не существует или недоступен для чтения';
-        }
-        ob_start();
-        extract($data);
-        require $name;
-        return ob_get_clean();
-    }
+    require_once('template_functions.php');
 
     /**
      * Функция проверяет существование ключа ассоциативного массива и возвращает значение по ключу, если
      * существуют ключ и значение. В противном случае будет возвращена пустая строка или пустой массив (если передан
      * третий параметр, запрашивающий пустой массив в случае отсутствия значения)
-     * @param array $data
+     * @param array  $data
      * @param string $key
-     * @param bool $array_return
+     * @param bool   $array_return
      * @return array|string
      */
     function get_assoc_element ($data, $key, $array_return = false) {
         $empty_value = $array_return ? [] : '';
-        return isset($data) && is_array($data) && array_key_exists($key, $data) && isset($data[$key]) ? $data[$key] : $empty_value;
+        return isset($data) && is_array($data) && array_key_exists($key,
+            $data) && isset($data[$key]) ? $data[$key] : $empty_value;
     }
 
     /**
@@ -59,8 +43,8 @@
     /**
      * Функция проверяет существование элемента массива и возвращает его, если он существует.
      * В противном случае будет возвращена пустая строка
-     * @param $array
-     * @param $index
+     * @param         $array
+     * @param         $index
      * @param boolean $array_return
      * @return any|string|array
      */
@@ -100,7 +84,7 @@
     }
 
     /** Функция пытается получить параметр msg из массива _GET. В случае неудачи выводит стандартное сообщение.
-     * @param $get
+     * @param        $get
      * @param string $standard_message
      * @return string
      */
@@ -220,8 +204,8 @@
 
     /**
      * Функция возвращает ссылку в зависимости от установленных фильтров и текущего проекта
-     * @param $current_filter
-     * @param $show_completed
+     * @param      $current_filter
+     * @param      $show_completed
      * @param null $project_id
      * @return string
      */
@@ -229,27 +213,7 @@
         return 'index.php?condition=' . $current_filter . '&show_completed=' . $show_completed . ($project_id ? '&project_id=' . $project_id : '');
     }
 
-    /**
-     * Функция возвращает инлайновый стиль для активного проекта, если он определен. Иначе - пустую строку.
-     * @param $current_project
-     * @param $project_id
-     * @return string
-     */
-    function get_active_project_style ($current_project, $project_id) {
-        return (intval($current_project) === intval($project_id)) ? ' style = "color: #6e45e2;" ' : '';
-    }
-
-    /**
-     * Функция возвращает атрибут класса для гостевой страницы
-     * @param $need_background
-     * @return string
-     *
-     */
-    function get_body_classname ($need_background) {
-        return get_classname(($need_background) ?  'body-background' : '');
-    }
-
-    /**
+     /**
      * Функция возвращает "чистое" читабельное имя файла без уникального идентификатора, либо изначальное имя файла
      * @param $name
      * @return bool|string
@@ -263,6 +227,23 @@
      * @param $filePath
      * @return bool
      */
-    function fileExists ($filePath) {
+    function is_file_exists ($filePath) {
         return is_file($filePath) && file_exists($filePath);
+    }
+
+    /**
+     * Идея позаимствована из функциии, найденной на просторах интернета. Возвращает favicon для url
+     * @param $url
+     * @return string
+     */
+    function get_favicon ($url) {
+//        $host = get_pure_data(parse_url($url), 'host');
+//        $scheme = get_pure_data(parse_url($url), 'scheme');
+//        $url = str_replace($scheme . '://', '', $host);
+//        return !empty($url) ? 'https://www.google.com/s2/favicons?domain=' . $url : '';
+        return EMPTY_FILE;
+    }
+
+    function get_avatar ($url) {
+        return !empty($url) ? $url : EMPTY_AVATAR;
     }

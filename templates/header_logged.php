@@ -43,7 +43,8 @@
                     <li class="header__profile">
                         <a class="header__profile-link" href="#">
                             <div class="header__avatar-wrapper">
-                                <img class="header__profile-avatar" src="img/userpic.jpg" alt="Аватар профиля">
+                                <img class="header__profile-avatar"
+                                     src="<?= get_avatar(get_auth_user_property('avatar')) ?>" alt="Аватар профиля">
                             </div>
                             <div class="header__profile-name">
                                 <span><?= $user_name; ?></span>

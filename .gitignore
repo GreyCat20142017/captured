@@ -11,3 +11,5 @@ uploads/*
 !uploads/.gitkeep
 pages/
 uploads/
+
+composer.phar

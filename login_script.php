@@ -46,7 +46,8 @@
                 $status_text = '';
                 $_SESSION[CAPTURED_SESSION] = [
                     'id' => get_assoc_element($db_user, 'id'),
-                    'name' => get_assoc_element($db_user, 'name')
+                    'name' => get_assoc_element($db_user, 'name'),
+                    'avatar' => get_assoc_element($db_user, 'avatar')
                 ];
                 header('Location: index.php');
             }
