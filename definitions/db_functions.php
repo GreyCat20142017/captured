@@ -55,12 +55,12 @@
     }
 
     /**
-     * Функция возвращает данные о постах или пустой массив
-     * @param $connection
-     * @return array|null
+     * Функция возвращает основную часть текста запроса для выборки постов
+     * Семену - привет!
+     * @return string
      */
-    function get_posts ($connection) {
-        $sql = 'SELECT  p.user_id, p.category_id, p.title, u.name AS username, u.avatar, c.content_type,
+    function get_posts_query_skeleton() {
+        return 'SELECT  p.user_id, p.category_id, p.title, p.id, u.name AS username, u.avatar, c.content_type,
                     IFNULL(ph.filename, IFNULL(v.filename, "") ) as filename,
                     IFNULL(q.author, "") as author,
                     IFNULL(l.reference, "") as ref,
@@ -86,9 +86,42 @@
                           SELECT post_id, 0, COUNT(*) AS comments_count
                           FROM comments AS l
                           GROUP BY post_id) AS tmp
-                    GROUP BY post_id) as lk on p.id=lk.post_id  ORDER BY  p.creation_date DESC';
+                    GROUP BY post_id) as lk on p.id=lk.post_id ';
+    }
 
+    /**
+     * Функция возвращает данные о постах или пустой массив
+     * @param $connection
+     * @return array|null
+     */
+    function get_posts ($connection) {
+        $sql = get_posts_query_skeleton() . '  ORDER BY  p.creation_date DESC';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о постах');
+        return (!$data || was_error($data)) ? [] : $data;
+    }
+
+    /**
+     * Функция возвращает результат запроса для постов, имеющих отношение к пользователю: репосты и собственные посты
+     * @param $connection
+     * @param $user_id
+     * @return array|null
+     */
+    function get_posts_for_profile ($connection, $user_id) {
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $sql = 'select pfp.update_date, pfp.is_own_post, sp.* from
+                        (SELECT id AS post_id, user_id AS author_id, creation_date AS update_date, 1 as is_own_post
+                        FROM posts
+                        WHERE user_id =' .$user_id . ' 
+                        UNION
+                        SELECT tmp.post_id, tmp.author_id, repost_date, 0 as is_own_post
+                        FROM (SELECT r.post_id AS post_id, IFNULL(p.user_id, 0) AS author_id, r.creation_date AS repost_date
+                              FROM reposts AS r
+                                     JOIN posts p ON r.post_id = p.id
+                              WHERE r.user_id = ' . $user_id . ') AS tmp) as  pfp
+                        join (' . get_posts_query_skeleton() . ') as sp
+                        on pfp.post_id=sp.id ORDER BY pfp.update_date DESC;';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о постах');
+
         return (!$data || was_error($data)) ? [] : $data;
     }
 

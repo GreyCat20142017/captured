@@ -5,7 +5,7 @@
     define('EMPTY_FILE', '/img/no_image.svg');
     define('EMPTY_AVATAR', '/img/user.svg');
 
-    define('MAX_TEXT_LENGTH', 120);
+    define('MAX_TEXT_LENGTH', 222);
     define('RECORDS_PER_PAGE', 6);
     define('ERROR_KEY', 'error');
     define('EMPTY_CATEGORY', 'Выберите категорию');

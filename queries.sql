@@ -43,12 +43,12 @@ VALUES (1, 'Василий Пупкин', 'vasya@mail.ru', '$2y$10$0GYFabnO4kWUh
         'Любитель рыбок');
 
 # Добавление постов
-INSERT INTO posts (category_id, user_id, creation_date, title)
-VALUES (4, 1, DATE_ADD(NOW(), INTERVAL -3 DAY), 'Цитата'),
-       (4, 4, DATE_ADD(NOW(), INTERVAL -2 DAY), 'Цитата дня'),
-       (3, 1, DATE_ADD(NOW(), INTERVAL -5 DAY), 'Полезный пост про Байкал'),
-       (1, 2, DATE_ADD(NOW(), INTERVAL -2 DAY), 'Просто пост про Байкал'),
-       (5, 3, DATE_ADD(NOW(), INTERVAL -1 DAY), 'Про валидацию');
+INSERT INTO posts (category_id, user_id, creation_date, title, hashtag)
+VALUES (4, 1, DATE_ADD(NOW(), INTERVAL -3 DAY), 'Цитата', '#стих'),
+       (4, 4, DATE_ADD(NOW(), INTERVAL -2 DAY), 'Цитата дня', '#стих #поэтнезнайка'),
+       (3, 1, DATE_ADD(NOW(), INTERVAL -5 DAY), 'Полезный пост про Байкал', '#nature'),
+       (1, 2, DATE_ADD(NOW(), INTERVAL -2 DAY), 'Просто пост про Байкал',  '#nature #globe #photooftheday #canon #landscape #шикарныйвид'),
+       (5, 3, DATE_ADD(NOW(), INTERVAL -1 DAY), 'Про валидацию', '#заумь');
 
 
 # Добавление контента
@@ -89,3 +89,8 @@ VALUES (1, 1, DATE_ADD(NOW(), INTERVAL -1 DAY)),
 INSERT INTO comments (user_id, post_id, creation_date, comment_text)
 VALUES (1, 5, DATE_ADD(NOW(), INTERVAL -1 DAY), 'Это здорово!'),
        (2, 5, DATE_ADD(NOW(), INTERVAL -1 DAY), 'Нормально.');
+
+INSERT INTO reposts (user_id, post_id, creation_date)
+VALUES (1, 3, DATE_ADD(NOW(), INTERVAL -5 HOUR)),
+       (2, 1, DATE_ADD(NOW(), INTERVAL -3 HOUR)),
+       (3, 1, DATE_ADD(NOW(), INTERVAL -3 HOUR));

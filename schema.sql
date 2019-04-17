@@ -45,6 +45,13 @@ CREATE TABLE comments (
   comment_text  VARCHAR(255) NOT NULL DEFAULT ''
 );
 
+CREATE TABLE reposts (
+  id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  post_id           INT UNSIGNED NOT NULL DEFAULT 0,
+  user_id INT UNSIGNED NOT NULL DEFAULT 0,
+  creation_date TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE photos (
   id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   post_id           INT UNSIGNED NOT NULL DEFAULT 0,
@@ -104,7 +111,8 @@ CREATE TABLE banners (
 );
 
 CREATE INDEX user_category_post ON posts (user_id, category_id, id);
-
+CREATE UNIQUE INDEX subscriber_blogger ON subscriptions (subscriber_id, blogger_id);
+CREATE UNIQUE INDEX re_post_user ON reposts (post_id, user_id);
 CREATE FULLTEXT INDEX post_ft_search ON posts (title);
 
 ALTER TABLE likes
@@ -133,15 +141,18 @@ ALTER TABLE subscriptions
 ALTER TABLE subscriptions
   ADD CONSTRAINT fk_user_blogger FOREIGN KEY (blogger_id) REFERENCES users (id) ON DELETE CASCADE;
 
-CREATE UNIQUE INDEX subscriber_blogger ON subscriptions (subscriber_id, blogger_id);
+ALTER TABLE reposts
+  ADD CONSTRAINT fk_user_reposts FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
+ALTER TABLE reposts
+  ADD CONSTRAINT fk_post_reposts FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE;
 
 ALTER TABLE messages
   ADD CONSTRAINT fk_user_msgs_from FOREIGN KEY (from_id) REFERENCES users (id) ON DELETE CASCADE;
 ALTER TABLE messages
   ADD CONSTRAINT fk_user_msgs_to FOREIGN KEY (to_id) REFERENCES users (id) ON DELETE CASCADE;
 
-
 ALTER TABLE posts
   ADD CONSTRAINT fk_user_posts FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
 ALTER TABLE posts
   ADD CONSTRAINT fk_category_posts FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE;
+

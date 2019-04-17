@@ -13,7 +13,8 @@
 
     if (is_auth_user()) {
 
-        $posts = get_posts($connection);
+//        $posts = get_posts($connection);
+        $posts = get_posts_for_profile ($connection, 1);
         $banners = get_banners($connection);
 
 

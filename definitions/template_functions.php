@@ -26,9 +26,13 @@
     function get_post_content (&$posts) {
         $content = '';
         foreach ($posts as $post) {
+            $counters_content =  include_template('counters.php', [
+                'post' => $post
+            ]);
             $template_name = get_assoc_element($post, 'content_type') . '.php';
             $post_content = include_template($template_name, [
-                'post' => $post
+                'post' => $post,
+                'post_footer_content' => $counters_content
             ]);
             $content .= $post_content;
         }
