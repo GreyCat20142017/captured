@@ -7,11 +7,15 @@
 
     define('MAX_TEXT_LENGTH', 222);
     define('RECORDS_PER_PAGE', 6);
+
+    /**
+     * Константы валидации и типов
+     */
     define('ERROR_KEY', 'error');
     define('EMPTY_CATEGORY', 'Выберите категорию');
-
     define('FILE_RULE', 'file_validation');
     define('MAX_FILE_SIZE', 200000);
+
 
     define('PHOTOS', 'photos');
     define('VIDEOS', 'videos');
@@ -43,6 +47,15 @@
     define('CAPTURED_SESSION', 'current_user');
 
     define('TEST_EMAIL', 'nrz3siaatg81@mail.ru');
+
+    /**
+     * Tabs для профиля пользователя
+     */
+
+    define('POSTS', 'posts');
+    define('LIKES', 'likes');
+    define('SUBSCRIPTIONS', 'subscriptions');
+    define('TABS', [POSTS, LIKES, SUBSCRIPTIONS]);
 
     define('FILTER_ALL', 'all');
     define('FILTER_PHOTOS', 'photos');

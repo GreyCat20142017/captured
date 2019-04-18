@@ -2,8 +2,10 @@ USE readme;
 
 # Чистка таблиц
 SET FOREIGN_KEY_CHECKS = 0;
+
 TRUNCATE TABLE likes;
 TRUNCATE TABLE comments;
+TRUNCATE TABLE reposts;
 
 TRUNCATE TABLE messages;
 TRUNCATE TABLE subscriptions;
@@ -19,6 +21,7 @@ TRUNCATE TABLE categories;
 TRUNCATE TABLE users;
 
 TRUNCATE TABLE banners;
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 # Добавление  списка категорий
@@ -66,7 +69,7 @@ VALUES (4, 'img/rock.jpg', 'rock.jpg');
 INSERT INTO links (post_id, reference, description)
 VALUES (5, 'https://laravel.com/docs/5.8/validation', 'Основная трава секты свидетелей laravel');
 
-INSERT INTO banners (text, creation_date, reference, reference_text)
+INSERT INTO banners (text, creation_date, reference, description)
 VALUES ('Все в Laravel!', DATE_ADD(NOW(), INTERVAL -3 DAY), 'https://laravel.com/docs/5.8', 'Перейти'),
        ('Здесь могла быть ваша реклама', DATE_ADD(NOW(), INTERVAL -3 WEEK), '#', 'Разместить');
 
@@ -86,11 +89,11 @@ VALUES (1, 1, DATE_ADD(NOW(), INTERVAL -1 DAY)),
        (1, 3, DATE_ADD(NOW(), INTERVAL -1 DAY)),
        (3, 5, DATE_ADD(NOW(), INTERVAL -2 DAY));
 
-INSERT INTO comments (user_id, post_id, creation_date, comment_text)
+INSERT INTO comments (user_id, post_id, creation_date, text)
 VALUES (1, 5, DATE_ADD(NOW(), INTERVAL -1 DAY), 'Это здорово!'),
        (2, 5, DATE_ADD(NOW(), INTERVAL -1 DAY), 'Нормально.');
 
 INSERT INTO reposts (user_id, post_id, creation_date)
-VALUES (1, 3, DATE_ADD(NOW(), INTERVAL -5 HOUR)),
+VALUES (1, 4, DATE_ADD(NOW(), INTERVAL -5 HOUR)),
        (2, 1, DATE_ADD(NOW(), INTERVAL -3 HOUR)),
        (3, 1, DATE_ADD(NOW(), INTERVAL -3 HOUR));

@@ -213,3 +213,30 @@
         }
         return $result;
     }
+
+    /**
+     * Функция возвращает данные о пользователе для профиля или пустой массив
+     * @param $connection
+     * @param $user_id
+     * @return array|null
+     */
+    function get_user_info ($connection, $user_id) {
+        $user_id = $user_id = mysqli_real_escape_string($connection, $user_id);
+        $sql = 'SELECT u.id as user_id, u.avatar,
+                       u.name as username,
+                       u.registration_date,
+                       IFNULL(p.posts_count, 0)      AS posts_count,
+                       IFNULL(s.subscribers_count, 0) AS subscribers_count
+                FROM users AS u
+                        LEFT OUTER JOIN (SELECT count(*) AS posts_count, user_id
+                                            FROM posts
+                                            WHERE user_id = ' . $user_id . '
+                                            GROUP BY user_id) AS p ON u.id = p.user_id
+                        LEFT OUTER JOIN (SELECT count(*) AS subscribers_count, blogger_id
+                                            FROM subscriptions
+                                            WHERE blogger_id = ' . $user_id . '
+                                            GROUP BY blogger_id) AS s ON u.id = s.blogger_id
+                WHERE u.id = ' . $user_id . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о постах', true);
+        return (!$data || was_error($data)) ? [] : $data;
+    }

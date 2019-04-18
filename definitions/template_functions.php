@@ -23,16 +23,33 @@
      * @param $posts
      * @return string
      */
-    function get_post_content (&$posts) {
+    function get_post_content (&$posts, $common_feed = true) {
         $content = '';
         foreach ($posts as $post) {
-            $counters_content =  include_template('counters.php', [
+            $is_own = isset($post['is_own_post']) ? (intval($post['is_own_post']) === 1) :  false;
+            $expand = false;
+
+            $comments_content = $common_feed ? '' : include_template('post_comments.php', [
+                'post' => $post,
+                'expand' => $expand,
+                'comments' => []
+            ]);
+
+            $header_postfix = $common_feed ? 'common' : 'profile_'. ($is_own ? 'own' : 'repost');
+            $footer_postfix = $common_feed ? 'common' : 'profile';
+            $header_content = include_template('post_header_' . $header_postfix . '.php', [
                 'post' => $post
             ]);
+            $footer_content = include_template('post_footer_' . $footer_postfix . '.php', [
+                'post' => $post,
+                'post_comments_content' => $comments_content
+            ]);
+
             $template_name = get_assoc_element($post, 'content_type') . '.php';
             $post_content = include_template($template_name, [
                 'post' => $post,
-                'post_footer_content' => $counters_content
+                'post_footer_content' => $footer_content,
+                'post_header_content' => $header_content
             ]);
             $content .= $post_content;
         }
@@ -74,4 +91,13 @@
             $result = 'promo__block--' . (($ind % 2 === 0) ? 'barbershop' : 'technomart');
         }
         return $result;
+    }
+
+    /** Функция возвращае название класса в зависимости от того, является ли tab активным
+     * @param $active
+     * @param $current
+     * @return string
+     */
+    function get_tab_classname ($active, $current) {
+        return $active === $current ? 'filters__button--active' : '';
     }

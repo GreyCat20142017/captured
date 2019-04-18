@@ -42,7 +42,7 @@ CREATE TABLE comments (
   user_id       INT UNSIGNED NOT NULL DEFAULT 0,
   post_id       INT UNSIGNED NOT NULL DEFAULT 0,
   creation_date TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  comment_text  VARCHAR(255) NOT NULL DEFAULT ''
+  text  VARCHAR(255) NOT NULL DEFAULT ''
 );
 
 CREATE TABLE reposts (
@@ -103,11 +103,11 @@ CREATE TABLE subscriptions (
 );
 
 CREATE TABLE banners (
-  id             INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  text           VARCHAR(255),
-  creation_date  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  reference      VARCHAR(255),
-  reference_text VARCHAR(32)
+  id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  text          VARCHAR(255),
+  creation_date TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  reference     VARCHAR(255),
+  description   VARCHAR(32)
 );
 
 CREATE INDEX user_category_post ON posts (user_id, category_id, id);

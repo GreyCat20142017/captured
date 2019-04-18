@@ -29,4 +29,5 @@
         if (isset($_SESSION[CAPTURED_SESSION])) {
             unset($_SESSION[CAPTURED_SESSION]);
         }
+        header('Location: index.php');
     }

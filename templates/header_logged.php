@@ -41,7 +41,7 @@
                 </ul>
                 <ul class="header__user-nav">
                     <li class="header__profile">
-                        <a class="header__profile-link" href="#">
+                        <a class="header__profile-link" href="profile.php">
                             <div class="header__avatar-wrapper">
                                 <img class="header__profile-avatar"
                                      src="<?= get_avatar(get_auth_user_property('avatar')) ?>" alt="Аватар профиля">
@@ -57,7 +57,7 @@
                             <div class="header__profile-tooltip">
                                 <ul class="header__profile-nav">
                                     <li class="header__profile-nav-item">
-                                        <a class="header__profile-nav-link" href="#">
+                                        <a class="header__profile-nav-link" href="profile.php">
                           <span class="header__profile-nav-text">
                             Мой профиль
                           </span>
