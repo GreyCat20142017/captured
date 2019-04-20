@@ -34,7 +34,7 @@ VALUES ('Фото', 'photos'),
 
 # Добавление пользователей
 INSERT INTO users (id, name, email, user_password, avatar, registration_date, info)
-VALUES (1, 'Василий Пупкин', 'vasya@mail.ru', '$2y$10$0GYFabnO4kWUhOhvSaOQGOsT3zHGyQBsSuRcgbtlUIV19u84TEEgW',
+VALUES (1, 'Василий Пупкин', 'vasya@pup.ru', '$2y$10$0GYFabnO4kWUhOhvSaOQGOsT3zHGyQBsSuRcgbtlUIV19u84TEEgW',
         'img/userpic-mark.jpg',
         DATE_ADD(NOW(), INTERVAL -2 MONTH), 'Любитель гор'),
        (2, 'Василиса Пупкина', 'zz@zz.zz', '$2y$10$0GYFabnO4kWUhOhvSaOQGOsT3zHGyQBsSuRcgbtlUIV19u84TEEgW',
@@ -84,10 +84,10 @@ VALUES (1, 2, DATE_ADD(NOW(), INTERVAL -3 DAY), 'Как поездка?'),
        (3, 1, DATE_ADD(NOW(), INTERVAL -4 DAY), 'Посмотрел последние фото - они супер!');
 
 INSERT INTO likes (user_id, post_id, creation_date)
-VALUES (1, 1, DATE_ADD(NOW(), INTERVAL -1 DAY)),
+VALUES (4, 1, DATE_ADD(NOW(), INTERVAL -1 DAY)),
        (2, 3, DATE_ADD(NOW(), INTERVAL -1 DAY)),
-       (1, 3, DATE_ADD(NOW(), INTERVAL -1 DAY)),
-       (3, 5, DATE_ADD(NOW(), INTERVAL -2 DAY));
+       (4, 3, DATE_ADD(NOW(), INTERVAL -1 DAY)),
+       (1, 5, DATE_ADD(NOW(), INTERVAL -2 DAY));
 
 INSERT INTO comments (user_id, post_id, creation_date, text)
 VALUES (1, 5, DATE_ADD(NOW(), INTERVAL -1 DAY), 'Это здорово!'),

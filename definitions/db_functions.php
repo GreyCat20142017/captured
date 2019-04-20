@@ -68,7 +68,7 @@
                      WHEN q.text IS NOT NULL THEN q.text
                      WHEN l.description IS NOT NULL THEN l.description
                     ELSE  "" END AS text,
-                    IFNULL(lk.likes_count, 0) AS likes_count, IFNULL(lk.comments_count, 0) AS comments_count
+                    IFNULL(lk.likes_count, 0) AS likes_count, IFNULL(lk.comments_count, 0) AS comments_count, IFNULL(lk.reposts_count, 0) AS reposts_count
                     FROM posts AS p
                     JOIN users u ON p.user_id = u.id
                     JOIN categories c ON p.category_id = c.id
@@ -78,14 +78,19 @@
                                         LEFT OUTER JOIN links AS l ON p.id = l.post_id AND c.content_type="' . FILTER_LINKS . '"
                                         LEFT OUTER JOIN texts AS t ON p.id = t.post_id AND c.content_type="' . FILTER_TEXTS . '"
                     LEFT OUTER JOIN  (
-                    SELECT post_id, sum(likes_count) AS likes_count, sum(comments_count) AS comments_count
-                    FROM (SELECT post_id, COUNT(*) AS likes_count, 0 AS comments_count
+                    SELECT post_id, sum(likes_count) AS likes_count, sum(comments_count) AS comments_count, sum(reposts_count) AS reposts_count
+                    FROM (SELECT post_id, COUNT(*) AS likes_count, 0 AS comments_count, 0 as reposts_count
                           FROM likes AS l
                           GROUP BY post_id
                           UNION
-                          SELECT post_id, 0, COUNT(*) AS comments_count
+                          SELECT post_id, 0, COUNT(*) AS comments_count, 0
                           FROM comments AS l
-                          GROUP BY post_id) AS tmp
+                          GROUP BY post_id
+                          UNION
+                          SELECT post_id, 0, 0, COUNT(*) as reposts_count
+                          FROM reposts AS r
+                          GROUP BY post_id
+                          ) AS tmp
                     GROUP BY post_id) AS lk ON p.id=lk.post_id ';
     }
 
@@ -223,7 +228,7 @@
      * @return array|null
      */
     function get_user_info ($connection, $user_id) {
-        $user_id = $user_id = mysqli_real_escape_string($connection, $user_id);
+        $user_id = mysqli_real_escape_string($connection, $user_id);
         $sql = 'SELECT u.id as user_id, u.avatar,
                        u.name as username,
                        u.registration_date,
@@ -239,6 +244,57 @@
                                             WHERE blogger_id = ' . $user_id . '
                                             GROUP BY blogger_id) AS s ON u.id = s.blogger_id
                 WHERE u.id = ' . $user_id . ';';
-        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о постах', true);
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о пользователе', true);
+        return (!$data || was_error($data)) ? [] : $data;
+    }
+
+    /**
+     * Функция возвращает данные о лайках, полученных постами пользователя или пустой массив
+     * @param $connection
+     * @param $author_id
+     * @return array|null
+     */
+    function get_authors_likes($connection, $author_id) {
+        $author_id = mysqli_real_escape_string($connection, $author_id);
+        $sql='SELECT l.post_id,
+                       l.user_id AS fan_id,
+                       u.name    AS fan_name,
+                       l.creation_date,
+                       p.user_id AS author_id,
+                       uu.name   AS author_name,       
+                       "" as filename 
+                FROM likes AS l
+                       JOIN posts AS p ON l.post_id = p.id
+                       JOIN users AS uu ON p.user_id = uu.id
+                       JOIN users AS u ON l.user_id = u.id
+                WHERE p.user_id = '. $author_id . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о лайках');
+        return (!$data || was_error($data)) ? [] : $data;
+    }
+
+    /**
+     * Функция возвращает информацию о подписках выбранного пользователя
+     * @param $connection
+     * @param $user_id
+     * @return array|null
+     */
+    function get_user_subscriptions($connection, $user_id) {
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $sql ='SELECT t.blogger_id, t.posts_count, t.subscribers_count, u.name AS blogger_name, u.avatar, u.registration_date
+                    FROM (SELECT tmp.blogger_id, sum(tmp.posts_count) AS posts_count, sum(tmp.subscribers_count) AS subscribers_count
+                          FROM (SELECT p.user_id AS blogger_id, COUNT(*) AS posts_count, 0 AS subscribers_count
+                                FROM posts AS p
+                                            JOIN (SELECT blogger_id FROM subscriptions WHERE subscriber_id = ' . $user_id . ') AS nocte
+                                                 ON p.user_id = nocte.blogger_id
+                                GROUP BY p.user_id
+                                UNION
+                                SELECT s.blogger_id, 0 AS posts_count, COUNT(*) AS subscribers_count
+                                FROM subscriptions AS s
+                                            JOIN (SELECT blogger_id FROM subscriptions WHERE subscriber_id = ' . $user_id . ') AS nocte
+                                                 ON s.blogger_id = nocte.blogger_id
+                                GROUP BY s.blogger_id) AS tmp
+                          GROUP BY tmp.blogger_id) AS t
+                                JOIN users AS u ON t.blogger_id = u.id';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о подписках');
         return (!$data || was_error($data)) ? [] : $data;
     }

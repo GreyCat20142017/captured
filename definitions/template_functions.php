@@ -102,5 +102,11 @@
         return $active === $current ? 'filters__button--active' : '';
     }
 
-
-
+    /**
+     * Возвращает текст комментария для таблицы лайков
+     * @param $is_own
+     * @return string
+     */
+    function get_like_text ($is_own) {
+        return 'Лайкнул(а) '. ($is_own ? 'вашу публикацию' : 'публикацию этого блогера');
+    }
