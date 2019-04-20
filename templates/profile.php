@@ -38,19 +38,19 @@
                     <b class="profile__tabs-caption filters__caption">Показать:</b>
                     <ul class="profile__tabs-list filters__list tabs__list">
                         <li class="profile__tabs-item filters__item tabs__item">
-                            <a class="profile__tabs-link filters__button <?= get_tab_classname($active_tab,
+                            <a class="profile__tabs-link filters__button <?= get_switch_classname($active_tab,
                                 POSTS); ?> button"
                                href="profile.php?tab=1">Посты
                             </a>
                         </li>
                         <li class="profile__tabs-item filters__item tabs__item">
-                            <a class="profile__tabs-link filters__button <?= get_tab_classname($active_tab,
+                            <a class="profile__tabs-link filters__button <?= get_switch_classname($active_tab,
                                 LIKES); ?> button"
                                href="profile.php?tab=2">Лайки
                             </a>
                         </li>
                         <li class="profile__tabs-item filters__item tabs__item">
-                            <a class="profile__tabs-link filters__button <?= get_tab_classname($active_tab,
+                            <a class="profile__tabs-link filters__button <?= get_switch_classname($active_tab,
                                 SUBSCRIPTIONS); ?> button"
                                href="profile.php?tab=3">Подписки
                             </a>

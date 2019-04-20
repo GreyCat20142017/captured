@@ -7,21 +7,30 @@
     $user = [];
     $db_user = [];
 
-    $is_ok = true;
-
-    require_once('login_script.php');
-
     if (!is_auth_user()) {
-        header('Location: login.php', true, 403);
+        header('Location: login.php');
     }
 
-    $user_id = intval(get_auth_user_property('id'));
-    $db_user = get_user_info($connection, $user_id);
+    $logged_user_id = intval(get_auth_user_property('id'));
 
-    if (empty($db_user)) {
+    if (isset($_GET['user'])) {
+        $user_id = isset($_GET['user']) ? intval(strip_tags($_GET['user'])) : null;
+    } else {
+        $user_id = $logged_user_id;
+    }
+
+    $is_own_profile = ($user_id === $logged_user_id);
+
+    $db_user = empty($user_id) ? [] : get_user_info($connection, $user_id);
+
+    if (empty($db_user) && $is_own_profile) {
+        /**
+         * Если пользователя в БД не существует и сеанс тоже под юзером с таким id - разлогинить его срочно!
+         */
         logout_current_user();
-        header('Location: login.php', true, 403);
+        header('Location: login.php');
     }
+
 
     $active_param = isset($_GET['tab']) ? intval(strip_tags($_GET['tab'])) : 1;
     $active_param = (($active_param <= 0) || ($active_param > count(TABS))) ? 1 : $active_param;
@@ -39,7 +48,10 @@
             }
         case LIKES:
             {
-                $content = include_template('profile_likes.php', []);
+                $likes = [];
+                $content = include_template('profile_likes.php', [
+                    'inner_part' => ''
+                ]);
                 break;
             }
         case SUBSCRIPTIONS:
@@ -54,7 +66,7 @@
     }
 
     $page_content = include_template('profile.php', [
-        'user' => $db_user,
+        'user' =>  $db_user,
         'profile_tab_content' => $content,
         'active_tab' => $active_tab
     ]);

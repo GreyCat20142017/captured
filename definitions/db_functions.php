@@ -59,17 +59,17 @@
      * Семену - привет!
      * @return string
      */
-    function get_posts_query_skeleton() {
+    function get_posts_query_skeleton () {
         return 'SELECT  p.user_id, p.category_id, p.title, p.id, u.name AS username, u.avatar, c.content_type,
-                    IFNULL(ph.filename, IFNULL(v.filename, "") ) as filename,
-                    IFNULL(q.author, "") as author,
-                    IFNULL(l.reference, "") as ref,
+                    IFNULL(ph.filename, IFNULL(v.filename, "") ) AS filename,
+                    IFNULL(q.author, "") AS author,
+                    IFNULL(l.reference, "") AS ref,
                     CASE WHEN t.text IS NOT NULL THEN t.text
                      WHEN q.text IS NOT NULL THEN q.text
                      WHEN l.description IS NOT NULL THEN l.description
-                    ELSE  "" END as text,
-                    IFNULL(lk.likes_count, 0) as likes_count, IFNULL(lk.comments_count, 0) as comments_count
-                    from posts AS p
+                    ELSE  "" END AS text,
+                    IFNULL(lk.likes_count, 0) AS likes_count, IFNULL(lk.comments_count, 0) AS comments_count
+                    FROM posts AS p
                     JOIN users u ON p.user_id = u.id
                     JOIN categories c ON p.category_id = c.id
                                         LEFT OUTER JOIN photos AS ph ON p.id = ph.post_id AND c.content_type="' . FILTER_PHOTOS . '"
@@ -86,7 +86,7 @@
                           SELECT post_id, 0, COUNT(*) AS comments_count
                           FROM comments AS l
                           GROUP BY post_id) AS tmp
-                    GROUP BY post_id) as lk on p.id=lk.post_id ';
+                    GROUP BY post_id) AS lk ON p.id=lk.post_id ';
     }
 
     /**
@@ -94,8 +94,10 @@
      * @param $connection
      * @return array|null
      */
-    function get_posts ($connection) {
-        $sql = get_posts_query_skeleton() . '  ORDER BY  p.creation_date DESC';
+    function get_posts ($connection, $type) {
+        $type_condition = empty($type) || ($type === FILTER_ALL) ? '' :
+            ' WHERE content_type = "' . mysqli_real_escape_string($connection, $type) . '" ';
+        $sql = get_posts_query_skeleton() . $type_condition . '  ORDER BY  p.creation_date DESC';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о постах');
         return (!$data || was_error($data)) ? [] : $data;
     }
@@ -111,7 +113,7 @@
         $sql = 'select pfp.update_date, pfp.is_own_post, sp.* from
                         (SELECT id AS post_id, user_id AS author_id, creation_date AS update_date, 1 as is_own_post
                         FROM posts
-                        WHERE user_id =' .$user_id . ' 
+                        WHERE user_id =' . $user_id . ' 
                         UNION
                         SELECT tmp.post_id, tmp.author_id, repost_date, 0 as is_own_post
                         FROM (SELECT r.post_id AS post_id, IFNULL(p.user_id, 0) AS author_id, r.creation_date AS repost_date
@@ -130,7 +132,7 @@
      * @return array|null
      */
     function get_banners ($connection) {
-        $sql = 'SELECT id, text, reference, reference_text FROM banners ORDER BY creation_date DESC;';
+        $sql = 'SELECT id, text, reference, description FROM banners ORDER BY creation_date DESC;';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о баннерах');
         return (!$data || was_error($data)) ? [] : $data;
     }

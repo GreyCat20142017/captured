@@ -93,11 +93,14 @@
         return $result;
     }
 
-    /** Функция возвращае название класса в зависимости от того, является ли tab активным
+    /** Функция возвращае название класса в зависимости от того, является ли переключатель активным
      * @param $active
      * @param $current
      * @return string
      */
-    function get_tab_classname ($active, $current) {
+    function get_switch_classname ($active, $current) {
         return $active === $current ? 'filters__button--active' : '';
     }
+
+
+

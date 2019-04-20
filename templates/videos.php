@@ -1,16 +1,5 @@
 <article class="feed__post post post-video">
-    <header class="post__header post__author">
-        <a class="post__author-link" href="#" title="Автор">
-            <div class="post__avatar-wrapper">
-                <img class="post__author-avatar" src="<?= get_avatar(get_pure_data($post, 'avatar')); ?>"
-                     alt="Аватар пользователя">
-            </div>
-            <div class="post__info">
-                <b class="post__author-name">Петр Демин</b>
-                <span class="post__time">5 часов назад</span>
-            </div>
-        </a>
-    </header>
+    <?= $post_header_content; ?>
     <div class="post__main">
         <div class="post-video__block">
             <div class="post-video__preview">

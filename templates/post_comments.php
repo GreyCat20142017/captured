@@ -19,7 +19,7 @@
                     <?php foreach ($comments as $comment): ?>
                         <li class="comments__item user">
                             <div class="comments__avatar">
-                                <a class="user__avatar-link" href="#">
+                                <a class="user__avatar-link" href="profile.php?user=<?= get_pure_data($post, 'user_id'); ?>">
                                     <img class="comments__picture"
                                          src="<?= get_avatar(get_pure_data($comment, 'avatar')); ?>"
                                          alt="Аватар пользователя">
@@ -27,7 +27,7 @@
                             </div>
                             <div class="comments__info">
                                 <div class="comments__name-wrapper">
-                                    <a class="comments__user-name" href="#">
+                                    <a class="comments__user-name" href="profile.php?user=<?= get_pure_data($post, 'user_id'); ?>">
                                         <span><?= get_pure_data($comment, 'username'); ?></span>
                                     </a>
                                     <time class="comments__time" datetime="2019-03-20">

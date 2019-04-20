@@ -12,4 +12,6 @@ uploads/*
 pages/
 uploads/
 
+capturedmdb/
+
 composer.phar
