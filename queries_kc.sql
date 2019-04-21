@@ -70,7 +70,7 @@ INSERT INTO links (post_id, reference, description)
 VALUES (5, 'https://htmlacademy.ru', 'Будет весело!');
 
 INSERT INTO banners (text, creation_date, reference, description)
-VALUES ('Цитаты здесь!', DATE_ADD(NOW(), INTERVAL -3 DAY), 'https://ru.wikiquote.org/wiki/%D0%9A%D0%B8%D0%BD-%D0%B4%D0%B7%D0%B0-%D0%B4%D0%B7%D0%B0!', 'Перейти'),
+VALUES ('Еще больше цитат из к/ф "Кин-дза-дза" - здесь!', DATE_ADD(NOW(), INTERVAL -3 DAY), 'https://ru.wikiquote.org/wiki/%D0%9A%D0%B8%D0%BD-%D0%B4%D0%B7%D0%B0-%D0%B4%D0%B7%D0%B0!', 'Перейти'),
        ('Скрипач! Тут инопланетяне штанами фарцуют… жёлтыми… Нужны тебе?', DATE_ADD(NOW(), INTERVAL -2 DAY), 'https://github.com/htmlacademy-php', 'Перейти'),
        ('Здесь могла быть ваша реклама', DATE_ADD(NOW(), INTERVAL -3 WEEK), '#', 'Разместить');
 

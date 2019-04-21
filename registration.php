@@ -34,6 +34,7 @@
                 if (isset($add_result['id'])) {
                     add_error_message($errors, 'email', 'Пользователь с таким email уже существует!');
                 } else {
+                    http_response_code(302);
                     header('Location: login.php');
                 }
             } else {

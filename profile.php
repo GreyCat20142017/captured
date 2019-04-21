@@ -8,6 +8,7 @@
     $db_user = [];
 
     if (!is_auth_user()) {
+        http_response_code(302);
         header('Location: login.php');
     }
 

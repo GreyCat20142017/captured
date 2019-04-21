@@ -5,7 +5,7 @@
             <div class="profile__user user container">
                 <div class="profile__user-info user__info">
                     <div class="profile__avatar user__avatar">
-                        <img class="profile__picture user__picture"
+                        <img class="profile__picture user__picture"  width="60" height="60"
                              src="<?= get_avatar(get_pure_data($user, 'avatar')); ?>" alt="Аватар пользователя">
                     </div>
                     <div class="profile__name-wrapper user__name-wrapper">
@@ -16,11 +16,11 @@
                 </div>
                 <div class="profile__rating user__rating">
                     <p class="profile__rating-item user__rating-item user__rating-item--publications">
-                        <span class="user__rating-amount"><?= get_pure_data($user, 'posts_count'); ?></span>
+                        <span class="user__rating-amount"><?= isnull(get_pure_data($user, 'posts_count'),0); ?></span>
                         <span class="profile__rating-text user__rating-text">публикаций</span>
                     </p>
                     <p class="profile__rating-item user__rating-item user__rating-item--subscribers">
-                        <span class="user__rating-amount"><?= get_pure_data($user, 'subscribers_count'); ?></span>
+                        <span class="user__rating-amount"><?= isnull(get_pure_data($user, 'subscribers_count'), 0); ?></span>
                         <span class="profile__rating-text user__rating-text">подписчиков</span>
                     </p>
                 </div>

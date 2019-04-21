@@ -5,9 +5,9 @@
             <li class="post-mini post-mini--photo post user">
                 <div class="post-mini__user-info user__info">
                     <div class="post-mini__avatar user__avatar">
-                        <a class="user__avatar-link" href="#">
+                        <a class="user__avatar-link" href="profile.php?user=<?= get_pure_data($like, 'fan_id'); ?>">
                             <img class="post-mini__picture user__picture"
-                                 src="<?= get_avatar(get_pure_data($like, 'avatar')); ?>"
+                                 src="<?= get_avatar(get_pure_data($like, 'fan_avatar')); ?>"
                                  alt="Аватар пользователя">
                         </a>
                     </div>
@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="post-mini__preview">
-                    <a class="post-mini__link" href="#" title="Перейти на публикацию">
+                    <a class="post-mini__link" href="post_details.php?post=<?= get_pure_data($like, 'post_id'); ?>" title="Перейти на публикацию">
                         <div class="post-mini__image-wrapper">
                             <img class="post-mini__image" src="<?= get_pure_data($like, 'filename'); ?>" width="109"
                                  height="109"

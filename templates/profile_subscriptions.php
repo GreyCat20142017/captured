@@ -13,7 +13,7 @@
                         </a>
                     </div>
                     <div class="post-mini__name-wrapper user__name-wrapper">
-                        <a class="post-mini__name user__name" href="">
+                        <a class="post-mini__name user__name" href="profile.php?user=<?= get_pure_data($subscription, 'blogger_id'); ?>">
                             <span><?= get_pure_data($subscription, 'blogger_name'); ?></span>
                         </a>
                         <time class="post-mini__time user__additional"

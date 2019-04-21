@@ -19,8 +19,8 @@
      */
     function get_assoc_element ($data, $key, $array_return = false) {
         $empty_value = $array_return ? [] : '';
-        return isset($data) && is_array($data) && array_key_exists($key,
-            $data) && isset($data[$key]) ? $data[$key] : $empty_value;
+        return !empty($data) && is_array($data) && array_key_exists($key,
+            $data) && !empty($data[$key]) ? $data[$key] : $empty_value;
     }
 
     /**
@@ -33,7 +33,7 @@
      */
     function set_assoc_element ($data, $key, $value) {
         $result = false;
-        if (isset($data) && array_key_exists($key, $data) && isset($data[$key])) {
+        if (!empty($data) && array_key_exists($key, $data) && !empty($data[$key])) {
             $data[$key] = $value;
             $result = true;
         }
@@ -70,7 +70,7 @@
      * @return string
      */
     function get_pure_data ($data, $key) {
-        return isset($data) && array_key_exists($key, $data) && isset($data[$key]) ? trim(strip_tags($data[$key])) : '';
+        return !empty($data) && array_key_exists($key, $data) && !empty($data[$key]) ? trim(strip_tags($data[$key])) : '';
     }
 
     /**
@@ -244,6 +244,22 @@
         return EMPTY_FILE;
     }
 
+    /**
+     * Возвращает псевдопустое изображение для подавления некрасивого текста ALT для отсутствующих аватаров
+     * @param $url
+     * @return string
+     */
     function get_avatar ($url) {
         return !empty($url) ? $url : EMPTY_AVATAR;
+    }
+
+    /**
+     * Аналог 1С-овской isnull. Возвращает либо передаваемый параметр, либо передаваемое значение,
+     * возвращаемое в случае если параметр - пустое значение
+     * @param $parameter
+     * @param $default_value
+     * @return mixed
+     */
+    function isnull($parameter, $default_value) {
+        return empty($parameter)? $default_value : $parameter;
     }

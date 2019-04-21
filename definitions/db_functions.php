@@ -60,7 +60,8 @@
      * @return string
      */
     function get_posts_query_skeleton () {
-        return 'SELECT  p.user_id, p.category_id, p.title, p.id, u.name AS username, u.avatar, c.content_type,
+        $post_condition = empty($post_id) ? '' : ' WHERE p.post_id=' . $post_id . ' ';
+        return 'SELECT  p.user_id, p.category_id, p.title, p.id as post_id, u.name AS username, u.avatar, c.content_type,
                     IFNULL(ph.filename, IFNULL(v.filename, "") ) AS filename,
                     IFNULL(q.author, "") AS author,
                     IFNULL(l.reference, "") AS ref,
@@ -79,7 +80,7 @@
                                         LEFT OUTER JOIN texts AS t ON p.id = t.post_id AND c.content_type="' . FILTER_TEXTS . '"
                     LEFT OUTER JOIN  (
                     SELECT post_id, sum(likes_count) AS likes_count, sum(comments_count) AS comments_count, sum(reposts_count) AS reposts_count
-                    FROM (SELECT post_id, COUNT(*) AS likes_count, 0 AS comments_count, 0 as reposts_count
+                    FROM (SELECT post_id, COUNT(*) AS likes_count, 0 AS comments_count, 0 AS reposts_count
                           FROM likes AS l
                           GROUP BY post_id
                           UNION
@@ -87,10 +88,10 @@
                           FROM comments AS l
                           GROUP BY post_id
                           UNION
-                          SELECT post_id, 0, 0, COUNT(*) as reposts_count
+                          SELECT post_id, 0, 0, COUNT(*) AS reposts_count
                           FROM reposts AS r
                           GROUP BY post_id
-                          ) AS tmp
+                          ) AS tmp                           
                     GROUP BY post_id) AS lk ON p.id=lk.post_id ';
     }
 
@@ -115,18 +116,18 @@
      */
     function get_posts_for_profile ($connection, $user_id) {
         $user_id = mysqli_real_escape_string($connection, $user_id);
-        $sql = 'select pfp.update_date, pfp.is_own_post, sp.* from
-                        (SELECT id AS post_id, user_id AS author_id, creation_date AS update_date, 1 as is_own_post
+        $sql = 'SELECT pfp.update_date, pfp.is_own_post, sp.* FROM
+                        (SELECT id AS post_id, user_id AS author_id, creation_date AS update_date, 1 AS is_own_post
                         FROM posts
                         WHERE user_id =' . $user_id . ' 
                         UNION
-                        SELECT tmp.post_id, tmp.author_id, repost_date, 0 as is_own_post
+                        SELECT tmp.post_id, tmp.author_id, repost_date, 0 AS is_own_post
                         FROM (SELECT r.post_id AS post_id, IFNULL(p.user_id, 0) AS author_id, r.creation_date AS repost_date
                               FROM reposts AS r
                                      JOIN posts p ON r.post_id = p.id
-                              WHERE r.user_id = ' . $user_id . ') AS tmp) as  pfp
-                        join (' . get_posts_query_skeleton() . ') as sp
-                        on pfp.post_id=sp.id ORDER BY pfp.update_date DESC;';
+                              WHERE r.user_id = ' . $user_id . ') AS tmp) AS  pfp
+                        JOIN (' . get_posts_query_skeleton() . ') AS sp
+                        ON pfp.post_id=sp.id ORDER BY pfp.update_date DESC;';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о постах');
 
         return (!$data || was_error($data)) ? [] : $data;
@@ -257,16 +258,17 @@
     function get_authors_likes($connection, $author_id) {
         $author_id = mysqli_real_escape_string($connection, $author_id);
         $sql='SELECT l.post_id,
-                       l.user_id AS fan_id,
-                       u.name    AS fan_name,
-                       l.creation_date,
-                       p.user_id AS author_id,
-                       uu.name   AS author_name,       
-                       "" as filename 
+                     l.user_id AS fan_id,
+                     u.name    AS fan_name,
+                     u.avatar AS fan_avatar,
+                     l.creation_date,
+                     p.user_id AS author_id,
+                     uu.name   AS author_name,       
+                     "" as filename 
                 FROM likes AS l
-                       JOIN posts AS p ON l.post_id = p.id
-                       JOIN users AS uu ON p.user_id = uu.id
-                       JOIN users AS u ON l.user_id = u.id
+                     JOIN posts AS p ON l.post_id = p.id
+                     JOIN users AS uu ON p.user_id = uu.id
+                     JOIN users AS u ON l.user_id = u.id
                 WHERE p.user_id = '. $author_id . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о лайках');
         return (!$data || was_error($data)) ? [] : $data;
@@ -296,5 +298,13 @@
                           GROUP BY tmp.blogger_id) AS t
                                 JOIN users AS u ON t.blogger_id = u.id';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о подписках');
+        return (!$data || was_error($data)) ? [] : $data;
+    }
+
+    function get_post_details ($connection, $post_id) {
+        $post_id = mysqli_real_escape_string($connection, $post_id);
+        $post_condition = empty($post_condition) ? '' : ' WHERE p.id=' . $post_id . ' ';
+        $sql = get_posts_query_skeleton() . $post_condition . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о поcте', true);
         return (!$data || was_error($data)) ? [] : $data;
     }
