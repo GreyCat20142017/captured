@@ -1,5 +1,6 @@
 <main class="page__main page__main--profile">
     <h1 class="visually-hidden">Профиль</h1>
+
     <div class="profile profile--<?= $active_tab; ?>">
         <div class="profile__user-wrapper">
             <div class="profile__user user container">
@@ -40,19 +41,19 @@
                         <li class="profile__tabs-item filters__item tabs__item">
                             <a class="profile__tabs-link filters__button <?= get_switch_classname($active_tab,
                                 POSTS); ?> button"
-                               href="profile.php?tab=1">Посты
+                               href="<?= rebuild_query_string($active_script, $active_query, 'tab', 1); ?>">Посты
                             </a>
                         </li>
                         <li class="profile__tabs-item filters__item tabs__item">
                             <a class="profile__tabs-link filters__button <?= get_switch_classname($active_tab,
                                 LIKES); ?> button"
-                               href="profile.php?tab=2">Лайки
+                               href="<?= rebuild_query_string($active_script, $active_query, 'tab', 2); ?>">Лайки
                             </a>
                         </li>
                         <li class="profile__tabs-item filters__item tabs__item">
                             <a class="profile__tabs-link filters__button <?= get_switch_classname($active_tab,
                                 SUBSCRIPTIONS); ?> button"
-                               href="profile.php?tab=3">Подписки
+                               href="<?= rebuild_query_string($active_script, $active_query, 'tab', 3); ?>">Подписки
                             </a>
                         </li>
                     </ul>

@@ -70,7 +70,8 @@
      * @return string
      */
     function get_pure_data ($data, $key) {
-        return !empty($data) && array_key_exists($key, $data) && !empty($data[$key]) ? trim(strip_tags($data[$key])) : '';
+        return !empty($data) && array_key_exists($key,
+            $data) && !empty($data[$key]) ? trim(strip_tags($data[$key])) : '';
     }
 
     /**
@@ -213,7 +214,7 @@
         return 'index.php?condition=' . $current_filter . '&show_completed=' . $show_completed . ($project_id ? '&project_id=' . $project_id : '');
     }
 
-     /**
+    /**
      * Функция возвращает "чистое" читабельное имя файла без уникального идентификатора, либо изначальное имя файла
      * @param $name
      * @return bool|string
@@ -260,6 +261,20 @@
      * @param $default_value
      * @return mixed
      */
-    function isnull($parameter, $default_value) {
-        return empty($parameter)? $default_value : $parameter;
+    function isnull ($parameter, $default_value) {
+        return empty($parameter) ? $default_value : $parameter;
+    }
+
+    /**
+     * Функция "пересобирает" строку запроса при изменении одного из параматров
+     * @param $script
+     * @param $query
+     * @param $param
+     * @param $value
+     * @return string
+     */
+    function rebuild_query_string ($script, $query, $param, $value) {
+        mb_parse_str($query, $items);
+        $items[$param] = $value;
+        return $script . '?' . http_build_query($items);
     }

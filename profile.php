@@ -7,6 +7,10 @@
     $user = [];
     $db_user = [];
 
+//    dd($_SERVER);
+
+    $is_ok = true;
+
     if (!is_auth_user()) {
         http_response_code(302);
         header('Location: login.php');
@@ -21,8 +25,9 @@
     }
 
     $is_own_profile = ($user_id === $logged_user_id);
-
     $db_user = empty($user_id) ? [] : get_user_info($connection, $user_id);
+
+    $is_ok = !empty($db_user);
 
     if (empty($db_user) && $is_own_profile) {
         /**
@@ -31,7 +36,6 @@
         logout_current_user();
         header('Location: login.php');
     }
-
 
     $active_param = isset($_GET['tab']) ? intval(strip_tags($_GET['tab'])) : 1;
     $active_param = (($active_param <= 0) || ($active_param > count(TABS))) ? 1 : $active_param;
@@ -71,11 +75,25 @@
             }
     }
 
-    $page_content = include_template('profile.php', [
-        'user' =>  $db_user,
-        'profile_tab_content' => $content,
-        'active_tab' => $active_tab
-    ]);
+    if (!$is_ok) {
+        http_response_code(404);
+        $page_content = include_template('404.php', [
+            'error_message' => 'В БД отсутствует информация о пользователе с id ' . $user_id
+        ]);
+    } else {
+        $page_content = include_template('profile.php', [
+            'user' => $db_user,
+            'profile_tab_content' => $content,
+            'active_tab' => $active_tab,
+            'active_user' => $user,
+            'active_query' => $_SERVER['QUERY_STRING'],
+            'active_script' =>  $_SERVER['PHP_SELF']
+//            'active_script' =>  $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME']
+        ]);
+
+        $_SESSION[CAPTURED_SESSION]['current_user'] = $user_id;
+        $_SESSION[CAPTURED_SESSION]['current_tab'] = $active_tab;
+    }
 
     $header_content = include_template('header_logged.php', [
         'user_name' => get_auth_user_property('name')

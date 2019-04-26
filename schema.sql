@@ -1,3 +1,5 @@
+#Однозначно, такая схема - это перебор. Но застарелые предрассудки пока победили...
+
 DROP DATABASE IF EXISTS readme;
 
 CREATE DATABASE readme DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;

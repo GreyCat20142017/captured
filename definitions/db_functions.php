@@ -61,7 +61,7 @@
      */
     function get_posts_query_skeleton () {
         $post_condition = empty($post_id) ? '' : ' WHERE p.post_id=' . $post_id . ' ';
-        return 'SELECT  p.user_id, p.category_id, p.title, p.id as post_id, u.name AS username, u.avatar, c.content_type,
+        return 'SELECT  p.user_id, p.category_id, p.title, p.id as post_id, p.hashtag, u.name AS username, u.avatar, c.content_type,
                     IFNULL(ph.filename, IFNULL(v.filename, "") ) AS filename,
                     IFNULL(q.author, "") AS author,
                     IFNULL(l.reference, "") AS ref,
@@ -127,7 +127,7 @@
                                      JOIN posts p ON r.post_id = p.id
                               WHERE r.user_id = ' . $user_id . ') AS tmp) AS  pfp
                         JOIN (' . get_posts_query_skeleton() . ') AS sp
-                        ON pfp.post_id=sp.id ORDER BY pfp.update_date DESC;';
+                        ON pfp.post_id=sp.post_id ORDER BY pfp.update_date DESC;';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о постах');
 
         return (!$data || was_error($data)) ? [] : $data;
