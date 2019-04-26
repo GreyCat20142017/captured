@@ -61,7 +61,7 @@
      */
     function get_posts_query_skeleton () {
         $post_condition = empty($post_id) ? '' : ' WHERE p.post_id=' . $post_id . ' ';
-        return 'SELECT  p.user_id, p.category_id, p.title, p.id as post_id, p.hashtag, u.name AS username, u.avatar, c.content_type,
+        return 'SELECT  p.user_id, p.category_id, p.title, p.id AS post_id, p.hashtag, u.name AS username, u.avatar, c.content_type,
                     IFNULL(ph.filename, IFNULL(v.filename, "") ) AS filename,
                     IFNULL(q.author, "") AS author,
                     IFNULL(l.reference, "") AS ref,
@@ -255,9 +255,9 @@
      * @param $author_id
      * @return array|null
      */
-    function get_authors_likes($connection, $author_id) {
+    function get_authors_likes ($connection, $author_id) {
         $author_id = mysqli_real_escape_string($connection, $author_id);
-        $sql='SELECT l.post_id,
+        $sql = 'SELECT l.post_id,
                      l.user_id AS fan_id,
                      u.name    AS fan_name,
                      u.avatar AS fan_avatar,
@@ -269,7 +269,7 @@
                      JOIN posts AS p ON l.post_id = p.id
                      JOIN users AS uu ON p.user_id = uu.id
                      JOIN users AS u ON l.user_id = u.id
-                WHERE p.user_id = '. $author_id . ';';
+                WHERE p.user_id = ' . $author_id . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о лайках');
         return (!$data || was_error($data)) ? [] : $data;
     }
@@ -280,9 +280,9 @@
      * @param $user_id
      * @return array|null
      */
-    function get_user_subscriptions($connection, $user_id) {
+    function get_user_subscriptions ($connection, $user_id) {
         $user_id = mysqli_real_escape_string($connection, $user_id);
-        $sql ='SELECT t.blogger_id, t.posts_count, t.subscribers_count, u.name AS blogger_name, u.avatar, u.registration_date
+        $sql = 'SELECT t.blogger_id, t.posts_count, t.subscribers_count, u.name AS blogger_name, u.avatar, u.registration_date
                     FROM (SELECT tmp.blogger_id, sum(tmp.posts_count) AS posts_count, sum(tmp.subscribers_count) AS subscribers_count
                           FROM (SELECT p.user_id AS blogger_id, COUNT(*) AS posts_count, 0 AS subscribers_count
                                 FROM posts AS p
@@ -301,10 +301,50 @@
         return (!$data || was_error($data)) ? [] : $data;
     }
 
+    /**
+     * Функция возвращает детальную информацию о посте по его id
+     * @param $connection
+     * @param $post_id
+     * @return array|null
+     */
     function get_post_details ($connection, $post_id) {
         $post_id = mysqli_real_escape_string($connection, $post_id);
         $post_condition = empty($post_condition) ? '' : ' WHERE p.id=' . $post_id . ' ';
         $sql = get_posts_query_skeleton() . $post_condition . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о поcте', true);
+        return (!$data || was_error($data)) ? [] : $data;
+    }
+
+    /**
+     * Функция возвращает массив сообщений, которыми обменивались 2 пользователя.
+     * Если не передан $correspondent_id - то будут возвращены все сообщения пользователя
+     * @param $connection
+     * @param $post_id
+     * @return array|null
+     */
+    function get_messages ($connection, $user_id, $corresponent_id = null) {
+//        $sql = '';
+//        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о поcте', true);
+//        return (!$data || was_error($data)) ? [] : $data;
+        return [];
+    }
+
+    /**
+     * @param $connection
+     * @param $user_id
+     * @return array|null
+     */
+    function get_messages_totals ($connection, $user_id) {
+        //mytodo Добавить в запрос последнее сообщение и его дату
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $sql='SELECT m.unread_count, m.total_count, m.correspondent_id, u.name AS correspondent_name, u.avatar as correspondent_avatar
+              FROM (SELECT sum(CASE WHEN from_id = ' . $user_id . ' AND was_read = 0 THEN 1 ELSE 0 END) AS unread_count,
+                           sum(1) AS total_count,                
+                           CASE WHEN from_id = ' . $user_id . ' THEN to_id ELSE from_id END AS correspondent_id
+                      FROM messages AS m
+                      WHERE from_id = ' . $user_id . ' OR to_id = ' . $user_id . '
+                      GROUP BY correspondent_id) AS m
+                       JOIN users AS u ON m.correspondent_id = u.id;';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о сообщениях пользователя');
         return (!$data || was_error($data)) ? [] : $data;
     }

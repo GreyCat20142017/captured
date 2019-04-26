@@ -8,6 +8,7 @@
     define('MAX_TEXT_LENGTH', 222);
     define('RECORDS_PER_PAGE', 6);
 
+
     /**
      * Константы валидации и типов
      */
@@ -49,8 +50,13 @@
     define('TEST_EMAIL', 'nrz3siaatg81@mail.ru');
 
     /**
-     * Tabs для профиля пользователя
+     * Типы контента, фильтров и  Tabs для профиля пользователя
      */
+
+    define('CONTENT_FEED', 'feed');
+    define('CONTENT_POPULAR', 'popular');
+    define('CONTENT_MESSAGES', 'messages');
+
 
     define('POSTS', 'posts');
     define('LIKES', 'likes');

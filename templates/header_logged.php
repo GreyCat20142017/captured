@@ -24,17 +24,24 @@
             <nav class="header__nav">
                 <ul class="header__my-nav">
                     <li class="header__my-page header__my-page--popular">
-                        <a class="header__page-link" href="popular.html" title="Популярный контент">
+                        <a class="header__page-link <?= get_switch_classname($active_content, CONTENT_POPULAR,
+                            'header__page-link'); ?>"
+                            <?= get_content_href(CONTENT_POPULAR, $active_content, $filter_type, $filter_value); ?> title="Популярный контент">
                             <span class="visually-hidden">Популярный контент</span>
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--feed">
-                        <a class="header__page-link header__page-link--active" title="Моя лента">
+                        <a class="header__page-link <?= get_switch_classname($active_content, CONTENT_FEED,
+                            'header__page-link'); ?>"
+                            <?= get_content_href(CONTENT_FEED, $active_content, $filter_type, $filter_value); ?> title="Моя лента">
                             <span class="visually-hidden">Моя лента</span>
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--messages">
-                        <a class="header__page-link" href="messages.html" title="Личные сообщения">
+                        <a class="header__page-link <?= get_switch_classname($active_content, CONTENT_MESSAGES,
+                            'header__page-link'); ?>"
+                            <?= get_content_href(CONTENT_MESSAGES, $active_content, $filter_type, $filter_value); ?>
+                           title="Личные сообщения">
                             <span class="visually-hidden">Личные сообщения</span>
                         </a>
                     </li>

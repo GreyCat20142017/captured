@@ -98,8 +98,8 @@
      * @param $current
      * @return string
      */
-    function get_switch_classname ($active, $current) {
-        return $active === $current ? 'filters__button--active' : '';
+    function get_switch_classname ($active, $current, $class='filters_button') {
+        return $active === $current ? $class . '--active' : '';
     }
 
     /**
@@ -108,5 +108,22 @@
      * @return string
      */
     function get_like_text ($is_own) {
-        return 'Лайкнул(а) '. ($is_own ? 'вашу публикацию' : 'публикацию этого блогера');
+        return 'Лайкнул(а) ' . ($is_own ? 'вашу публикацию' : 'публикацию этого блогера');
+    }
+
+    /**
+     * Функция возвращает сформированный тег href либо пустую строку в зависимости от переданных параметров
+     * @param        $content
+     * @param        $active_content
+     * @param string $filter_type
+     * @param string $filter_value
+     * @return string
+     */
+    function get_content_href ($content, $active_content, $filter_type = 'all', $filter_value = null) {
+        $href = '';
+        if ($content !== $active_content) {
+            $href = ' href="' . $content . '.php';
+            $href .= empty($filter_value) ? '"' : '?' . $filter_type . '=' . $filter_value . '"';
+        }
+        return $href;
     }

@@ -79,10 +79,10 @@ VALUES (1, 2, DATE_ADD(NOW(), INTERVAL -3 DAY)),
        (3, 2, DATE_ADD(NOW(), INTERVAL -2 DAY)),
        (3, 1, DATE_ADD(NOW(), INTERVAL -4 DAY));
 
-INSERT INTO messages (from_id, to_id, creation_date, text)
-VALUES (1, 2, DATE_ADD(NOW(), INTERVAL -3 DAY), 'Как поездка?'),
-       (3, 2, DATE_ADD(NOW(), INTERVAL -2 DAY), '"Ты жива еще, моя старушка...?"'),
-       (3, 1, DATE_ADD(NOW(), INTERVAL -4 DAY), 'Посмотрел последние фото - они супер!');
+INSERT INTO messages (from_id, to_id, creation_date, text, was_read)
+VALUES (1, 2, DATE_ADD(NOW(), INTERVAL -3 DAY), 'Как поездка?', 0),
+       (3, 2, DATE_ADD(NOW(), INTERVAL -2 DAY), '"Ты жива еще, моя старушка...?"', 0),
+       (3, 1, DATE_ADD(NOW(), INTERVAL -4 DAY), 'Посмотрел последние фото - они супер!', 1);
 
 INSERT INTO likes (user_id, post_id, creation_date)
 VALUES (4, 1, DATE_ADD(NOW(), INTERVAL -1 DAY)),
