@@ -10,9 +10,9 @@
                       <?= !empty(get_pure_data($correspondent, 'unread_count')) ?
                         'messages__contacts-item--new' : ''; ?>">
                         <a class="messages__contacts-tab
-                         <?= get_switch_classname($active_user, get_pure_data($correspondent, 'correspondent_id'),
+                         <?= get_switch_classname(intval($active_user), intval(get_pure_data($correspondent, 'correspondent_id')),
                             'messages__contacts-tab'); ?>"
-                           href="profile.php?user=<?= get_pure_data($correspondent, 'correspondent_id'); ?>">
+                           href="messages.php?user=<?= get_pure_data($correspondent, 'correspondent_id'); ?>">
                             <div class="messages__avatar-wrapper">
                                 <img class="messages__avatar"
                                      src="<?= get_avatar(get_pure_data($correspondent, 'correspondent_avatar')); ?>"
@@ -28,10 +28,10 @@
                   </span>
                                 <div class="messages__preview">
                                     <p class="messages__preview-text">
-                                        Озеро Байкал – огромное
+                                        <?= get_pure_data($correspondent, 'message_part'); ?>
                                     </p>
                                     <time class="messages__preview-time" datetime="2019-05-01T14:40">
-                                        14:40
+                                        <?= date('H:i', strtotime(get_pure_data($correspondent, 'creation_date'))); ?>
                                     </time>
                                 </div>
                             </div>
@@ -43,19 +43,25 @@
         </div>
 
         <div class="messages__chat">
-            <div class="messages__chat-wrapper">
-                <?= $chat_content; ?>
-            </div>
-            <div class="comments">
-                <form class="comments__form form" action="#" method="post">
-                    <div class="comments__my-avatar">
-                        <img class="comments__picture" src="img/userpic.jpg" alt="Аватар пользователя">
-                    </div>
-                    <textarea class="comments__textarea form__textarea" placeholder="Ваше сообщение"></textarea>
-                    <label class="visually-hidden">Ваше сообщение</label>
-                    <button class="comments__submit button button--green" type="submit">Отправить</button>
-                </form>
-            </div>
+            <?php if (empty($active_user)): ?>
+                <h3 style="text-align: center; margin-bottom: 5rem;">Необходимо выбрать пользователя для просмотра и
+                    отправки сообщений</h3>
+            <?php else: ?>
+                <div class="messages__chat-wrapper">
+                    <?= $chat_content; ?>
+                </div>
+                <div class="comments">
+                    <form class="comments__form form" action="send_message" method="post">
+                        <div class="comments__my-avatar">
+                            <img class="comments__picture" src="img/userpic.jpg" alt="Аватар пользователя">
+                        </div>
+                        <textarea class="comments__textarea form__textarea" placeholder="Ваше сообщение"></textarea>
+                        <label class="visually-hidden">Ваше сообщение</label>
+                        <button class="comments__submit button button--green" type="submit">Отправить</button>
+                    </form>
+                </div>
+            <?php endif; ?>
         </div>
+
     </section>
 </main>

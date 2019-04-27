@@ -323,10 +323,22 @@
      * @return array|null
      */
     function get_messages ($connection, $user_id, $corresponent_id = null) {
-//        $sql = '';
-//        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о поcте', true);
-//        return (!$data || was_error($data)) ? [] : $data;
-        return [];
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $corresponent_id = !empty($corresponent_id) ? mysqli_real_escape_string($connection,
+            $corresponent_id) : $corresponent_id;
+        $users_condition = ' WHERE m.from_id = ' . $user_id . (empty($corresponent_id) ? '' : ' AND m.to_id = ' . $corresponent_id) . '  
+                             OR m.to_id = ' . $user_id . (empty($corresponent_id) ? '' :' AND m.from_id =' . $corresponent_id) . ' ';
+        $sql = 'SELECT m.from_id AS author_id,
+                       IF(m.from_id = '. $user_id . ', 1 , 0)   AS is_own,
+                       m.text,
+                       m.creation_date,
+                       u.name AS author_name,
+                       u.avatar AS author_avatar
+                       FROM messages AS m
+                JOIN  users AS u ON m.from_id = u.id
+                       ' . $users_condition . ' ORDER BY m.id DESC LIMIT  ' . RECORDS_PER_PAGE . ' OFFSET 0;';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о поcте');
+        return (!$data || was_error($data)) ? [] : $data;
     }
 
     /**
@@ -335,16 +347,26 @@
      * @return array|null
      */
     function get_messages_totals ($connection, $user_id) {
-        //mytodo Добавить в запрос последнее сообщение и его дату
         $user_id = mysqli_real_escape_string($connection, $user_id);
-        $sql='SELECT m.unread_count, m.total_count, m.correspondent_id, u.name AS correspondent_name, u.avatar as correspondent_avatar
-              FROM (SELECT sum(CASE WHEN from_id = ' . $user_id . ' AND was_read = 0 THEN 1 ELSE 0 END) AS unread_count,
-                           sum(1) AS total_count,                
-                           CASE WHEN from_id = ' . $user_id . ' THEN to_id ELSE from_id END AS correspondent_id
-                      FROM messages AS m
-                      WHERE from_id = ' . $user_id . ' OR to_id = ' . $user_id . '
-                      GROUP BY correspondent_id) AS m
-                       JOIN users AS u ON m.correspondent_id = u.id;';
+        $sql = 'SELECT m.unread_count,
+                       m.total_count,
+                       m.correspondent_id,
+                       m.last_id,
+                       mm.creation_date,
+                       CONCAT(substr(mm.text, 1, ' . SHORT_TEXT_LENGTH . '), "...") AS message_part,
+                       u.id AS correspondent_id,
+                       u.name AS correspondent_name,
+                       u.avatar AS correspondent_avatar
+                 FROM (SELECT SUM(IF(from_id = ' . $user_id . ' AND was_read = 0, 1, 0)) AS unread_count,
+                              SUM(1) AS total_count,
+                              MAX(id) AS last_id,
+                              IF(from_id = ' . $user_id . ', to_id, from_id) AS correspondent_id
+                       FROM messages AS m
+                       WHERE from_id = ' . $user_id . ' OR to_id = ' . $user_id . '
+                       GROUP BY correspondent_id
+                       HAVING max(id)) AS m
+                        JOIN users AS u ON m.correspondent_id = u.id
+                        JOIN messages AS mm ON m.last_id = mm.id;';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о сообщениях пользователя');
         return (!$data || was_error($data)) ? [] : $data;
     }

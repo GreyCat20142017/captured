@@ -1,7 +1,7 @@
 <header class="header">
     <div class="header__wrapper container">
         <div class="header__logo-wrapper">
-            <a class="header__logo-link"  href="index.php">
+            <a class="header__logo-link" href="index.php">
                 <img class="header__logo" src="img/logo.svg" alt="Логотип readme" width="128" height="24">
             </a>
             <p class="header__topic">
@@ -24,17 +24,26 @@
             <nav class="header__nav">
                 <ul class="header__my-nav">
                     <li class="header__my-page header__my-page--popular">
-                        <a class="header__page-link" href="popular.html" title="Популярный контент">
+                        <a class="header__page-link <?= get_switch_classname($active_content, CONTENT_POPULAR,
+                            'header__page-link'); ?>"
+                            <?= get_content_href(CONTENT_POPULAR, $active_content, $filter_type, $filter_value); ?>
+                           title="Популярный контент">
                             <span class="visually-hidden">Популярный контент</span>
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--feed">
-                        <a class="header__page-link" href="feed.html" title="Моя лента">
+                        <a class="header__page-link <?= get_switch_classname($active_content, CONTENT_FEED,
+                            'header__page-link'); ?>"
+                            <?= get_content_href(CONTENT_FEED, $active_content, $filter_type, $filter_value); ?>
+                           title="Моя лента">
                             <span class="visually-hidden">Моя лента</span>
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--messages">
-                        <a class="header__page-link" href="messages.html" title="Личные сообщения">
+                        <a class="header__page-link <?= get_switch_classname($active_content, CONTENT_MESSAGES,
+                            'header__page-link'); ?>"
+                            <?= get_content_href(CONTENT_MESSAGES, $active_content, $filter_type, $filter_value); ?>
+                           title="Личные сообщения">
                             <span class="visually-hidden">Личные сообщения</span>
                         </a>
                     </li>

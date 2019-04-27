@@ -118,6 +118,8 @@ CREATE UNIQUE INDEX subscriber_blogger ON subscriptions (subscriber_id, blogger_
 CREATE UNIQUE INDEX re_post_user ON reposts (post_id, user_id);
 CREATE FULLTEXT INDEX post_ft_search ON posts (title);
 
+CREATE INDEX from_to ON messages (from_id, to_id);
+
 ALTER TABLE likes
   ADD CONSTRAINT fk_post_likes FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE;
 ALTER TABLE likes

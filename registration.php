@@ -18,7 +18,7 @@
          */
         $fields = [
             'email' => ['description' => 'E-mail', 'required' => true, 'validation_rules' => ['email_validation']],
-            'password' => ['description' => 'Пароль', 'required' => true],
+            'password' => ['description' => 'Пароль', 'required' => true, 'validation_rules' => ['confirmed:password_repeat']],
             'password-repeat' => ['description' => 'Пароль', 'required' => true],
             'name' => ['description' => 'Имя пользователя', 'required' => true],
             'info' => ['description' => 'Информация', 'required' => true],
@@ -51,7 +51,10 @@
 
     $page_content = include_template('registration.php', ['user' => $user]);
     $header_content = include_template(is_auth_user() ? 'header_logged.php' : 'header_normal.php', [
-        'user_name' => get_auth_user_property('name')
+        'user_name' => get_auth_user_property('name'),
+        'active_content' => '',
+        'filter_type' => null,
+        'filter_value' => null
     ]);
 
     $layout_content = include_template('layout.php',

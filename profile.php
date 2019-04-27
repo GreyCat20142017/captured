@@ -96,7 +96,10 @@
     }
 
     $header_content = include_template('header_logged.php', [
-        'user_name' => get_auth_user_property('name')
+        'user_name' => get_auth_user_property('name'),
+        'active_content' => '',
+        'filter_type' => null,
+        'filter_value' => null
     ]);
 
     $layout_content = include_template('layout.php',
