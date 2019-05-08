@@ -160,6 +160,22 @@
     }
 
     /**
+     * Функция возвращает id записи, если поле с переданным значением существует в таблице БД
+     * @param $connection
+     * @param $table
+     * @param $field_name
+     * @param $field_value
+     * @return bool
+     */
+    function get_id_by_value ($connection, $table, $field_name, $field_value) {
+        $sql = 'SELECT id  FROM ' . $table . ' WHERE ' .
+            mysqli_real_escape_string($connection, $field_name) . ' = "' .
+            mysqli_real_escape_string($connection, $field_value) . '" LIMIT 1;';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные с такими условиями из таблицы ' . $table, true);
+        return (!$data || was_error($data)) ? 0 : intval(get_assoc_element($data, 'id'));
+    }
+
+    /**
      * Функция возращает ошибку, если невозможно получить данные из БД, массив с id пользователя, если пользователь
      * с таким email существует, null - если не было ошибки и такого пользователя нет в БД
      * @param $connection
@@ -369,4 +385,88 @@
                         JOIN messages AS mm ON m.last_id = mm.id;';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о сообщениях пользователя');
         return (!$data || was_error($data)) ? [] : $data;
+    }
+
+    /**
+     * Основная часть транзакции по добавлению поста: проверка значений и вызов функции для добавления дочерних сущностей
+     * @param $connection
+     * @param $post
+     * @param $title
+     * @param $tab
+     * @param $user_id
+     * @return array|int|string
+     */
+    function add_post($connection, $post, $title, $tab, $user_id) {
+        $user_id =  mysqli_real_escape_string($connection, $user_id);
+        $tab =  mysqli_real_escape_string($connection, $tab);
+
+        $user_status = get_id_existance($connection, 'users', $user_id);
+        $category_id = get_id_by_value($connection, 'categories', 'content_type', $tab);
+
+        if (empty($category_id) ||  was_error($user_status)) {
+            return ['error' => 'Попытка использовать несуществующие данные для добавления поста. Пост не будет добавлен!'];
+        }
+
+        mysqli_query($connection, "START TRANSACTION");
+
+        $sql = 'INSERT INTO posts (category_id, user_id,  title)
+                          VALUES ( ?, ?, ?)';
+        $stmt = db_get_prepare_stmt($connection, $sql, [
+            $category_id,
+            $user_id,
+            $title
+        ]);
+        $res = mysqli_stmt_execute($stmt);
+        $new_id = $res ? mysqli_insert_id($connection) : 0 ;
+
+        $res_next = add_child_entity($connection, $new_id, $post, $tab);
+
+        if ($res && $res_next) {
+            mysqli_query($connection, "COMMIT");
+        }
+        else {
+            mysqli_query($connection, "ROLLBACK");
+        }
+
+        return $new_id ?? 0;
+    }
+
+    /** Вторая часть транзакции по добавлению поста: добавление дочерних сущностей по типам контента
+     * @param $connection
+     * @param $post_id
+     * @param $post
+     * @param $tab
+     * @return bool
+     */
+    function add_child_entity ($connection, $post_id, $post, $tab) {
+        switch ($tab) {
+            case FILTER_PHOTOS:
+                $sql = 'INSERT INTO ' . $tab . ' (post_id, filename)
+                          VALUES ( ?, ?)';
+                $params = [$post_id, get_assoc_element($post, 'userpic-file-photo')];
+                break;
+            case FILTER_VIDEOS:
+                $sql = 'INSERT INTO ' . $tab . ' (post_id, filename)
+                          VALUES ( ?, ?)';
+                $params = [$post_id, get_assoc_element($post, 'userpic-file-video')];
+                break;
+            case FILTER_QUOTES:
+                $sql = 'INSERT INTO ' . $tab . ' (post_id, text, author)
+                          VALUES ( ?, ?, ?)';
+                $params = [$post_id, get_assoc_element($post, 'quote-text'), get_assoc_element($post, 'quote-author')];
+                break;
+            case FILTER_TEXTS:
+                $sql = 'INSERT INTO ' . $tab . ' (post_id, text)
+                          VALUES ( ?, ?)';
+                $params = [$post_id, get_assoc_element($post, 'post-text')];
+                break;
+            case FILTER_LINKS:
+                $sql = 'INSERT INTO ' . $tab . ' (post_id, reference,  description)
+                          VALUES ( ?, ?, ?)';
+                $params = [$post_id, get_assoc_element($post, 'post-link'), get_assoc_element($post, 'post-text')];
+                break;
+            default:
+        }
+        $stmt = db_get_prepare_stmt($connection, $sql, $params);
+        return mysqli_stmt_execute($stmt);
     }

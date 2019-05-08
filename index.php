@@ -15,7 +15,11 @@
         header('Location: feed.php');
     }
 
-    $page_content = include_template('main.php', ['user' => $user]);
+    $page_content = include_template('main.php', [
+        'user' => $user,
+        'errors' => $errors
+    ]);
+
     $header_content = include_template('header_short.php', []);
 
     $layout_content = include_template('layout.php',

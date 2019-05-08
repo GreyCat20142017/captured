@@ -98,7 +98,7 @@
      * @param $current
      * @return string
      */
-    function get_switch_classname ($active, $current, $class='filters_button') {
+    function get_switch_classname ($active, $current, $class='filters__button') {
         return $active === $current ? $class . '--active' : '';
     }
 
@@ -126,4 +126,33 @@
             $href .= empty($filter_value) ? '"' : '?' . $filter_type . '=' . $filter_value . '"';
         }
         return $href;
+    }
+
+    /**
+     * Функция формирует заполненный шаблон с кнопками фильтров Фото,Видео и т.д.
+     * Формирование осуществляется на основе массивов констант, описанных в модуле constants
+     * @param        $active_tab
+     * @param        $script_name
+     * @param        $li_classname
+     * @param        $a_classname
+     * @param string $classbase
+     * @return string
+     */
+    function get_filters_content ($active_tab, $script_name, $li_classname, $a_classname, $vh, $is_tab, $classbase = 'filters__button--') {
+        $content = '';
+        for ($i = 1; $i < count(FILTER_NAME); $i++) {
+            $suffix = $is_tab ? '?tab=' . $i . '"' : '?filter=' . trim(get_element(FILTER_ALIAS, $i)) .'"';
+            $is_active = $is_tab ? get_switch_classname($active_tab, $i) : get_switch_classname($active_tab, trim(get_element(FILTER_ALIAS, $i)));
+            $item_content = include_template('filter_item.php', [
+                'filter_text' => get_element(FILTER_NAME, $i),
+                'filter_href' => intval($active_tab) === $i ? '' : 'href="' . $script_name . $suffix,
+                'filter_svg' => get_element(FILTER_SVG, $i),
+                'li_classname' => $li_classname,
+                'a_classname' => $a_classname . ' ' . $classbase . TEMPLATE_NAME[$i] . ' ' . $is_active,
+                'active_tab' => $active_tab,
+                'vh' => $vh
+            ]);
+            $content .= $item_content;
+        }
+        return $content;
     }

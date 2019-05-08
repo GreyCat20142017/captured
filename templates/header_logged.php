@@ -26,14 +26,16 @@
                     <li class="header__my-page header__my-page--popular">
                         <a class="header__page-link <?= get_switch_classname($active_content, CONTENT_POPULAR,
                             'header__page-link'); ?>"
-                            <?= get_content_href(CONTENT_POPULAR, $active_content, $filter_type, $filter_value); ?> title="Популярный контент">
+                            <?= get_content_href(CONTENT_POPULAR, $active_content, $filter_type, $filter_value); ?>
+                           title="Популярный контент">
                             <span class="visually-hidden">Популярный контент</span>
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--feed">
                         <a class="header__page-link <?= get_switch_classname($active_content, CONTENT_FEED,
                             'header__page-link'); ?>"
-                            <?= get_content_href(CONTENT_FEED, $active_content, $filter_type, $filter_value); ?> title="Моя лента">
+                            <?= get_content_href(CONTENT_FEED, $active_content, $filter_type, $filter_value); ?>
+                           title="Моя лента">
                             <span class="visually-hidden">Моя лента</span>
                         </a>
                     </li>
@@ -97,7 +99,7 @@
                         </div>
                     </li>
                     <li>
-                        <a class="header__post-button button button--transparent" href="adding-post.html">Пост</a>
+                        <a class="header__post-button button button--transparent" href="adding.php">Пост</a>
                     </li>
                 </ul>
             </nav>

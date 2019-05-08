@@ -13,24 +13,31 @@
         header('Location: login.php');
     }
 
-    $active_filter = isset($_GET['filter']) ? strip_tags($_GET['filter']) : null;
+    $active_tab = isset($_GET['filter']) ? strip_tags($_GET['filter']) : null;
 
-    $posts = get_posts($connection, $active_filter);
+    $posts = get_posts($connection, $active_tab);
     $banners = get_banners($connection);
 
     $page_content = include_template('feed.php', [
         'user' => $user,
         'posts_content' => get_post_content($posts),
         'promo_content' => get_various_content($banners, 'promo.php', 'banner'),
-        'active_tab' => empty($active_filter) ? FILTER_ALL : $active_filter,
-        'content_classname' =>  empty($posts) ? 'feed__wrapper feed__wrapper--no-content' : 'feed__wrapper'
+        'active_tab' => empty($active_tab) ? FILTER_ALL : $active_tab,
+        'content_classname' =>  empty($posts) ? 'feed__wrapper feed__wrapper--no-content' : 'feed__wrapper',
+        'filters_content' => get_filters_content(
+            $active_tab,
+            'feed.php',
+            'feed__filters-item filters__item',
+            'filters__button button ',
+            'visually-hidden',
+            false)
     ]);
 
     $header_content = include_template('header_logged.php', [
         'user_name' => get_auth_user_property('name'),
         'active_content' => CONTENT_FEED,
         'filter_type' => 'filter',
-        'filter_value' => $active_filter
+        'filter_value' => $active_tab
     ]);
 
     $layout_content = include_template('layout.php',

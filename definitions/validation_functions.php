@@ -35,8 +35,9 @@
     function get_field_validation_classname (&$errors, $field_name, $success_classname = '') {
         $success_classname = is_array($errors) && count($errors) === 0 ? '' : $success_classname;
         $field_errors = get_assoc_element($errors, $field_name);
-        return is_array($field_errors) && count($field_errors) > 0 ? 'form__input--error' : $success_classname;
+        return is_array($field_errors) && count($field_errors) > 0 ? ' form__input-wrapper--error ' : $success_classname;
     }
+
 
     /**
      * Функция возвращает описание ошибок валадации для поля по массиву ошибок и названию поля (название поля - ключ в массиве с ошибками)
@@ -84,12 +85,12 @@
     }
 
     /**
-     * Функция возвращает результат проверки правильности выбора значения из списка категорий
-     * @param $project_value
+     * Функция возвращает результат проверки правильности выбора значения из списка
+     * @param $item_value
      * @return string
      */
-    function get_project_validation_result ($project_value) {
-        return empty($project_value) || ($project_value === EMPTY_PROJECT) ? 'Необходимо выбрать категорию!' : '';
+    function get_list_validation_result ($item_value) {
+        return empty($item_value) || ($item_value === EMPTY_ITEM) ? 'Необходимо выбрать элемент!' : '';
     }
 
     /**
@@ -97,7 +98,7 @@
      * @param $date
      * @return string
      */
-    function get_task_date_validation_result ($date) {
+    function get_date_validation_result ($date) {
         $error_message = 'Необходима дата в формате ДД.ММ.ГГГГ больше или равна текущей ';
         $now = date_create("now");
         $new_date = date_create_from_format('d.m.Y', $date);
@@ -121,8 +122,10 @@
                 return get_project_validation_result($current_field);
             case 'email_validation':
                 return !filter_var($current_field, FILTER_VALIDATE_EMAIL) ? 'Email должен быть корректным' : '';
-            case 'lot_date_validation':
-                return get_task_date_validation_result($current_field);
+            case 'url_validation':
+                return !filter_var($current_field, FILTER_VALIDATE_URL) ? 'Url должен быть корректным' : '';
+            case 'date_validation':
+                return get_date_validation_result($current_field);
             case 'auth_validation':
                 return is_auth_user() ? '' : 'Необходимо авторизоваться';
 
@@ -140,7 +143,7 @@
      */
     function get_file_validation_result ($field_name, &$files, $is_required) {
         if (isset($files[$field_name]['name'])) {
-            if (get_assoc_element($files[$field_name], 'error') !== 0) {
+            if (intval(get_assoc_element($files[$field_name], 'error')) !== 0) {
                 return 'Файл не загружен';
             }
             $tmp_name = $files[$field_name]['tmp_name'];

@@ -11,7 +11,10 @@ uploads/*
 !uploads/.gitkeep
 pages/
 uploads/
+photos/
 
 capturedmdb/
 
 composer.phar
+
+mainbred.css

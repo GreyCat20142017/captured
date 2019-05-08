@@ -1,13 +1,13 @@
 <div class="post-details__user-info user__info">
     <div class="post-details__avatar user__avatar">
-        <a class="post-details__avatar-link user__avatar-link" href="#">
+        <a class="post-details__avatar-link user__avatar-link" href="profile.php?user=<?= get_pure_data($user, 'id'); ?>">
             <img class="post-details__picture user__picture" width="60" height="60"
                  src="<?= get_avatar(get_pure_data($user, 'avatar')); ?>"
                  alt="Аватар пользователя">
         </a>
     </div>
     <div class="post-details__name-wrapper user__name-wrapper">
-        <a class="post-details__name user__name" href="#">
+        <a class="post-details__name user__name" href="profile.php?user=<?= get_pure_data($user, 'id'); ?>">
             <span><?= get_pure_data($user, 'username'); ?></span>
         </a>
         <time class="post-details__time user__time" datetime="2014-03-20"><?= get_pure_data($user,

@@ -1,20 +1,18 @@
 <?php
 
-    define('TEMPLATE_FOLDER', 'templates/');
+    require_once ('filters_constants.php');
 
-    define('EMPTY_FILE', '/img/no_image.svg');
-    define('EMPTY_AVATAR', '/img/user.svg');
+    define('TEMPLATE_FOLDER', 'templates/');
 
     define('MAX_TEXT_LENGTH', 222);
     define('SHORT_TEXT_LENGTH', 22);
     define('RECORDS_PER_PAGE', 6);
 
-
     /**
      * Константы валидации и типов
      */
     define('ERROR_KEY', 'error');
-    define('EMPTY_CATEGORY', 'Выберите категорию');
+    define('EMPTY_ITEM', 'Выберите элемент');
     define('FILE_RULE', 'file_validation');
     define('MAX_FILE_SIZE', 200000);
 
@@ -32,6 +30,10 @@
         VIDEOS => 'videos/',
         AVATARS => 'avatars/'
     ]);
+
+
+    define('EMPTY_FILE', '/img/no_image.svg');
+    define('EMPTY_AVATAR', '/img/user.svg');
 
 //    define('VALID_FILE_TYPES', [
 //        PHOTOS => 'photos/', ['image/png', 'image/jpeg'],
@@ -59,37 +61,6 @@
     define('CONTENT_MESSAGES', 'messages');
 
 
-    define('POSTS', 'posts');
-    define('LIKES', 'likes');
-    define('SUBSCRIPTIONS', 'subscriptions');
-    define('TABS', [POSTS, LIKES, SUBSCRIPTIONS]);
-
-    define('FILTER_ALL', 'all');
-    define('FILTER_PHOTOS', 'photos');
-    define('FILTER_VIDEOS', 'videos');
-    define('FILTER_TEXTS', 'texts');
-    define('FILTER_QUOTES', 'quotes');
-    define('FILTER_LINKS', 'links');
-
-    define('FILTER_CONDITION', [
-        FILTER_ALL => '',
-        FILTER_PHOTOS => '',
-        FILTER_VIDEOS => '',
-        FILTER_TEXTS => '',
-        FILTER_QUOTES => '',
-        FILTER_LINKS => ''
-    ]);
-
-    define('FILTER_TEXT', [
-        FILTER_ALL => 'Все',
-        FILTER_PHOTOS => 'Фото',
-        FILTER_VIDEOS => 'Видео',
-        FILTER_TEXTS => 'Заметки',
-        FILTER_QUOTES => 'Цитаты',
-        FILTER_LINKS => 'Ссылки'
-    ]);
-
-    define('DEFAULT_FILTER', FILTER_ALL);
 
     define('CUSTOM_FILE_PROPERTY', 'Original filename');
     define('UI_START', 'UI');

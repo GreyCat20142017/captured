@@ -2,15 +2,13 @@
     session_start();
     require_once('init.php');
 
-    $post_id = isset($_GET['post']) ? $_GET['post'] : null;
+    $post_id = isset($_GET['post']) ? intval(strip_tags($_GET['post'])) : null;
     $post = $post_id ? get_post_details($connection, $post_id) : null;
-
 
     $is_ok = (!empty($post_id) && !empty($post));
 
-
     if ($is_ok) {
-        $user = get_user_info ($connection, intval(get_assoc_element($post, 'post_id')));
+        $user = get_user_info($connection, intval(get_assoc_element($post, 'post_id')));
         $user_content = include_template('post_details_user.php', [
             'user' => $user
         ]);
@@ -19,11 +17,14 @@
     $page_content = include_template($is_ok ? 'post_details.php' : '404.php',
         [
             'post' => $post,
-            'user_content' => $user_content
+            'user_content' => $is_ok ? $user_content : ''
         ]);
 
     $header_content = include_template(is_auth_user() ? 'header_logged.php' : 'header_short.php', [
-        'user_name' => get_auth_user_property('name')
+        'user_name' => get_auth_user_property('name'),
+        'active_content' => '',
+        'filter_type' => null,
+        'filter_value' => null
     ]);
 
     $layout_content = include_template('layout.php',

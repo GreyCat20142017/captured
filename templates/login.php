@@ -5,7 +5,7 @@
     <section class="login container">
         <h2 class="visually-hidden">Форма авторизации</h2>
         <form class="login__form form" action="login.php" method="post">
-            <div class="login__input-wrapper form__input-wrapper">
+            <div class="login__input-wrapper form__input-wrapper <?= get_field_validation_classname ($errors, 'email'); ?>">
                 <label class="login__label form__label" for="login-email">Электронная почта</label>
                 <div class="form__input-section">
                     <input class="login__input form__input" id="login-email" type="email" name="email"
@@ -18,7 +18,7 @@
                     </div>
                 </div>
             </div>
-            <div class="login__input-wrapper form__input-wrapper">
+            <div class="login__input-wrapper form__input-wrapper <?= get_field_validation_classname ($errors, 'password'); ?>">
                 <label class="login__label form__label" for="login-password">Пароль</label>
                 <div class="form__input-section">
                     <input class="login__input form__input" id="login-password" type="password" name="password"
