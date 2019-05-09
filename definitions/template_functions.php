@@ -23,7 +23,7 @@
      * @param $posts
      * @return string
      */
-    function get_post_content (&$posts, $common_feed = true) {
+    function get_post_content (&$posts, $classname, $common_feed = true) {
         $content = '';
         foreach ($posts as $post) {
             $is_own = isset($post['is_own_post']) ? (intval($post['is_own_post']) === 1) :  false;
@@ -49,7 +49,8 @@
             $post_content = include_template($template_name, [
                 'post' => $post,
                 'post_footer_content' => $footer_content,
-                'post_header_content' => $header_content
+                'post_header_content' => $header_content,
+                'classname' => $classname
             ]);
             $content .= $post_content;
         }

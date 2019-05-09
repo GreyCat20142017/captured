@@ -1,4 +1,4 @@
-<article class="feed__post post post-text">
+<article class="<?= $classname; ?>__post post post-text">
     <?= $post_header_content; ?>
     <div class="post__main">
         <h2><?= get_pure_data($post, 'title'); ?></h2>

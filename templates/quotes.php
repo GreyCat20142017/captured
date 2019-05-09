@@ -1,4 +1,4 @@
-<article class="feed__post post post-quote">
+<article class="<?= $classname; ?>__post post post-quote">
     <?= $post_header_content; ?>
     <div class="post__main">
         <blockquote>

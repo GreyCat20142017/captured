@@ -6,7 +6,7 @@
 
     define('MAX_TEXT_LENGTH', 222);
     define('SHORT_TEXT_LENGTH', 22);
-    define('RECORDS_PER_PAGE', 6);
+    define('RECORDS_PER_PAGE', 4);
 
     /**
      * Константы валидации и типов

@@ -100,10 +100,11 @@
      * @param $connection
      * @return array|null
      */
-    function get_posts ($connection, $type) {
+    function get_posts ($connection, $type, $limit = RECORDS_PER_PAGE, $offset = 0) {
         $type_condition = empty($type) || ($type === FILTER_ALL) ? '' :
             ' WHERE content_type = "' . mysqli_real_escape_string($connection, $type) . '" ';
-        $sql = get_posts_query_skeleton() . $type_condition . '  ORDER BY  p.creation_date DESC';
+        $sql = get_posts_query_skeleton() . $type_condition . '  ORDER BY  p.creation_date DESC ' .
+        ' LIMIT ' . $limit . ' OFFSET ' . $offset . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о постах');
         return (!$data || was_error($data)) ? [] : $data;
     }
@@ -114,7 +115,7 @@
      * @param $user_id
      * @return array|null
      */
-    function get_posts_for_profile ($connection, $user_id) {
+    function get_posts_for_profile ($connection, $user_id, $limit = RECORDS_PER_PAGE, $offset = 0) {
         $user_id = mysqli_real_escape_string($connection, $user_id);
         $sql = 'SELECT pfp.update_date, pfp.is_own_post, sp.* FROM
                         (SELECT id AS post_id, user_id AS author_id, creation_date AS update_date, 1 AS is_own_post
@@ -127,7 +128,8 @@
                                      JOIN posts p ON r.post_id = p.id
                               WHERE r.user_id = ' . $user_id . ') AS tmp) AS  pfp
                         JOIN (' . get_posts_query_skeleton() . ') AS sp
-                        ON pfp.post_id=sp.post_id ORDER BY pfp.update_date DESC;';
+                        ON pfp.post_id=sp.post_id ORDER BY pfp.update_date DESC 
+                        LIMIT ' . $limit . ' OFFSET ' . $offset . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о постах');
 
         return (!$data || was_error($data)) ? [] : $data;
@@ -419,9 +421,9 @@
         $res = mysqli_stmt_execute($stmt);
         $new_id = $res ? mysqli_insert_id($connection) : 0 ;
 
-        $res_next = add_child_entity($connection, $new_id, $post, $tab);
+        $res_child = add_child_entity($connection, $new_id, $post, $tab);
 
-        if ($res && $res_next) {
+        if ($res && $res_child) {
             mysqli_query($connection, "COMMIT");
         }
         else {
@@ -469,4 +471,21 @@
         }
         $stmt = db_get_prepare_stmt($connection, $sql, $params);
         return mysqli_stmt_execute($stmt);
+    }
+
+    /**
+     * Функция возвращает результаты расчета общего количества страниц для пагинации по постам.
+     * Передается соединение, число записей на страницу и в качестве необязательного параметра id категории
+     * @param      $connection
+     * @param      $limit
+     * @param null $category_id
+     * @return array|int|null
+     */
+    function get_posts_total_pages ($connection, $limit, $category_id = null) {
+        $category_condition = $category_id ?
+            ' WHERE category_id = ' . mysqli_real_escape_string($connection, $category_id) . ' GROUP BY category_id;' :
+            ';';
+        $sql = 'SELECT CEIL(COUNT(*) / ' . $limit . ') AS page_count, COUNT(*) AS total_records FROM posts ' . $category_condition;
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные для пагинации', true);
+        return (!$data || was_error($data)) ? 1 : intval(get_assoc_element($data, 'page_count'));
     }

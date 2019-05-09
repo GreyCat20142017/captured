@@ -47,7 +47,7 @@
             {
                 $posts = get_posts_for_profile($connection, $user_id);
                 $content = include_template('profile_posts.php', [
-                    'inner_part' => get_post_content($posts, false)
+                    'inner_part' => get_post_content($posts, 'profile', false)
                 ]);
                 break;
             }
@@ -88,7 +88,6 @@
             'active_user' => $user,
             'active_query' => $_SERVER['QUERY_STRING'],
             'active_script' =>  $_SERVER['PHP_SELF']
-//            'active_script' =>  $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME']
         ]);
 
         $_SESSION[CAPTURED_SESSION]['current_user'] = $user_id;

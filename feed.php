@@ -20,7 +20,7 @@
 
     $page_content = include_template('feed.php', [
         'user' => $user,
-        'posts_content' => get_post_content($posts),
+        'posts_content' => get_post_content($posts, 'feed'),
         'promo_content' => get_various_content($banners, 'promo.php', 'banner'),
         'active_tab' => empty($active_tab) ? FILTER_ALL : $active_tab,
         'content_classname' =>  empty($posts) ? 'feed__wrapper feed__wrapper--no-content' : 'feed__wrapper',

@@ -1,4 +1,4 @@
-<article class="feed__post post post-video">
+<article class="<?= $classname; ?>__post post post-video">
     <?= $post_header_content; ?>
     <div class="post__main">
         <div class="post-video__block">
