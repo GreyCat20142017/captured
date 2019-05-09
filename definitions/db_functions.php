@@ -327,7 +327,7 @@
      */
     function get_post_details ($connection, $post_id) {
         $post_id = mysqli_real_escape_string($connection, $post_id);
-        $post_condition = empty($post_condition) ? '' : ' WHERE p.id=' . $post_id . ' ';
+        $post_condition =  ' WHERE p.id=' . $post_id . ' ';
         $sql = get_posts_query_skeleton() . $post_condition . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о поcте', true);
         return (!$data || was_error($data)) ? [] : $data;
@@ -488,4 +488,14 @@
         $sql = 'SELECT CEIL(COUNT(*) / ' . $limit . ') AS page_count, COUNT(*) AS total_records FROM posts ' . $category_condition;
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные для пагинации', true);
         return (!$data || was_error($data)) ? 1 : intval(get_assoc_element($data, 'page_count'));
+    }
+
+    function get_post_comments ($connection, $post_id, $limit = null) {
+        $post_id = mysqli_real_escape_string($connection, $post_id);
+        $limit_condition = empty($limit) ? '' : ' LIMIT ' . $limit;
+        $sql = 'SELECT c.user_id, c.text, c.creation_date, u.name as username, u.avatar as avatar
+                    FROM comments AS c
+                      JOIN users AS u ON c.user_id=u.id WHERE c.post_id=' . $post_id  .  $limit_condition . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о комментариях');
+        return (!$data || was_error($data)) ? [] : $data;
     }

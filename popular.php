@@ -15,8 +15,6 @@
     $page = isset($_GET['page']) ? intval(strip_tags($_GET['page'])) : 1;
     $page_count = get_posts_total_pages($connection, RECORDS_PER_PAGE, $category_id);
 
-    dump($page_count);
-
     $posts = get_posts($connection, $active_tab, RECORDS_PER_PAGE, ($page - 1) * RECORDS_PER_PAGE);
 
     $pagination_content = include_template('pagination.php', [

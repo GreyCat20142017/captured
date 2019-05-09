@@ -1,6 +1,7 @@
 <div class="post-details__user-info user__info">
     <div class="post-details__avatar user__avatar">
-        <a class="post-details__avatar-link user__avatar-link" href="profile.php?user=<?= get_pure_data($user, 'id'); ?>">
+        <a class="post-details__avatar-link user__avatar-link"
+           href="profile.php?user=<?= get_pure_data($user, 'id'); ?>">
             <img class="post-details__picture user__picture" width="60" height="60"
                  src="<?= get_avatar(get_pure_data($user, 'avatar')); ?>"
                  alt="Аватар пользователя">
@@ -25,9 +26,12 @@
         <span class="post-details__rating-text user__rating-text">публикаций</span>
     </p>
 </div>
+
 <div class="post-details__user-buttons user__buttons">
-    <button class="user__button user__button--subscription button button--main" type="button">
-        Подписаться
-    </button>
-    <a class="user__button user__button--writing button button--green" href="#">Сообщение</a>
+    <?php if (intval(get_pure_data($user, 'user_id')) !== intval($current_user)) : ?>
+        <button class="user__button user__button--subscription button button--main" type="button">
+            Подписаться
+        </button>
+        <a class="user__button user__button--writing button button--green" href="#">Сообщение</a>
+    <?php endif; ?>
 </div>
