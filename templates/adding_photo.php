@@ -1,6 +1,6 @@
 <section class="adding-post__photo tabs__content tabs__content--active">
     <h2 class="visually-hidden">Форма добавления фото</h2>
-    <form class="adding-post__form form" action="adding.php" method="post" enctype="multipart/form-data">
+    <form class="adding-post__form form" action="adding.php?tab=1" method="post" enctype="multipart/form-data">
         <div class="adding-post__input-wrapper form__input-wrapper <?= get_field_validation_classname ($errors, 'photo-heading'); ?>">
             <label class="adding-post__label form__label" for="photo-heading">Заголовок</label>
             <div class="form__input-section">

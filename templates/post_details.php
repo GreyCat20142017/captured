@@ -5,13 +5,13 @@
             <h2 class="visually-hidden">Публикация</h2>
             <div class="post-details__wrapper post-photo">
 
-                <?php if(intval(get_pure_data($post, 'id')) === intval($current_user)) : ?>
-                <a class="post-details__close button button--close" href="#" title="Удалить">
-                    <span class="visually-hidden">Удалить</span>
-                    <svg class="button__close-icon" width="18" height="18">
-                        <use xlink:href="#icon-close"></use>
-                    </svg>
-                </a>
+                <?php if (intval(get_pure_data($post, 'id')) === intval($current_user)) : ?>
+                    <a class="post-details__close button button--close" href="#" title="Удалить">
+                        <span class="visually-hidden">Удалить</span>
+                        <svg class="button__close-icon" width="18" height="18">
+                            <use xlink:href="#icon-close"></use>
+                        </svg>
+                    </a>
                 <?php endif; ?>
 
                 <div class="post-details__main-block post post--details">
@@ -42,21 +42,18 @@
                         <span class="post__view"><?= isnull(get_pure_data($post, 'reviews'), 0); ?> просмотров</span>
                     </div>
                     <div class="comments">
-                        <form class="comments__form form" action="comment.php" method="post">
-                            <div class="comments__my-avatar">
-                                <img class="comments__picture" src="img/userpic.jpg" alt="Аватар пользователя">
-                            </div>
-                            <textarea class="comments__textarea form__textarea"
-                                      placeholder="Ваш комментарий"></textarea>
-                            <label class="visually-hidden">Ваш комментарий</label>
-                            <button class="comments__submit button button--green" type="submit">Отправить</button>
-                        </form>
+
+                        <?= $comments_form_content; ?>
+
                         <div class="comments__list-wrapper">
                             <?= $comments_content; ?>
-                            <a class="comments__more-link" href="#">
-                                <span>Показать все комментарии</span>
-                                <sup class="comments__amount">45</sup>
-                            </a>
+                            <?php if ($need_more_comments): ?>
+                                <a class="comments__more-link"
+                                   href="<?= rebuild_query_string($active_script, $active_query, 'all_comments', !($shown)); ?>">
+                                    <span><?= $shown? 'Cкрыть комментарии' : 'Показать все комментарии'; ?></span>
+                                    <sup class="comments__amount"><?= isnull(get_pure_data($post, 'comments_count'), 0); ?> </sup>
+                                </a>
+                            <? endif; ?>
                         </div>
                     </div>
                 </div>

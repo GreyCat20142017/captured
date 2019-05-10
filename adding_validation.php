@@ -38,8 +38,8 @@
         if (isset($_POST['publish_link'])) {
             $fields = [
                 'link-heading' => ['description' => 'Заголовок', 'required' => true],
-                'post_link' => ['description' => 'Ссылка', 'required' => true, 'validation_rules' => ['url_validation'],
-                'post-text' => ['description' => 'Описание', 'required' => true]]
+                'post-link' => ['description' => 'Ссылка', 'required' => true, 'validation_rules' => ['url_validation']],
+                'post-text' => ['description' => 'Описание', 'required' => true]
             ];
             $tab = FILTER_LINKS;
         }

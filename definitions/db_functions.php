@@ -490,6 +490,13 @@
         return (!$data || was_error($data)) ? 1 : intval(get_assoc_element($data, 'page_count'));
     }
 
+    /**
+     * Функция возвращает либо первые комментарии к посту, либо все
+     * @param      $connection
+     * @param      $post_id
+     * @param null $limit
+     * @return array|null
+     */
     function get_post_comments ($connection, $post_id, $limit = null) {
         $post_id = mysqli_real_escape_string($connection, $post_id);
         $limit_condition = empty($limit) ? '' : ' LIMIT ' . $limit;
@@ -498,4 +505,31 @@
                       JOIN users AS u ON c.user_id=u.id WHERE c.post_id=' . $post_id  .  $limit_condition . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о комментариях');
         return (!$data || was_error($data)) ? [] : $data;
+    }
+
+    /**
+     * Функция возвращает истину в случае успешного добавления комменатрия или ложь - в случае ошибки
+     * @param $connection
+     * @param $text
+     * @param $user_id
+     * @param $post_id
+     * @return bool
+     */
+    function add_comment ($connection, $text, $user_id, $post_id) {
+
+        $user_status = get_id_existance($connection, 'users', $user_id);
+        if (was_error($user_status) || empty($text)) {
+            return false;
+        }
+
+        $sql = 'INSERT INTO comments ( user_id,  post_id, text) 
+                          VALUES (?, ?, ?)';
+        $stmt = db_get_prepare_stmt($connection, $sql, [
+            $user_id,
+            $post_id,
+            $text
+        ]);
+        $res = mysqli_stmt_execute($stmt);
+
+        return ($res) ? true : false;
     }

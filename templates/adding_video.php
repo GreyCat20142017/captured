@@ -1,6 +1,6 @@
 <section class="adding-post__video tabs__content tabs__content--active">
     <h2 class="visually-hidden">Форма добавления видео</h2>
-    <form class="adding-post__form form" action="adding.php" method="post" enctype="multipart/form-data">
+    <form class="adding-post__form form" action="adding.php?tab=2" method="post" enctype="multipart/form-data">
         <div class="adding-post__input-wrapper form__input-wrapper">
             <label class="adding-post__label form__label" for="video-heading">Заголовок</label>
             <div class="form__input-section">

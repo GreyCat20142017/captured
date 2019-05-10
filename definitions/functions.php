@@ -266,7 +266,13 @@
     }
 
     /**
-     * Функция "пересобирает" строку запроса при изменении одного из параматров
+     * Функция "пересобирает" строку запроса при изменении одного из параметров
+     * Пример использования:
+     * 'active_query' => $_SERVER['QUERY_STRING'], - пример передаваемых в шаблон параметров
+     * 'active_script' => $_SERVER['PHP_SELF'],  - пример переедаваемых в шаблон параметров
+     * 'shown' => $show_all
+     *  где $show_all = !empty($_GET['all_comments']); - пример использования для включения-выключения параметра
+     *  в шаблоне: href="<?= rebuild_query_string($active_script, $active_query, 'all_comments', !($shown)); ?>">
      * @param $script
      * @param $query
      * @param $param

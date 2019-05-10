@@ -97,3 +97,5 @@ INSERT INTO reposts (user_id, post_id, creation_date)
 VALUES (1, 4, DATE_ADD(NOW(), INTERVAL -5 HOUR)),
        (2, 1, DATE_ADD(NOW(), INTERVAL -3 HOUR)),
        (3, 1, DATE_ADD(NOW(), INTERVAL -3 HOUR));
+
+# git log --pretty=format:"%h  %cd %s" --date=format:%c

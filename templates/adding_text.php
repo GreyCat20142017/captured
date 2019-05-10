@@ -1,6 +1,6 @@
 <section class="adding-post__text tabs__content tabs__content--active">
     <h2 class="visually-hidden">Форма добавления текста</h2>
-    <form class="adding-post__form form" action="adding.php" method="post">
+    <form class="adding-post__form form" action="adding.php?tab=3" method="post">
         <div class="adding-post__input-wrapper form__input-wrapper <?= get_field_validation_classname($errors,
             'text-heading'); ?>"
         ">

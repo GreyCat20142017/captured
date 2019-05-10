@@ -14,10 +14,11 @@
         header('Location: login.php');
     }
 
+    require_once('adding_validation.php');
+
+
     $active_tab = isset($_GET['tab']) ? intval(strip_tags($_GET['tab'])) : 1;
     $tab_template_name = 'adding_' . get_element(TEMPLATE_NAME, $active_tab) . '.php';
-
-    require_once('adding_validation.php');
 
 
     $tab_content = include_template($tab_template_name, [
