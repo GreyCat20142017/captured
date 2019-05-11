@@ -55,12 +55,15 @@
     }
 
     /**
-     * Функция возвращает основную часть текста запроса для выборки постов
+     * Вспомогательная функция. Возвращает основную часть текста запроса для выборки постов
+     * К subscriber_id операция mysqli_real_escape_string должна быть применена в вызывающей функции!
      * Семену - привет!
      * @return string
      */
-    function get_posts_query_skeleton () {
-        $post_condition = empty($post_id) ? '' : ' WHERE p.post_id=' . $post_id . ' ';
+    function get_posts_query_skeleton ($subscriber_id = null) {
+        $subscriber_join = empty($subscriber_id) ? '' :
+            ' JOIN (SELECT subscriber_id, blogger_id FROM subscriptions WHERE subscriber_id = ' . $subscriber_id .') AS s
+            ON p.user_id = blogger_id ';
         return 'SELECT  p.user_id, p.category_id, p.title, p.id AS post_id, p.hashtag, u.name AS username, u.avatar, c.content_type,
                     IFNULL(ph.filename, IFNULL(v.filename, "") ) AS filename,
                     IFNULL(q.author, "") AS author,
@@ -70,7 +73,7 @@
                      WHEN l.description IS NOT NULL THEN l.description
                     ELSE  "" END AS text,
                     IFNULL(lk.likes_count, 0) AS likes_count, IFNULL(lk.comments_count, 0) AS comments_count, IFNULL(lk.reposts_count, 0) AS reposts_count
-                    FROM posts AS p
+                    FROM posts AS p '. $subscriber_join . '
                     JOIN users u ON p.user_id = u.id
                     JOIN categories c ON p.category_id = c.id
                                         LEFT OUTER JOIN photos AS ph ON p.id = ph.post_id AND c.content_type="' . FILTER_PHOTOS . '"
@@ -100,11 +103,29 @@
      * @param $connection
      * @return array|null
      */
-    function get_posts ($connection, $type, $limit = RECORDS_PER_PAGE, $offset = 0) {
+    function get_posts ($connection, $type, $limit = RECORDS_PER_PAGE, $offset = 0, $sort = null) {
+        $sort_condition = empty($sort) ? '' : ' ORDER BY ' . $sort . ' DESC ';
         $type_condition = empty($type) || ($type === FILTER_ALL) ? '' :
             ' WHERE content_type = "' . mysqli_real_escape_string($connection, $type) . '" ';
-        $sql = get_posts_query_skeleton() . $type_condition . '  ORDER BY  p.creation_date DESC ' .
+        $sql = get_posts_query_skeleton() . $type_condition . ' ' . $sort_condition .
         ' LIMIT ' . $limit . ' OFFSET ' . $offset . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о постах');
+        return (!$data || was_error($data)) ? [] : $data;
+    }
+
+
+    /**
+     * Функция возвращает данные о постах или пустой массив
+     * @param $connection
+     * @return array|null
+     */
+    function get_posts_for_feed ($connection, $user_id, $type, $limit = RECORDS_PER_PAGE, $offset = 0) {
+        $user_id  =  mysqli_real_escape_string($connection, $user_id);
+        $sort_condition = empty($sort) ? '' : ' ORDER BY ' . $sort . ' DESC ';
+        $type_condition = empty($type) || ($type === FILTER_ALL) ? '' :
+            ' WHERE content_type = "' . mysqli_real_escape_string($connection, $type) . '" ';
+        $sql = get_posts_query_skeleton($user_id) . $type_condition . ' ' . $sort_condition .
+            ' LIMIT ' . $limit . ' OFFSET ' . $offset . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о постах');
         return (!$data || was_error($data)) ? [] : $data;
     }

@@ -8,7 +8,9 @@
                 <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
                 <ul class="popular__sorting-list sorting__list">
                     <li class="sorting__item sorting__item--popular">
-                        <a class="sorting__link sorting__link--active" href="#">
+                        <a class="sorting__link <?= get_switch_classname($active_sort,
+                            SORT_COMMENTS, 'sorting__link'); ?>"
+                           href="<?= rebuild_query_string($active_script, $active_query, 'sort', SORT_COMMENTS); ?>">
                             <span>Популярность</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -16,7 +18,9 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link" href="#">
+                        <a class="sorting__link <?= get_switch_classname($active_sort,
+                            SORT_LIKES, 'sorting__link'); ?>"
+                           href="<?= rebuild_query_string($active_script, $active_query, 'sort', SORT_LIKES); ?>">
                             <span>Лайки</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -24,7 +28,9 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link" href="#">
+                        <a class="sorting__link <?= get_switch_classname($active_sort,
+                            SORT_DATE, 'sorting__link'); ?>"
+                           href="<?= rebuild_query_string($active_script, $active_query, 'sort', SORT_DATE); ?>">
                             <span>Дата</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -55,7 +61,7 @@
             <?= $posts_content; ?>
         </div>
 
-       <?= $pagination_content; ?>
+        <?= $pagination_content; ?>
 
     </div>
 </section>

@@ -15,7 +15,7 @@
 
     $active_tab = isset($_GET['filter']) ? strip_tags($_GET['filter']) : null;
 
-    $posts = get_posts($connection, $active_tab);
+    $posts = get_posts_for_feed($connection, get_auth_user_property('id'), $active_tab);
     $banners = get_banners($connection);
 
     $page_content = include_template('feed.php', [
@@ -26,7 +26,8 @@
         'content_classname' =>  empty($posts) ? 'feed__wrapper feed__wrapper--no-content' : 'feed__wrapper',
         'filters_content' => get_filters_content(
             $active_tab,
-            'feed.php',
+            $_SERVER['PHP_SELF'],
+            $_SERVER['QUERY_STRING'],
             'feed__filters-item filters__item',
             'filters__button button ',
             'visually-hidden',

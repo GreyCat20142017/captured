@@ -2,6 +2,10 @@
 
     require_once ('filters_constants.php');
 
+    define('SORT_COMMENTS', 'comments_count');
+    define('SORT_LIKES', 'likes_count');
+    define('SORT_DATE', 'creation_date');
+
     define('TEMPLATE_FOLDER', 'templates/');
 
     define('MAX_TEXT_LENGTH', 222);

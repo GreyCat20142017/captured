@@ -87,7 +87,8 @@
             'active_tab' => $active_tab,
             'active_user' => $user,
             'active_query' => $_SERVER['QUERY_STRING'],
-            'active_script' =>  $_SERVER['PHP_SELF']
+            'active_script' =>  $_SERVER['PHP_SELF'],
+            'is_own' => $is_own_profile
         ]);
 
         $_SESSION[CAPTURED_SESSION]['current_user'] = $user_id;

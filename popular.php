@@ -8,14 +8,16 @@
 
     $is_ok = true;
 
-    $active_tab = isset($_GET['filter']) ? trim(strip_tags($_GET['filter'])) : null;
+    $active_tab = isset($_GET['filter']) ? trim(strip_tags($_GET['filter'])) : FILTER_ALL;
+    $active_sort = isset($_GET['sort']) ? trim(strip_tags($_GET['sort'])) : SORT_DATE;
+
     $category_id = empty($active_tab) || $active_tab === FILTER_ALL ? null :
         get_id_by_value($connection, 'categories', 'content_type', $active_tab);
 
     $page = isset($_GET['page']) ? intval(strip_tags($_GET['page'])) : 1;
     $page_count = get_posts_total_pages($connection, RECORDS_PER_PAGE, $category_id);
 
-    $posts = get_posts($connection, $active_tab, RECORDS_PER_PAGE, ($page - 1) * RECORDS_PER_PAGE);
+    $posts = get_posts($connection, $active_tab, RECORDS_PER_PAGE, ($page - 1) * RECORDS_PER_PAGE, $active_sort);
 
     $pagination_content = include_template('pagination.php', [
         'page_count' => $page_count,
@@ -30,15 +32,19 @@
         'active_tab' => empty($active_filter) ? FILTER_ALL : $active_filter,
         'content_classname' => empty($posts) ? 'popular__posts popular__posts--no-content' : 'popular__posts',
         'active_tab' => $active_tab,
+        'active_sort' => $active_sort,
         'posts_content' => get_post_content($posts, 'popular', true),
         'pagination_content' => ($page_count > 1) ? $pagination_content : '',
         'filters_content' => get_filters_content(
             $active_tab,
-            'popular.php',
+            $_SERVER['PHP_SELF'],
+            $_SERVER['QUERY_STRING'],
             'popular__filters-item filters__item',
             'filters__button button ',
             'visually-hidden',
-            false)
+            false),
+        'active_query' => $_SERVER['QUERY_STRING'],
+        'active_script' =>  $_SERVER['PHP_SELF']
     ]);
 
     $header_content = include_template('header_logged.php', [

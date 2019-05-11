@@ -8,10 +8,12 @@
                  height="17">
                 <use xlink:href="#icon-heart-active"></use>
             </svg>
-            <span><?= isnull(get_pure_data($post, 'likes_count'),0); ?></span>
+            <span><?= isnull(get_pure_data($post, 'likes_count'), 0); ?></span>
             <span class="visually-hidden">количество лайков</span>
         </a>
-        <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
+        <a class="post__indicator post__indicator--comments button"
+           href="post_details.php?post=<?= get_pure_data($post, 'post_id'); ?>"
+           title="Комментарии и другая детальная информация о публикации">
             <svg class="post__indicator-icon" width="19" height="17">
                 <use xlink:href="#icon-comment"></use>
             </svg>

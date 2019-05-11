@@ -31,7 +31,8 @@
         'active_tab' => $active_tab,
         'filters_content' => get_filters_content(
             $active_tab,
-            'adding.php',
+            $_SERVER['PHP_SELF'],
+            $_SERVER['QUERY_STRING'],
             'adding-post__tabs-item filters__item tabs__item',
             'adding-post__tabs-link filters__button button',
             '',
