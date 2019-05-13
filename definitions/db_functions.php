@@ -554,3 +554,99 @@
 
         return ($res) ? true : false;
     }
+
+    /**
+     * Функция переключает состояние лайка залогиненного пользователя для поста. Возвращает true в случае успеха,
+     * false - в случае ошибки
+     * @param $connection
+     * @param $user_id
+     * @param $post_id
+     * @return bool
+     */
+    function switch_like ($connection, $user_id, $post_id) {
+        return switch_common($connection, $user_id, $post_id, 'likes');
+    }
+
+    /**
+     * Функция переключает состояние репоста залогиненного пользователя для поста. Возвращает true в случае успеха,
+     * false - в случае ошибки
+     * @param $connection
+     * @param $user_id
+     * @param $post_id
+     * @return bool
+     */
+    function switch_repost ($connection, $user_id, $post_id) {
+        return switch_common($connection, $user_id, $post_id, 'reposts');
+    }
+
+
+    /**
+     * Функция переключает состояние данных в указанной таблице для залогиненного пользователя по публикации.
+     * Возвращает true в случае успеха, false - в случае ошибки
+     * @param $connection
+     * @param $user_id
+     * @param $post_id
+     * @return bool
+     */
+    function switch_common ($connection, $user_id, $post_id, $table) {
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $post_id = mysqli_real_escape_string($connection, $post_id);
+        $sql = 'SELECT id  FROM ' . $table . ' WHERE user_id=' . $user_id . ' AND post_id=' . $post_id . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные', true);
+
+        if (was_error($data)) {
+            return false;
+        }
+
+        if (empty($data)) {
+            //mytodo Подумать: может, стОит добавить и здесь проверку, не является ли пост собственным.
+            // Но вообще это делается при формировании ссылки
+            $sql = 'INSERT INTO ' . $table . ' ( user_id,  post_id) 
+                          VALUES (?, ?)';
+            $stmt = db_get_prepare_stmt($connection, $sql, [
+                $user_id,
+                $post_id
+            ]);
+            $res = mysqli_stmt_execute($stmt);
+        } else {
+            $sql = 'DELETE FROM ' . $table . '  WHERE  user_id=' . $user_id . ' AND post_id=' . $post_id . ';';
+            $res = mysqli_query($connection, $sql);
+        }
+        return ($res) ? true : false;
+    }
+
+    /**
+     * Функция переключает состояние репоста залогиненного пользователя для поста. Возвращает true в случае успеха,
+     * false - в случае ошибки
+     * @param $connection
+     * @param $subscriber_id
+     * @param $post_id
+     * @return bool
+     */
+    function switch_subscription ($connection, $subscriber_id, $blogger_id) {
+        $subscriber_id = mysqli_real_escape_string($connection, $subscriber_id);
+        $blogger_id = mysqli_real_escape_string($connection, $blogger_id);
+
+        $sql = 'SELECT id  FROM subscriptions WHERE subscriber_id=' . $subscriber_id . ' AND blogger_id=' . $blogger_id . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о подписках', true);
+
+        if (was_error($data)) {
+            return false;
+        }
+
+        if (empty($data)) {
+            //mytodo Подумать: может, стОит добавить и здесь проверку, не является ли пост собственным.
+            // Но вообще это делается при формировании ссылки
+            $sql = 'INSERT INTO subscriptions ( subscriber_id, blogger_id) 
+                          VALUES (?, ?)';
+            $stmt = db_get_prepare_stmt($connection, $sql, [
+                $subscriber_id,
+                $blogger_id
+            ]);
+            $res = mysqli_stmt_execute($stmt);
+        } else {
+            $sql = 'DELETE FROM subscriptions WHERE subscriber_id=' . $subscriber_id . ' AND blogger_id=' . $blogger_id . ';';
+            $res = mysqli_query($connection, $sql);
+        }
+        return ($res) ? true : false;
+    }

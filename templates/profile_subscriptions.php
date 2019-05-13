@@ -35,10 +35,11 @@
                 </div>
 
                 <div class="post-mini__user-buttons user__buttons">
-                    <button
+                    <a <?= get_subscription_href_title( get_pure_data($subscription,
+                        'blogger_id', 'Подписаться/отписаться')); ?>
                         class="post-mini__user-button user__button user__button--subscription button button--main"
                         type="button">Подписаться
-                    </button>
+                    </a>
                 </div>
 
             </li>

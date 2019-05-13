@@ -29,10 +29,10 @@
 
                 <?php if (!$is_own): ?>
                     <div class="profile__user-buttons user__buttons">
-                        <button class="profile__user-button user__button user__button--subscription button button--main"
-                                type="button" title="Подписаться на автора <?= get_pure_data($user, 'username'); ?>">
+                        <a class="profile__user-button user__button user__button--subscription button button--main"
+                        <a <?= get_subscription_href_title(get_pure_data($user, 'user_id'), 'Подписаться/отписаться от автора ' . get_pure_data($user, 'username')); ?>>
                             Подписаться
-                        </button>
+                        </a>
                         <a class="profile__user-button user__button user__button--writing button button--green"
                            href="#">Сообщение</a>
                     </div>

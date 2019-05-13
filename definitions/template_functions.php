@@ -26,7 +26,7 @@
     function get_post_content (&$posts, $classname, $common_feed = true) {
         $content = '';
         foreach ($posts as $post) {
-            $is_own = isset($post['is_own_post']) ? (intval($post['is_own_post']) === 1) :  false;
+            $is_own = isset($post['is_own_post']) ? (intval($post['is_own_post']) === 1) : false;
             $expand = false;
 
             $comments_content = $common_feed ? '' : include_template('post_comments.php', [
@@ -35,7 +35,7 @@
                 'comments' => []
             ]);
 
-            $header_postfix = $common_feed ? 'common' : 'profile_'. ($is_own ? 'own' : 'repost');
+            $header_postfix = $common_feed ? 'common' : 'profile_' . ($is_own ? 'own' : 'repost');
             $footer_postfix = $common_feed ? 'common' : 'profile';
             $header_content = include_template('post_header_' . $header_postfix . '.php', [
                 'post' => $post
@@ -86,8 +86,7 @@
         $ref = get_pure_data($banner, 'reference');
         if ((empty($ref) || trim($ref) === '#')) {
             $result = '';
-        }
-            else {
+        } else {
             $ind = intval(get_pure_data($banner, 'id'));
             $result = 'promo__block--' . (($ind % 2 === 0) ? 'barbershop' : 'technomart');
         }
@@ -99,7 +98,7 @@
      * @param $current
      * @return string
      */
-    function get_switch_classname ($active, $current, $class='filters__button') {
+    function get_switch_classname ($active, $current, $class = 'filters__button') {
         return $active === $current ? $class . '--active' : '';
     }
 
@@ -139,9 +138,18 @@
      * @param string $classbase
      * @return string
      */
-    function get_filters_content ($active_tab, $script_name, $query_string, $li_classname, $a_classname, $vh, $is_tab, $classbase = 'filters__button--') {
+    function get_filters_content (
+        $active_tab,
+        $script_name,
+        $query_string,
+        $li_classname,
+        $a_classname,
+        $vh,
+        $is_tab,
+        $classbase = 'filters__button--'
+    ) {
         $content = '';
-        $param =  $is_tab ? 'tab' : 'filter';
+        $param = $is_tab ? 'tab' : 'filter';
         for ($i = 1; $i < count(FILTER_NAME); $i++) {
             $value = $is_tab ? $i : trim(get_element(FILTER_ALIAS, $i));
             $is_active = $is_tab ? get_switch_classname($active_tab, $i) : get_switch_classname($active_tab,
@@ -161,4 +169,37 @@
             $content .= $item_content;
         }
         return $content;
+    }
+
+    /**
+     * @param        $post
+     * @return string
+     */
+    function get_like_href_title (&$post) {
+        $author_id = get_pure_data($post, 'user_id');
+        return intval($author_id) === intval(get_auth_user_property('id')) ? 'title ="Собственный пост нельзя лайкнуть"' :
+            'href="like.php?post=' . get_pure_data($post, 'post_id') . '&user=' . get_auth_user_property('id') . '" 
+             title="Лайк/дизлайк"';
+    }
+
+    /**
+     * @param        $post
+     * @return string
+     */
+    function get_repost_href_title (&$post) {
+        $author_id = get_pure_data($post, 'user_id');
+        return intval($author_id) === intval(get_auth_user_property('id')) ? 'title ="Собственный пост нельзя зарепостить"' :
+            'href="repost.php?post=' . get_pure_data($post, 'post_id') . '&user=' . get_auth_user_property('id') . '" 
+             title="Репост"';
+    }
+
+    /**
+     * @param        $post
+     * @return string
+     */
+    function get_subscription_href_title ($blogger_id, $title = '') {
+        $subscriber_id = get_auth_user_property('id');
+        return intval($blogger_id) === intval($subscriber_id) ? 'title="Нельзя подписаться на самого себя"' :
+            'href="subscription.php?subscriber=' . $subscriber_id . '&blogger=' . $blogger_id . '" 
+             title="' . $title . '"';
     }

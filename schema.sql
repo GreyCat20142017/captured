@@ -116,7 +116,7 @@ CREATE TABLE banners (
 CREATE INDEX user_category_post ON posts (user_id, category_id, id);
 CREATE UNIQUE INDEX subscriber_blogger ON subscriptions (subscriber_id, blogger_id);
 CREATE UNIQUE INDEX re_post_user ON reposts (post_id, user_id);
-CREATE FULLTEXT INDEX post_ft_search ON posts (title);
+CREATE FULLTEXT INDEX post_ft_search ON posts (title, hashtag);
 
 CREATE INDEX from_to ON messages (from_id, to_id);
 

@@ -1,6 +1,7 @@
 <footer class="post__footer post__indicators">
     <div class="post__buttons">
-        <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+        <a class="post__indicator post__indicator--likes button"
+            <?= get_like_href_title($post); ?>>
             <svg class="post__indicator-icon" width="20" height="17">
                 <use xlink:href="#icon-heart"></use>
             </svg>
@@ -19,6 +20,13 @@
             </svg>
             <span><?= isnull(get_pure_data($post, 'comments_count'), 0); ?></span>
             <span class="visually-hidden">количество комментариев</span>
+        </a>
+        <a class="post__indicator post__indicator--repost button" <?= get_repost_href_title($post); ?>>
+            <svg class="post__indicator-icon" width="19" height="17">
+                <use xlink:href="#icon-repost"></use>
+            </svg>
+            <span><?= isnull(get_pure_data($post, 'reposts_count'), 0); ?></span>
+            <span class="visually-hidden">количество репостов</span>
         </a>
     </div>
 </footer>

@@ -282,5 +282,8 @@
     function rebuild_query_string ($script, $query, $param, $value) {
         mb_parse_str($query, $items);
         $items[$param] = $value;
+        if ($param !== 'page' && isset($items['page']) ) {
+            $items['page'] = 1;
+        }
         return $script . '?' . http_build_query($items);
     }

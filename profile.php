@@ -7,7 +7,7 @@
     $user = [];
     $db_user = [];
 
-//    dd($_SERVER);
+
 
     $is_ok = true;
 
@@ -65,7 +65,8 @@
                 $subcriptions = get_user_subscriptions($connection, $user_id);
                 $content = include_template('profile_subscriptions.php', [
                     'subscriptions' => $subcriptions,
-                    'is_own' => $is_own_profile
+                    'is_own' => $is_own_profile,
+                    'logged_user_id' => $logged_user_id
                 ]);
                 break;
             }
