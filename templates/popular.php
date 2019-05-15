@@ -46,7 +46,7 @@
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
                         <a class="filters__button filters__button--ellipse filters__button--all <?= get_switch_classname($active_tab,
                             FILTER_ALL); ?>"
-                           href="popular.php?filter=<?= FILTER_ALL; ?>">
+                           href="<?= rebuild_query_string($active_script, $active_query, 'filter', FILTER_ALL); ?>">
                             <span>Все</span>
                         </a>
                     </li>

@@ -2,6 +2,7 @@
     session_start();
     require_once('init.php');
 
+    $search_string = '';
     $errors = [];
 
     $post_id = isset($_GET['post']) ? intval(strip_tags($_GET['post'])) : null;
@@ -56,7 +57,8 @@
         'user_name' => get_auth_user_property('name'),
         'active_content' => '',
         'filter_type' => null,
-        'filter_value' => null
+        'filter_value' => null,
+        'search_string' => $search_string
     ]);
 
     $layout_content = include_template('layout.php', [

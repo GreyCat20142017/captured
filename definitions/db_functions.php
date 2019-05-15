@@ -103,16 +103,21 @@
      * @param $connection
      * @return array|null
      */
-    function get_posts ($connection, $type, $limit = RECORDS_PER_PAGE, $offset = 0, $sort = null) {
+    function get_posts ($connection, $type, $limit = RECORDS_PER_PAGE, $offset = 0, $sort = null, $search_string = null) {
+        $search_string =  mysqli_real_escape_string($connection, $search_string);
+        $search_condition = empty($search_string) ? '' : ' MATCH(title, hashtag) AGAINST("*' . $search_string . '*" IN BOOLEAN MODE) ';
         $sort_condition = empty($sort) ? '' : ' ORDER BY ' . $sort . ' DESC ';
         $type_condition = empty($type) || ($type === FILTER_ALL) ? '' :
-            ' WHERE content_type = "' . mysqli_real_escape_string($connection, $type) . '" ';
-        $sql = get_posts_query_skeleton() . $type_condition . ' ' . $sort_condition .
+            ' content_type = "' . mysqli_real_escape_string($connection, $type) . '" ';
+        $where_condition = empty($type_condition) ?   '' : ' WHERE ' . $type_condition;
+        if (!empty($search_condition)) {
+            $where_condition .=   ( empty($where_condition) ? ' WHERE ' : ' AND ') . $search_condition;
+        }
+        $sql = get_posts_query_skeleton() . $where_condition . ' ' . $sort_condition .
         ' LIMIT ' . $limit . ' OFFSET ' . $offset . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о постах');
         return (!$data || was_error($data)) ? [] : $data;
     }
-
 
     /**
      * Функция возвращает данные о постах или пустой массив
@@ -579,9 +584,8 @@
         return switch_common($connection, $user_id, $post_id, 'reposts');
     }
 
-
     /**
-     * Функция переключает состояние данных в указанной таблице для залогиненного пользователя по публикации.
+     * Функция переключает состояние данных по публикации в указанной таблице для залогиненного пользователя.
      * Возвращает true в случае успеха, false - в случае ошибки
      * @param $connection
      * @param $user_id
@@ -635,7 +639,7 @@
         }
 
         if (empty($data)) {
-            //mytodo Подумать: может, стОит добавить и здесь проверку, не является ли пост собственным.
+            //mytodo Подумать: может, стОит добавить и здесь проверку, не является ли подписчик автором.
             // Но вообще это делается при формировании ссылки
             $sql = 'INSERT INTO subscriptions ( subscriber_id, blogger_id) 
                           VALUES (?, ?)';
@@ -649,4 +653,46 @@
             $res = mysqli_query($connection, $sql);
         }
         return ($res) ? true : false;
+    }
+
+    /**
+     * Функция возвращает данные об авторах постов или пустой массив
+     * @param $connection
+     * @return array|null
+     */
+    function get_posts_authors ($connection,  $limit = RECORDS_PER_PAGE, $offset = 0, $search_string = null) {
+        $search_condition = !empty($search_string) ?
+            ' WHERE MATCH(p.title, p.hashtag) AGAINST("*' .  mysqli_real_escape_string($connection, $search_string) . '*" IN BOOLEAN MODE) ' : '';
+        $sql = 'SELECT p.user_id  AS blogger_id,
+                       u.name AS blogger_name,
+                       u.avatar,
+                       u.registration_date,
+                       IFNULL(s.subscribers_count, 0) AS subscribers_count,
+                       IFNULL(pp.posts_count, 0) AS posts_count
+                FROM posts AS p
+                       JOIN users AS u ON p.user_id = u.id
+                       LEFT OUTER JOIN (SELECT blogger_id, count(*) AS subscribers_count FROM subscriptions GROUP BY blogger_id) AS s
+                                       ON p.user_id = s.blogger_id
+                       LEFT OUTER JOIN (SELECT user_id, count(*) AS posts_count FROM posts GROUP BY user_id) AS pp
+                                       ON p.user_id = pp.user_id                
+                ' . $search_condition . '
+                GROUP BY p.user_id LIMIT ' . $limit . ' OFFSET ' . $offset . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о постах');
+        return (!$data || was_error($data)) ? [] : $data;
+    }
+
+    /**
+     * Функция возвращает количество страниц для пагинации по авторам постов
+     * @param      $connection
+     * @param      $limit
+     * @param null $search_string
+     * @return int
+     *
+     */
+    function get_posts_authors_total_pages ($connection, $limit, $search_string = null) {
+        $search_condition = !empty($search_string) ?
+            ' WHERE MATCH(p.title, p.hashtag) AGAINST("*' .  mysqli_real_escape_string($connection, $search_string) . '*" IN BOOLEAN MODE) ' : '';
+        $sql = 'SELECT CEIL(COUNT(*) / ' . $limit . ') AS page_count, COUNT(*) AS total_records FROM posts ' . $search_condition . ' GROUP BY user_id;';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные для пагинации', true);
+        return (!$data || was_error($data)) ? 1 : intval(get_assoc_element($data, 'page_count'));
     }

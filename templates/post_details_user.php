@@ -29,9 +29,10 @@
 
 <div class="post-details__user-buttons user__buttons">
     <?php if (intval(get_pure_data($user, 'user_id')) !== intval($current_user)) : ?>
-        <button class="user__button user__button--subscription button button--main" type="button">
+        <a class="user__button user__button--subscription button button--main" <?= get_subscription_href_title(get_pure_data($user,
+            'user_id', 'Подписаться/отписаться')); ?>>
             Подписаться
-        </button>
+        </a>
         <a class="user__button user__button--writing button button--green" href="#">Сообщение</a>
     <?php endif; ?>
 </div>

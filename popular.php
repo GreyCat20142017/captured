@@ -3,6 +3,7 @@
     session_start();
     require_once('init.php');
 
+    $search_string = '';
     $errors = [];
     $user = [];
 
@@ -51,7 +52,8 @@
         'user_name' => get_auth_user_property('name'),
         'active_content' => CONTENT_POPULAR,
         'filter_type' => 'filter',
-        'filter_value' => $active_tab
+        'filter_value' => $active_tab,
+        'search_string' => $search_string
     ]);
 
     $layout_content = include_template('layout.php',

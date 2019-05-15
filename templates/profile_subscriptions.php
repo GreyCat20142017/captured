@@ -1,5 +1,8 @@
-<section class="profile__subscriptions tabs__content tabs__content--active">
-    <h2 class="visually-hidden">Подриски</h2>
+<section
+    class="<?= empty($is_search) ? 'profile__subscriptions' : 'search__user'; ?> tabs__content tabs__content--active">
+    <?php if (empty($is_search)): ?>
+        <h2 class="visually-hidden">Подписки</h2>
+    <?php endif; ?>
     <ul class="profile__subscriptions-list">
         <?php foreach ($subscriptions as $subscription): ?>
             <li class="post-mini post-mini--photo post user">
@@ -13,7 +16,8 @@
                         </a>
                     </div>
                     <div class="post-mini__name-wrapper user__name-wrapper">
-                        <a class="post-mini__name user__name" href="profile.php?user=<?= get_pure_data($subscription, 'blogger_id'); ?>">
+                        <a class="post-mini__name user__name"
+                           href="profile.php?user=<?= get_pure_data($subscription, 'blogger_id'); ?>">
                             <span><?= get_pure_data($subscription, 'blogger_name'); ?></span>
                         </a>
                         <time class="post-mini__time user__additional"
@@ -23,19 +27,19 @@
                 </div>
                 <div class="post-mini__rating user__rating">
                     <p class="post-mini__rating-item user__rating-item user__rating-item--publications">
-                        <span class="post-mini__rating-amount user__rating-amount"><?= get_pure_data($subscription,
-                                'posts_count'); ?></span>
+                        <span class="post-mini__rating-amount user__rating-amount"><?= isnull(get_pure_data($subscription,
+                                'posts_count'), 0); ?></span>
                         <span class="post-mini__rating-text user__rating-text">публикаций</span>
                     </p>
                     <p class="post-mini__rating-item user__rating-item user__rating-item--subscribers">
-                        <span class="post-mini__rating-amount user__rating-amount"><?= get_pure_data($subscription,
-                                'subscribers_count'); ?></span>
+                        <span class="post-mini__rating-amount user__rating-amount"><?= isnull(get_pure_data($subscription,
+                                'subscribers_count'), 0); ?></span>
                         <span class="post-mini__rating-text user__rating-text">подписчиков</span>
                     </p>
                 </div>
 
                 <div class="post-mini__user-buttons user__buttons">
-                    <a <?= get_subscription_href_title( get_pure_data($subscription,
+                    <a <?= get_subscription_href_title(get_pure_data($subscription,
                         'blogger_id', 'Подписаться/отписаться')); ?>
                         class="post-mini__user-button user__button user__button--subscription button button--main"
                         type="button">Подписаться

@@ -3,6 +3,8 @@
     session_start();
     require_once('init.php');
 
+    $search_string = '';
+
     $errors = [];
     $user = [];
     $is_ok = true;
@@ -33,7 +35,8 @@
         'user_name' => get_auth_user_property('name'),
         'active_content' => CONTENT_MESSAGES,
         'filter_type' => 'user',
-        'filter_value' => $correspondent_id
+        'filter_value' => $correspondent_id,
+        'search_string' => $search_string
     ]);
 
     $layout_content = include_template('layout.php',  [

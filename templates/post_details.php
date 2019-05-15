@@ -18,7 +18,10 @@
 
                     <?= $dependent_content; ?>
 
+                    <p style="text-align: center;"><small><?= get_pure_data($post, 'hashtag'); ?></small></p>
                     <div class="post__indicators">
+
+
                         <div class="post__buttons">
                             <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
                                 <svg class="post__indicator-icon" width="20" height="17">
@@ -57,6 +60,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="post-details__user user">
                     <?= $user_content; ?>
                 </div>

@@ -8,15 +8,16 @@
                 micro blogging
             </p>
         </div>
-        <form class="header__search-form form" action="#" method="get">
+        <form class="header__search-form form" action="<?= $search_script ?? 'search_result.php'; ?>" method="post">
             <div class="header__search">
                 <label class="visually-hidden">Поиск</label>
-                <input class="header__search-input form__input" type="search">
-                <button class="header__search-button button" type="submit">
-                    <svg class="header__search-icon" width="18" height="18">
-                        <use xlink:href="#icon-search"></use>
-                    </svg>
-                    <span class="visually-hidden">Начать поиск</span>
+                <input class="header__search-input form__input" type="search"
+                       name="search" value="<?= strip_tags($search_string); ?>">
+                <button class=" header__search-button button" type="submit">
+                <svg class="header__search-icon" width="18" height="18">
+                    <use xlink:href="#icon-search"></use>
+                </svg>
+                <span class="visually-hidden">Начать поиск</span>
                 </button>
             </div>
         </form>
