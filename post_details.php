@@ -2,7 +2,7 @@
     session_start();
     require_once('init.php');
 
-    $search_string = '';
+    $search_string = get_auth_user_property('last_search', $search_string ?? '') ?? '';
     $errors = [];
 
     $post_id = isset($_GET['post']) ? intval(strip_tags($_GET['post'])) : null;

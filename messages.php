@@ -3,19 +3,20 @@
     session_start();
     require_once('init.php');
 
-    $search_string = '';
-
-    $errors = [];
-    $user = [];
-    $is_ok = true;
-
     if (!is_auth_user()) {
         http_response_code(302);
         header('Location: login.php');
     }
 
-    $correspondent_id = isset($_GET['user']) ? intval(strip_tags($_GET['user'])) : null;
+    $errors = [];
+    $user = [];
+    $is_ok = true;
+    $search_string = get_auth_user_property('last_search', $search_string ?? '') ?? '';
+
+    $correspondent_id = isset($_GET['user']) ? intval(strip_tags($_GET['user'])) : 0;
     $user_id = intval(get_auth_user_property('id', 0));
+
+    require_once('message_validation.php');
 
     $messages = empty($correspondent_id) ? [] : get_messages($connection, $user_id, $correspondent_id);
     $totals = get_messages_totals($connection, get_auth_user_property('id', 0));
@@ -39,13 +40,13 @@
         'search_string' => $search_string
     ]);
 
-    $layout_content = include_template('layout.php',  [
-            'header_content' => $header_content,
-            'page_content' => $page_content,
-            'title' => 'Readme: все',
-            'is_auth' => is_auth_user(),
-            'body_classname' => is_auth_user() ? 'page--main' : '',
-            'user_name' => get_auth_user_property('name')
-        ]);
+    $layout_content = include_template('layout.php', [
+        'header_content' => $header_content,
+        'page_content' => $page_content,
+        'title' => 'Readme: все',
+        'is_auth' => is_auth_user(),
+        'body_classname' => is_auth_user() ? 'page--main' : '',
+        'user_name' => get_auth_user_property('name')
+    ]);
 
     print($layout_content);

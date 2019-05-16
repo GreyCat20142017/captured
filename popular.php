@@ -3,10 +3,9 @@
     session_start();
     require_once('init.php');
 
-    $search_string = '';
+    $search_string = get_auth_user_property('last_search', $search_string ?? '') ?? '';
     $errors = [];
     $user = [];
-
     $is_ok = true;
 
     $active_tab = isset($_GET['filter']) ? trim(strip_tags($_GET['filter'])) : FILTER_ALL;

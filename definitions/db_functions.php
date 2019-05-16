@@ -696,3 +696,31 @@
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные для пагинации', true);
         return (!$data || was_error($data)) ? 1 : intval(get_assoc_element($data, 'page_count'));
     }
+
+    /**
+     * Функция возвращает истину в случае успешного добавления комменатрия или ложь - в случае ошибки
+     * @param $connection
+     * @param $text
+     * @param $from_id
+     * @param $to_id
+     * @return bool
+     */
+    function add_message ($connection, $text, $from_id, $to_id) {
+
+        $user_from_status = get_id_existance($connection, 'users', $from_id);
+        $user_to_status = get_id_existance($connection, 'users', $to_id);
+        if (was_error($user_from_status) || was_error($user_to_status) || empty($text)) {
+            return false;
+        }
+
+        $sql = 'INSERT INTO messages ( from_id,  to_id, text) 
+                          VALUES (?, ?, ?)';
+        $stmt = db_get_prepare_stmt($connection, $sql, [
+            $from_id,
+            $to_id,
+            $text
+        ]);
+        $res = mysqli_stmt_execute($stmt);
+
+        return ($res) ? true : false;
+    }

@@ -34,7 +34,7 @@
                             Подписаться
                         </a>
                         <a class="profile__user-button user__button user__button--writing button button--green"
-                           href="#">Сообщение</a>
+                            <?= get_message_href_title($user); ?>>Сообщение</a>
                     </div>
                 <?php endif; ?>
             </div>

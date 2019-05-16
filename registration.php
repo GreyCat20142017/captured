@@ -7,7 +7,7 @@
     $errors = [];
     $user = [];
     $status_text = '';
-    $search_string = '';
+    $search_string = get_auth_user_property('last_search', $search_string ?? '') ?? '';
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = array_map(function ($item) {
             return trim(strip_tags($item));

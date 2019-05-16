@@ -3,18 +3,17 @@
     session_start();
     require_once('init.php');
 
-    $search_string = '';
-    $errors = [];
-    $user = [];
-    $db_user = [];
-    $is_ok = true;
-
     if (!is_auth_user()) {
         http_response_code(302);
         header('Location: login.php');
     }
 
+    $errors = [];
+    $user = [];
+    $db_user = [];
+    $is_ok = true;
     $logged_user_id = intval(get_auth_user_property('id'));
+    $search_string = get_auth_user_property('last_search', $search_string ?? '') ?? '';
 
     if (isset($_GET['user'])) {
         $user_id = isset($_GET['user']) ? intval(strip_tags($_GET['user'])) : null;

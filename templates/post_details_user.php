@@ -1,14 +1,14 @@
 <div class="post-details__user-info user__info">
     <div class="post-details__avatar user__avatar">
         <a class="post-details__avatar-link user__avatar-link"
-           href="profile.php?user=<?= get_pure_data($user, 'id'); ?>">
+           href="profile.php?user=<?= get_pure_data($user, 'user_id'); ?>">
             <img class="post-details__picture user__picture" width="60" height="60"
                  src="<?= get_avatar(get_pure_data($user, 'avatar')); ?>"
                  alt="Аватар пользователя">
         </a>
     </div>
     <div class="post-details__name-wrapper user__name-wrapper">
-        <a class="post-details__name user__name" href="profile.php?user=<?= get_pure_data($user, 'id'); ?>">
+        <a class="post-details__name user__name" href="profile.php?user=<?= get_pure_data($user, 'user_id'); ?>">
             <span><?= get_pure_data($user, 'username'); ?></span>
         </a>
         <time class="post-details__time user__time" datetime="2014-03-20"><?= get_pure_data($user,
@@ -30,9 +30,10 @@
 <div class="post-details__user-buttons user__buttons">
     <?php if (intval(get_pure_data($user, 'user_id')) !== intval($current_user)) : ?>
         <a class="user__button user__button--subscription button button--main" <?= get_subscription_href_title(get_pure_data($user,
-            'user_id', 'Подписаться/отписаться')); ?>>
+            'user_id'), 'Подписаться/отписаться'); ?>>
             Подписаться
         </a>
-        <a class="user__button user__button--writing button button--green" href="#">Сообщение</a>
+        <a class="user__button user__button--writing button button--green"
+            <?= get_message_href_title($user); ?>>Сообщение</a>
     <?php endif; ?>
 </div>

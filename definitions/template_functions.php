@@ -203,3 +203,13 @@
             'href="subscription.php?subscriber=' . $subscriber_id . '&blogger=' . $blogger_id . '" 
              title="' . $title . '"';
     }
+
+    /**
+     * @param        $post
+     * @return string
+     */
+    function get_message_href_title (&$data) {
+        $user_id = get_pure_data($data, 'user_id');
+        return intval($user_id) === intval(get_auth_user_property('id')) ? 'title ="Нельзя отправить сообщение самому себе"' :
+            'href="messages.php?user=' . $user_id . ' "  title="Сообщение"';
+    }

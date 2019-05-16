@@ -15,7 +15,7 @@
     $active_tab = isset($_GET['filter']) ? trim(strip_tags($_GET['filter'])) : FILTER_ALL;
     $active_sort = SORT_DATE;
 
-    $search_string = isset($_POST['search']) ? strip_tags($_POST['search']) : ($search_string ?? '');
+    $search_string = isset($_POST['search']) ? strip_tags($_POST['search']) : (get_auth_user_property('last_search', $search_string ?? '') ?? '');
 
     $category_id = empty($active_tab) || $active_tab === FILTER_ALL ? null :
         get_id_by_value($connection, 'categories', 'content_type', $active_tab);
@@ -91,5 +91,7 @@
             'body_classname' => '',
             'user_name' => get_auth_user_property('name')
         ]);
+
+    $_SESSION[CAPTURED_SESSION]['last_search'] = $search_string;
 
     print($layout_content);

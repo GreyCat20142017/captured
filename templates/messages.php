@@ -10,7 +10,8 @@
                       <?= !empty(get_pure_data($correspondent, 'unread_count')) ?
                         'messages__contacts-item--new' : ''; ?>">
                         <a class="messages__contacts-tab
-                         <?= get_switch_classname(intval($active_user), intval(get_pure_data($correspondent, 'correspondent_id')),
+                         <?= get_switch_classname(intval($active_user),
+                            intval(get_pure_data($correspondent, 'correspondent_id')),
                             'messages__contacts-tab'); ?>"
                            href="messages.php?user=<?= get_pure_data($correspondent, 'correspondent_id'); ?>">
                             <div class="messages__avatar-wrapper">
@@ -51,13 +52,17 @@
                     <?= $chat_content; ?>
                 </div>
                 <div class="comments">
-                    <form class="comments__form form" action="send_message" method="post">
+                    <form class="comments__form form" action="messages.php?user=<?= $active_user; ?>" method="post">
                         <div class="comments__my-avatar">
-                            <img class="comments__picture" src="img/userpic.jpg" alt="Аватар пользователя">
+                            <img class="comments__picture"
+                                 src="<?= get_auth_user_property('avatar', EMPTY_AVATAR); ?>" alt="Аватар пользователя">
                         </div>
-                        <textarea class="comments__textarea form__textarea" placeholder="Ваше сообщение"></textarea>
+                        <textarea class="comments__textarea form__textarea" name="message"
+                                  placeholder="Ваше сообщение"></textarea>
                         <label class="visually-hidden">Ваше сообщение</label>
-                        <button class="comments__submit button button--green" type="submit">Отправить</button>
+                        <button class="comments__submit button button--green" type="submit" name="add_message">
+                            Отправить
+                        </button>
                     </form>
                 </div>
             <?php endif; ?>

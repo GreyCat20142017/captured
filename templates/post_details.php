@@ -18,12 +18,14 @@
 
                     <?= $dependent_content; ?>
 
-                    <p style="text-align: center;"><small><?= get_pure_data($post, 'hashtag'); ?></small></p>
+                    <p style="text-align: center;">
+                        <small><?= get_pure_data($post, 'hashtag'); ?></small>
+                    </p>
                     <div class="post__indicators">
 
 
                         <div class="post__buttons">
-                            <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                            <a class="post__indicator post__indicator--likes button" <?= get_like_href_title($post); ?>>
                                 <svg class="post__indicator-icon" width="20" height="17">
                                     <use xlink:href="#icon-heart"></use>
                                 </svg>
@@ -34,12 +36,22 @@
                                 <span><?= isnull(get_pure_data($post, 'likes_count'), 0); ?></span>
                                 <span class="visually-hidden">количество лайков</span>
                             </a>
-                            <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
+                            <a class="post__indicator post__indicator--comments button"
+                               href="<?= rebuild_query_string($active_script, $active_query, 'all_comments',
+                                   !($shown)); ?>"
+                               title="Комментарии">
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-comment"></use>
                                 </svg>
                                 <span><?= isnull(get_pure_data($post, 'comments_count'), 0); ?></span>
                                 <span class="visually-hidden">количество комментариев</span>
+                            </a>
+                            <a class="post__indicator post__indicator--repost button" <?= get_repost_href_title($post); ?>>
+                                <svg class="post__indicator-icon" width="19" height="17">
+                                    <use xlink:href="#icon-repost"></use>
+                                </svg>
+                                <span><?= isnull(get_pure_data($post, 'reposts_count'), 0); ?></span>
+                                <span class="visually-hidden">количество репостов</span>
                             </a>
                         </div>
                         <span class="post__view"><?= isnull(get_pure_data($post, 'reviews'), 0); ?> просмотров</span>
@@ -52,9 +64,11 @@
                             <?= $comments_content; ?>
                             <?php if ($need_more_comments): ?>
                                 <a class="comments__more-link"
-                                   href="<?= rebuild_query_string($active_script, $active_query, 'all_comments', !($shown)); ?>">
-                                    <span><?= $shown? 'Cкрыть комментарии' : 'Показать все комментарии'; ?></span>
-                                    <sup class="comments__amount"><?= isnull(get_pure_data($post, 'comments_count'), 0); ?> </sup>
+                                   href="<?= rebuild_query_string($active_script, $active_query, 'all_comments',
+                                       !($shown)); ?>">
+                                    <span><?= $shown ? 'Cкрыть комментарии' : 'Показать все комментарии'; ?></span>
+                                    <sup class="comments__amount"><?= isnull(get_pure_data($post, 'comments_count'),
+                                            0); ?> </sup>
                                 </a>
                             <? endif; ?>
                         </div>

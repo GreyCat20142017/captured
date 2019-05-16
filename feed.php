@@ -3,17 +3,15 @@
     session_start();
     require_once('init.php');
 
-    $search_string = '';
-    $errors = [];
-    $user = [];
-
-    $is_ok = true;
-
     if (!is_auth_user()) {
         http_response_code(302);
         header('Location: login.php');
     }
 
+    $errors = [];
+    $user = [];
+    $is_ok = true;
+    $search_string = get_auth_user_property('last_search', $search_string ?? '') ?? '';
     $active_tab = isset($_GET['filter']) ? strip_tags($_GET['filter']) : null;
 
     $posts = get_posts_for_feed($connection, get_auth_user_property('id'), $active_tab);

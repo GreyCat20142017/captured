@@ -1,12 +1,10 @@
 <?php
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_comment'])) {
 
-        if (isset($_POST['add_comment'])) {
-            $fields = [
-                'comment' => ['description' => 'Комментарий', 'required' => true]
-            ];
-        }
+        $fields = [
+            'comment' => ['description' => 'Комментарий', 'required' => true]
+        ];
 
         $comment = array_map(function ($item) {
             return trim(strip_tags($item));
@@ -17,6 +15,7 @@
 
         if ($status_ok) {
             add_comment($connection, get_assoc_element($comment, 'comment'), get_auth_user_property('id'), $post_id);
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
         }
 
     }
