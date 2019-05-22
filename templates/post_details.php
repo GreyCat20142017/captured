@@ -54,7 +54,7 @@
                                 <span class="visually-hidden">количество репостов</span>
                             </a>
                         </div>
-                        <span class="post__view"><?= isnull(get_pure_data($post, 'reviews'), 0); ?> просмотров</span>
+                        <span class="post__view"><?= $reviews_count_text; ?></span>
                     </div>
                     <div class="comments">
 

@@ -36,12 +36,16 @@
 
         $dependent_content = include_template('dependent_' .
             get_element(TEMPLATE_NAME, get_assoc_element($post, 'category_id')) . '.php', [
-            'post' => $post
+            'post' => $post,
+            'classname' =>'post_details'
         ]);
     }
 
+    $reviews_count = $is_post_ok ? get_reviews_count($connection, $post_id) : 0;
+
     $page_content = include_template($is_post_ok ? 'post_details.php' : '404.php', [
         'post' => $post,
+        'reviews_count_text' => $reviews_count . ' ' . get_text_form( $reviews_count, ['просмотр', 'просмотра', 'просмотров']),
         'user_content' => $is_post_ok ? $user_content : '',
         'comments_content' => $is_post_ok ? $comments_content : '',
         'comments_form_content' => $is_post_ok ? $comments_form_content : '',
@@ -70,7 +74,9 @@
         'user_name' => get_auth_user_property('name')
     ]);
 
-    if (!$is_post_ok) {
+    if ($is_post_ok) {
+        increase_reviews_counter($connection, $current_user, $post_id);
+    } else {
         http_response_code(404);
     }
 

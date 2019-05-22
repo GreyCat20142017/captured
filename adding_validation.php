@@ -15,7 +15,7 @@
         if (isset($_POST['publish_video'])) {
             $fields = [
                 'video-heading' => ['description' => 'Заголовок', 'required' => true],
-                'userpic-file-video' => ['description' => 'Видео', 'required' => true, 'validation_rules' => [FILE_RULE]]
+                'userpic-file-video' => ['description' => 'Видео', 'required' => true, 'validation_rules' => ['youtube_validation']]
             ];
             $upload_to = get_assoc_element(PATHS,VIDEOS);
             $tab = FILTER_VIDEOS;

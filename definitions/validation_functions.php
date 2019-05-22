@@ -120,6 +120,8 @@
         switch ($kind) {
             case 'project_validation':
                 return get_project_validation_result($current_field);
+            case 'youtube_validation':
+                return get_youtube_validation_result($current_field);
             case 'email_validation':
                 return !filter_var($current_field, FILTER_VALIDATE_EMAIL) ? 'Email должен быть корректным' : '';
             case 'url_validation':
@@ -209,4 +211,25 @@
         if (isset($errors) && array_key_exists($field_name, $errors)) {
             array_push($errors[$field_name], $error_message);
         }
+    }
+
+    /**
+     * Функция по мотивам функции от HTML Academy. Проверяет, что переданная ссылка ведет на публично доступное видео с
+     * youtube
+     * @param string $youtube_url Ссылка на youtube видео
+     * @return bool
+     */
+    function get_youtube_vlidation_result ($id) {
+        $youtube_url = 'https://www.youtube.com/watch?v=' . $id;
+        $res = false;
+        $id = extract_youtube_id($youtube_url);
+        if ($id) {
+            $api_data = ['id' => $id, 'part' => 'id,status', 'key' => 'AIzaSyDkxJIV293lh3sfvW4GEi3WRVUvEQml_Mc'];
+            $url = "https://www.googleapis.com/youtube/v3/videos?" . http_build_query($api_data);
+            $resp = file_get_contents($url);
+            if ($resp && $json = json_decode($resp, true)) {
+                $res = $json['pageInfo']['totalResults'] > 0 && $json['items'][0]['status']['privacyStatus'] == 'public';
+            }
+        }
+        return $res;
     }

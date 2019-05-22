@@ -19,11 +19,17 @@
     <p class="post-details__rating-item user__rating-item user__rating-item--subscribers">
         <span class="post-details__rating-amount user__rating-amount"><?= isnull(get_pure_data($user,
                 'subscribers_count'), 0); ?></span>
-        <span class="post-details__rating-text user__rating-text">подписчиков</span>
+        <span class="post-details__rating-text user__rating-text">
+              <?= get_text_form(get_pure_data($user, 'subscribers_count'),
+                  ['подписчик', 'подписчика', 'подписчиков']); ?>
+        </span>
     </p>
     <p class="post-details__rating-item user__rating-item user__rating-item--publications">
         <span class="post-details__rating-amount user__rating-amount"><?= get_pure_data($user, 'posts_count'); ?></span>
-        <span class="post-details__rating-text user__rating-text">публикаций</span>
+        <span class="post-details__rating-text user__rating-text">
+            <?= get_text_form(get_pure_data($user, 'posts_count'),
+                ['публикация', 'публикации', 'публикаций']); ?>
+        </span>
     </p>
 </div>
 

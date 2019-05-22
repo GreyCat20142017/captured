@@ -62,10 +62,11 @@
      */
     function get_posts_query_skeleton ($subscriber_id = null) {
         $subscriber_join = empty($subscriber_id) ? '' :
-            ' JOIN (SELECT subscriber_id, blogger_id FROM subscriptions WHERE subscriber_id = ' . $subscriber_id .') AS s
+            ' JOIN (SELECT subscriber_id, blogger_id FROM subscriptions WHERE subscriber_id = ' . $subscriber_id . ') AS s
             ON p.user_id = blogger_id ';
         return 'SELECT  p.user_id, p.category_id, p.title, p.id AS post_id, p.hashtag, u.name AS username, u.avatar, c.content_type,
-                    IFNULL(ph.filename, IFNULL(v.filename, "") ) AS filename,
+                    IFNULL(ph.filename,  "") AS filename,
+                    IFNULL(v.youtube_id, "") as youtube_id,
                     IFNULL(q.author, "") AS author,
                     IFNULL(l.reference, "") AS ref,
                     CASE WHEN t.text IS NOT NULL THEN t.text
@@ -73,7 +74,7 @@
                      WHEN l.description IS NOT NULL THEN l.description
                     ELSE  "" END AS text,
                     IFNULL(lk.likes_count, 0) AS likes_count, IFNULL(lk.comments_count, 0) AS comments_count, IFNULL(lk.reposts_count, 0) AS reposts_count
-                    FROM posts AS p '. $subscriber_join . '
+                    FROM posts AS p ' . $subscriber_join . '
                     JOIN users u ON p.user_id = u.id
                     JOIN categories c ON p.category_id = c.id
                                         LEFT OUTER JOIN photos AS ph ON p.id = ph.post_id AND c.content_type="' . FILTER_PHOTOS . '"
@@ -103,18 +104,25 @@
      * @param $connection
      * @return array|null
      */
-    function get_posts ($connection, $type, $limit = RECORDS_PER_PAGE, $offset = 0, $sort = null, $search_string = null) {
-        $search_string =  mysqli_real_escape_string($connection, $search_string);
+    function get_posts (
+        $connection,
+        $type,
+        $limit = RECORDS_PER_PAGE,
+        $offset = 0,
+        $sort = null,
+        $search_string = null
+    ) {
+        $search_string = mysqli_real_escape_string($connection, $search_string);
         $search_condition = empty($search_string) ? '' : ' MATCH(title, hashtag) AGAINST("*' . $search_string . '*" IN BOOLEAN MODE) ';
         $sort_condition = empty($sort) ? '' : ' ORDER BY ' . $sort . ' DESC ';
         $type_condition = empty($type) || ($type === FILTER_ALL) ? '' :
             ' content_type = "' . mysqli_real_escape_string($connection, $type) . '" ';
-        $where_condition = empty($type_condition) ?   '' : ' WHERE ' . $type_condition;
+        $where_condition = empty($type_condition) ? '' : ' WHERE ' . $type_condition;
         if (!empty($search_condition)) {
-            $where_condition .=   ( empty($where_condition) ? ' WHERE ' : ' AND ') . $search_condition;
+            $where_condition .= (empty($where_condition) ? ' WHERE ' : ' AND ') . $search_condition;
         }
         $sql = get_posts_query_skeleton() . $where_condition . ' ' . $sort_condition .
-        ' LIMIT ' . $limit . ' OFFSET ' . $offset . ';';
+            ' LIMIT ' . $limit . ' OFFSET ' . $offset . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о постах');
         return (!$data || was_error($data)) ? [] : $data;
     }
@@ -125,7 +133,7 @@
      * @return array|null
      */
     function get_posts_for_feed ($connection, $user_id, $type, $limit = RECORDS_PER_PAGE, $offset = 0) {
-        $user_id  =  mysqli_real_escape_string($connection, $user_id);
+        $user_id = mysqli_real_escape_string($connection, $user_id);
         $sort_condition = empty($sort) ? '' : ' ORDER BY ' . $sort . ' DESC ';
         $type_condition = empty($type) || ($type === FILTER_ALL) ? '' :
             ' WHERE content_type = "' . mysqli_real_escape_string($connection, $type) . '" ';
@@ -199,7 +207,8 @@
         $sql = 'SELECT id  FROM ' . $table . ' WHERE ' .
             mysqli_real_escape_string($connection, $field_name) . ' = "' .
             mysqli_real_escape_string($connection, $field_value) . '" LIMIT 1;';
-        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные с такими условиями из таблицы ' . $table, true);
+        $data = get_data_from_db($connection, $sql,
+            'Невозможно получить данные с такими условиями из таблицы ' . $table, true);
         return (!$data || was_error($data)) ? 0 : intval(get_assoc_element($data, 'id'));
     }
 
@@ -353,7 +362,7 @@
      */
     function get_post_details ($connection, $post_id) {
         $post_id = mysqli_real_escape_string($connection, $post_id);
-        $post_condition =  ' WHERE p.id=' . $post_id . ' ';
+        $post_condition = ' WHERE p.id=' . $post_id . ' ';
         $sql = get_posts_query_skeleton() . $post_condition . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о поcте', true);
         return (!$data || was_error($data)) ? [] : $data;
@@ -371,9 +380,9 @@
         $corresponent_id = !empty($corresponent_id) ? mysqli_real_escape_string($connection,
             $corresponent_id) : $corresponent_id;
         $users_condition = ' WHERE m.from_id = ' . $user_id . (empty($corresponent_id) ? '' : ' AND m.to_id = ' . $corresponent_id) . '  
-                             OR m.to_id = ' . $user_id . (empty($corresponent_id) ? '' :' AND m.from_id =' . $corresponent_id) . ' ';
+                             OR m.to_id = ' . $user_id . (empty($corresponent_id) ? '' : ' AND m.from_id =' . $corresponent_id) . ' ';
         $sql = 'SELECT m.from_id AS author_id,
-                       IF(m.from_id = '. $user_id . ', 1 , 0)   AS is_own,
+                       IF(m.from_id = ' . $user_id . ', 1 , 0)   AS is_own,
                        m.text,
                        m.creation_date,
                        u.name AS author_name,
@@ -416,7 +425,8 @@
     }
 
     /**
-     * Основная часть транзакции по добавлению поста: проверка значений и вызов функции для добавления дочерних сущностей
+     * Основная часть транзакции по добавлению поста: проверка значений и вызов функции для добавления дочерних
+     * сущностей
      * @param $connection
      * @param $post
      * @param $title
@@ -424,14 +434,14 @@
      * @param $user_id
      * @return array|int|string
      */
-    function add_post($connection, $post, $title, $tab, $user_id) {
-        $user_id =  mysqli_real_escape_string($connection, $user_id);
-        $tab =  mysqli_real_escape_string($connection, $tab);
+    function add_post ($connection, $post, $title, $tab, $user_id) {
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $tab = mysqli_real_escape_string($connection, $tab);
 
         $user_status = get_id_existance($connection, 'users', $user_id);
         $category_id = get_id_by_value($connection, 'categories', 'content_type', $tab);
 
-        if (empty($category_id) ||  was_error($user_status)) {
+        if (empty($category_id) || was_error($user_status)) {
             return ['error' => 'Попытка использовать несуществующие данные для добавления поста. Пост не будет добавлен!'];
         }
 
@@ -445,14 +455,13 @@
             $title
         ]);
         $res = mysqli_stmt_execute($stmt);
-        $new_id = $res ? mysqli_insert_id($connection) : 0 ;
+        $new_id = $res ? mysqli_insert_id($connection) : 0;
 
         $res_child = add_child_entity($connection, $new_id, $post, $tab);
 
         if ($res && $res_child) {
             mysqli_query($connection, "COMMIT");
-        }
-        else {
+        } else {
             mysqli_query($connection, "ROLLBACK");
         }
 
@@ -528,7 +537,7 @@
         $limit_condition = empty($limit) ? '' : ' LIMIT ' . $limit;
         $sql = 'SELECT c.user_id, c.text, c.creation_date, u.name as username, u.avatar as avatar
                     FROM comments AS c
-                      JOIN users AS u ON c.user_id=u.id WHERE c.post_id=' . $post_id  .  $limit_condition . ';';
+                      JOIN users AS u ON c.user_id=u.id WHERE c.post_id=' . $post_id . $limit_condition . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о комментариях');
         return (!$data || was_error($data)) ? [] : $data;
     }
@@ -592,7 +601,7 @@
      * @param $post_id
      * @return bool
      */
-    function switch_common ($connection, $user_id, $post_id, $table) {
+    function switch_common ($connection, $user_id, $post_id, $table, $counter_field = '') {
         $user_id = mysqli_real_escape_string($connection, $user_id);
         $post_id = mysqli_real_escape_string($connection, $post_id);
         $sql = 'SELECT id  FROM ' . $table . ' WHERE user_id=' . $user_id . ' AND post_id=' . $post_id . ';';
@@ -613,8 +622,19 @@
             ]);
             $res = mysqli_stmt_execute($stmt);
         } else {
-            $sql = 'DELETE FROM ' . $table . '  WHERE  user_id=' . $user_id . ' AND post_id=' . $post_id . ';';
-            $res = mysqli_query($connection, $sql);
+            if (!empty($counter_field)) {
+                /**
+                 * Если счетчик промотров по пользователю увеличивать не нужно - просто убрать этот код
+                 */
+                $sql = 'UPDATE reviews 
+                  SET ' . $counter_field . ' = ' .$counter_field . ' + 1
+                  WHERE  user_id=' . $user_id . ' AND post_id=' . $post_id . ';';
+                $res = mysqli_query($connection, $sql);
+            }
+            else  {
+                $sql = 'DELETE FROM ' . $table . '  WHERE  user_id=' . $user_id . ' AND post_id=' . $post_id . ';';
+                $res = mysqli_query($connection, $sql);
+            }
         }
         return ($res) ? true : false;
     }
@@ -660,9 +680,10 @@
      * @param $connection
      * @return array|null
      */
-    function get_posts_authors ($connection,  $limit = RECORDS_PER_PAGE, $offset = 0, $search_string = null) {
+    function get_posts_authors ($connection, $limit = RECORDS_PER_PAGE, $offset = 0, $search_string = null) {
         $search_condition = !empty($search_string) ?
-            ' WHERE MATCH(p.title, p.hashtag) AGAINST("*' .  mysqli_real_escape_string($connection, $search_string) . '*" IN BOOLEAN MODE) ' : '';
+            ' WHERE MATCH(p.title, p.hashtag) AGAINST("*' . mysqli_real_escape_string($connection,
+                $search_string) . '*" IN BOOLEAN MODE) ' : '';
         $sql = 'SELECT p.user_id  AS blogger_id,
                        u.name AS blogger_name,
                        u.avatar,
@@ -691,7 +712,8 @@
      */
     function get_posts_authors_total_pages ($connection, $limit, $search_string = null) {
         $search_condition = !empty($search_string) ?
-            ' WHERE MATCH(p.title, p.hashtag) AGAINST("*' .  mysqli_real_escape_string($connection, $search_string) . '*" IN BOOLEAN MODE) ' : '';
+            ' WHERE MATCH(p.title, p.hashtag) AGAINST("*' . mysqli_real_escape_string($connection,
+                $search_string) . '*" IN BOOLEAN MODE) ' : '';
         $sql = 'SELECT CEIL(COUNT(*) / ' . $limit . ') AS page_count, COUNT(*) AS total_records FROM posts ' . $search_condition . ' GROUP BY user_id;';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные для пагинации', true);
         return (!$data || was_error($data)) ? 1 : intval(get_assoc_element($data, 'page_count'));
@@ -723,4 +745,27 @@
         $res = mysqli_stmt_execute($stmt);
 
         return ($res) ? true : false;
+    }
+
+    /**
+     * Функция увеличивает счетчик просмотров на 1 (при посещении страницы post_details)
+     * @param $connection
+     * @param $post_id
+     * @return bool|mysqli_result
+     */
+    function increase_reviews_counter ($connection, $user_id, $post_id) {
+        return switch_common($connection, $user_id, $post_id, 'reviews', 'counter');
+    }
+
+    /**
+     * Функция возвращает общее число просмотров поста
+     * @param $connection
+     * @param $post_id
+     * @return int
+     */
+    function get_reviews_count ($connection, $post_id) {
+        $post_id = mysqli_real_escape_string($connection, $post_id);
+        $sql = 'SELECT IFNULL(SUM(counter), 0) AS reviews_count FROM reviews WHERE post_id = ' . $post_id . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные для пагинации', true);
+        return (!$data || was_error($data)) ? 0 : intval(get_assoc_element($data, 'reviews_count'));
     }

@@ -287,3 +287,24 @@
         }
         return $script . '?' . http_build_query($items);
     }
+
+    /**
+     * Функция возвращает форму слова для числа по переданному массиву словоформ и числу
+     * @param $source_number
+     * @param $text_forms
+     * @return mixed
+     */
+    function get_text_form ($source_number, $text_forms) {
+        $source_number = abs(intval($source_number, 10)) % 100;
+        $temporary_number = $source_number % 10;
+        if ($source_number > 10 && $source_number < 20) {
+            return $text_forms[2];
+        }
+        if ($temporary_number > 1 && $temporary_number < 5) {
+            return $text_forms[1];
+        }
+        if ($temporary_number === 1) {
+            return $text_forms[0];
+        }
+        return $text_forms[2];
+    }

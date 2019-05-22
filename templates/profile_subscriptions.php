@@ -27,14 +27,23 @@
                 </div>
                 <div class="post-mini__rating user__rating">
                     <p class="post-mini__rating-item user__rating-item user__rating-item--publications">
-                        <span class="post-mini__rating-amount user__rating-amount"><?= isnull(get_pure_data($subscription,
+                        <span
+                            class="post-mini__rating-amount user__rating-amount"><?= isnull(get_pure_data($subscription,
                                 'posts_count'), 0); ?></span>
-                        <span class="post-mini__rating-text user__rating-text">публикаций</span>
+                        <span class="post-mini__rating-text user__rating-text">
+                             <?= get_text_form(get_pure_data($subscription, 'posts_count'),
+                                 ['публикация', 'публикации', 'публикаций']); ?>
+                        </span>
                     </p>
                     <p class="post-mini__rating-item user__rating-item user__rating-item--subscribers">
-                        <span class="post-mini__rating-amount user__rating-amount"><?= isnull(get_pure_data($subscription,
-                                'subscribers_count'), 0); ?></span>
-                        <span class="post-mini__rating-text user__rating-text">подписчиков</span>
+                        <span
+                            class="post-mini__rating-amount user__rating-amount"><?= isnull(get_pure_data($subscription,
+                                'subscribers_count'), 0); ?>
+                        </span>
+                        <span class="post-mini__rating-text user__rating-text">
+                               <?= get_text_form(get_pure_data($subscription, 'subscribers_count'),
+                                   ['подписчик', 'подписчика', 'подписчиков']); ?>
+                        </span>
                     </p>
                 </div>
 

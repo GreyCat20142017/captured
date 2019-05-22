@@ -28,7 +28,6 @@ CREATE TABLE posts (
   category_id   INT UNSIGNED NOT NULL DEFAULT 0,
   title         VARCHAR(128) NOT NULL DEFAULT '',
   hashtag       VARCHAR(255) NOT NULL DEFAULT '',
-  reviews       INT UNSIGNED          DEFAULT 0,
   creation_date TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -54,6 +53,14 @@ CREATE TABLE reposts (
   creation_date TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE reviews (
+  id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  post_id       INT UNSIGNED NOT NULL DEFAULT 0,
+  user_id       INT UNSIGNED NOT NULL DEFAULT 0,
+  counter       INT UNSIGNED NOT NULL DEFAULT 0,
+  creation_date TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE photos (
   id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   post_id           INT UNSIGNED NOT NULL DEFAULT 0,
@@ -64,8 +71,7 @@ CREATE TABLE photos (
 CREATE TABLE videos (
   id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   post_id           INT UNSIGNED NOT NULL DEFAULT 0,
-  filename          VARCHAR(32)  NOT NULL DEFAULT '',
-  original_filename VARCHAR(32)  NOT NULL DEFAULT ''
+  youtube_id        CHAR(11)  NOT NULL DEFAULT ''
 );
 
 CREATE TABLE links (
@@ -150,6 +156,11 @@ ALTER TABLE reposts
   ADD CONSTRAINT fk_user_reposts FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
 ALTER TABLE reposts
   ADD CONSTRAINT fk_post_reposts FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE;
+
+ALTER TABLE reviews
+  ADD CONSTRAINT fk_user_reviews FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
+ALTER TABLE reviews
+  ADD CONSTRAINT fk_post_reviews FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE;
 
 ALTER TABLE messages
   ADD CONSTRAINT fk_user_msgs_from FOREIGN KEY (from_id) REFERENCES users (id) ON DELETE CASCADE;

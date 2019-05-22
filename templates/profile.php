@@ -18,19 +18,26 @@
                 <div class="profile__rating user__rating">
                     <p class="profile__rating-item user__rating-item user__rating-item--publications">
                         <span class="user__rating-amount"><?= isnull(get_pure_data($user, 'posts_count'), 0); ?></span>
-                        <span class="profile__rating-text user__rating-text">публикаций</span>
+                        <span class="profile__rating-text user__rating-text">
+                            <?= get_text_form(get_pure_data($user, 'posts_count'),
+                                ['публикация', 'публикации', 'публикаций']); ?>
+                        </span>
                     </p>
                     <p class="profile__rating-item user__rating-item user__rating-item--subscribers">
                         <span class="user__rating-amount"><?= isnull(get_pure_data($user, 'subscribers_count'),
                                 0); ?></span>
-                        <span class="profile__rating-text user__rating-text">подписчиков</span>
+                        <span class="profile__rating-text user__rating-text">
+                              <?= get_text_form(get_pure_data($user, 'subscribers_count'),
+                                  ['подписчик', 'подписчика', 'подписчиков']); ?>
+                        </span>
                     </p>
                 </div>
 
                 <?php if (!$is_own): ?>
                     <div class="profile__user-buttons user__buttons">
                         <a class="profile__user-button user__button user__button--subscription button button--main"
-                        <a <?= get_subscription_href_title(get_pure_data($user, 'user_id'), 'Подписаться/отписаться от автора ' . get_pure_data($user, 'username')); ?>>
+                        <a <?= get_subscription_href_title(get_pure_data($user, 'user_id'),
+                            'Подписаться/отписаться от автора ' . get_pure_data($user, 'username')); ?>>
                             Подписаться
                         </a>
                         <a class="profile__user-button user__button user__button--writing button button--green"
