@@ -53,7 +53,8 @@ VALUES (4, 1, DATE_ADD(NOW(), INTERVAL -3 DAY), 'Цитата', '#актуаль
        (3, 1, DATE_ADD(NOW(), INTERVAL -1 DAY), 'Цветовая дифференциация штанов', '#актуально'),
        (1, 2, DATE_ADD(NOW(), INTERVAL -4 DAY), 'Когда у общества нет цветовой дифференциации штанов, то нет цели!',  '#новаяреальность'),
        (5, 3, DATE_ADD(NOW(), INTERVAL -5 DAY), 'Здесь научат :-)', '#обучение'),
-       (2, 3, DATE_ADD(NOW(), INTERVAL -7 DAY), 'Docker: DKA-Develop', '#обучение');;
+       (2, 3, DATE_ADD(NOW(), INTERVAL -7 DAY), 'Neverhood', '#музыка');
+#        (2, 3, DATE_ADD(NOW(), INTERVAL -7 DAY), 'Docker: DKA-Develop', '#обучение');
 
 
 # Добавление контента
@@ -72,7 +73,8 @@ INSERT INTO links (post_id, reference, description)
 VALUES (5, 'https://htmlacademy.ru', 'Будет весело!');
 
 INSERT INTO videos (post_id, youtube_id)
-VALUES (6, 'EbEZgdTOHzE');
+VALUES (6, 'Wh4WnHlsbvM');
+# VALUES (7, 'EbEZgdTOHzE'); 'rzJhacp9z9I'
 
 INSERT INTO banners (text, creation_date, reference, description)
 VALUES ('Еще больше цитат из к/ф "Кин-дза-дза" - здесь!', DATE_ADD(NOW(), INTERVAL -3 DAY), 'https://ru.wikiquote.org/wiki/%D0%9A%D0%B8%D0%BD-%D0%B4%D0%B7%D0%B0-%D0%B4%D0%B7%D0%B0!', 'Перейти'),

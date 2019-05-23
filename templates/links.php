@@ -1,5 +1,5 @@
 <article class="<?= $classname; ?>__post post post-link">
-    <?= $post_header_content; ?>
+    <?= $post_header_content ?? ''; ?>
     <div class="post__main">
         <div class="post-link__wrapper">
             <a class="post-link__external"
@@ -18,5 +18,5 @@
             </a>
         </div>
     </div>
-    <?= $post_footer_content; ?>
+    <?= $post_footer_content ?? ''; ?>
 </article>

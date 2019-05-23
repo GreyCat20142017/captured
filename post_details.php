@@ -39,6 +39,7 @@
             'post' => $post,
             'classname' =>'post_details'
         ]);
+
     }
 
     $reviews_count = $is_post_ok ? get_reviews_count($connection, $post_id) : 0;

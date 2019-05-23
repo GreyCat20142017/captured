@@ -4,7 +4,7 @@
 
     define('SORT_COMMENTS', 'comments_count');
     define('SORT_LIKES', 'likes_count');
-    define('SORT_DATE', 'creation_date');
+    define('SORT_DATE', 'post_id');
 
     define('TEMPLATE_FOLDER', 'templates/');
 

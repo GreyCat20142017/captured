@@ -148,7 +148,7 @@
                     </li>
                 </ul>
                 <div class="footer__copyright">
-                    <a class="footer__copyright-link" href="#">
+                    <a class="footer__copyright-link" href="https://htmlacademy.ru">
                         <span>Разработано HTML Academy</span>
                         <svg class="footer__copyright-logo" width="27" height="34">
                             <use xlink:href="#icon-htmlacademy"></use>

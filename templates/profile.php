@@ -72,7 +72,7 @@
                     </ul>
                 </div>
                 <div class="profile__tab-content">
-                    <?= $profile_tab_content; ?>
+                    <?= $profile_tab_content ?? ''; ?>
                 </div>
             </div>
         </div>

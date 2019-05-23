@@ -205,11 +205,44 @@
     }
 
     /**
-     * @param        $post
+     * Функци возвращает ссылку и подсказку для кнопки отправки сообщения
+     * @param $post
      * @return string
      */
     function get_message_href_title (&$data) {
         $user_id = get_pure_data($data, 'user_id');
         return intval($user_id) === intval(get_auth_user_property('id')) ? 'title ="Нельзя отправить сообщение самому себе"' :
             'href="messages.php?user=' . $user_id . ' "  title="Сообщение"';
+    }
+
+    /**
+     * Функция возвращает атрибуты ширина и высота в зависимости от переданного названия класса
+     * @param $classname
+     * @return string
+     */
+    function get_video_size ($classname) {
+        return ' width="' . ($classname === 'popular' ? 360 : 760) . '" ' .
+            ' height="' . ($classname === 'popular' ? 188 : 396) . '" ';
+    }
+
+    /**
+     * Возвращает id для iframe
+     * @param $post
+     * @return string
+     */
+    function get_video_id ($post) {
+        return ' id="' . get_pure_data($post, 'youtube_id') . '" ';
+    }
+
+    /**
+     * Функция возвращает ссылку для удаления поста и заголовок подсказки для кнопки
+     * @param $post
+     * @return string
+     */
+    function get_delete_post_href_title (&$post) {
+        $user_id = get_pure_data($post, 'user_id');
+        $post_id = get_pure_data($post, 'post_id');
+        return intval($user_id) !== intval(get_auth_user_property('id')) ?
+            ' title ="Нельзя удалить чужую публикацию" ' :
+            ' href="delete_post.php?post=' . $post_id . '" title="Удалить эту публикацию" ';
     }

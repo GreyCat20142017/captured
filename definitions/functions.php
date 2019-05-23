@@ -308,3 +308,7 @@
         }
         return $text_forms[2];
     }
+
+    function get_pure_youtube_link($post, $field_name) {
+     return 'http://www.youtube.com/embed/'. get_pure_data($post, $field_name) . '?autoplay=0';
+    }

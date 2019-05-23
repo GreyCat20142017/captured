@@ -1,5 +1,5 @@
 <article class="<?= $classname; ?>__post post post-text">
-    <?= $post_header_content; ?>
+    <?= $post_header_content ?? ''; ?>
     <div class="post__main">
         <h2><?= get_pure_data($post, 'title'); ?></h2>
         <?php if (strlen(trim(get_pure_data($post, 'text'))) > MAX_TEXT_LENGTH): ?>
@@ -9,5 +9,5 @@
             <p><?= get_pure_data($post, 'text'); ?></p>
         <?php endif; ?>
     </div>
-    <?= $post_footer_content; ?>
+    <?= $post_footer_content ?? ''; ?>
 </article>

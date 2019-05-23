@@ -5,8 +5,9 @@
             <h2 class="visually-hidden">Публикация</h2>
             <div class="post-details__wrapper post-photo">
 
-                <?php if (intval(get_pure_data($post, 'id')) === intval($current_user)) : ?>
-                    <a class="post-details__close button button--close" href="#" title="Удалить">
+                <?php if (intval(get_pure_data($post, 'user_id')) === intval($current_user)) : ?>
+                    <a class="post-details__close button button--close"
+                        <?= get_delete_post_href_title($post); ?>>
                         <span class="visually-hidden">Удалить</span>
                         <svg class="button__close-icon" width="18" height="18">
                             <use xlink:href="#icon-close"></use>

@@ -66,7 +66,7 @@
             ON p.user_id = blogger_id ';
         return 'SELECT  p.user_id, p.category_id, p.title, p.id AS post_id, p.hashtag, u.name AS username, u.avatar, c.content_type,
                     IFNULL(ph.filename,  "") AS filename,
-                    IFNULL(v.youtube_id, "") as youtube_id,
+                    IFNULL(v.youtube_id, "") AS youtube_id,
                     IFNULL(q.author, "") AS author,
                     IFNULL(l.reference, "") AS ref,
                     CASE WHEN t.text IS NOT NULL THEN t.text
@@ -483,9 +483,9 @@
                 $params = [$post_id, get_assoc_element($post, 'userpic-file-photo')];
                 break;
             case FILTER_VIDEOS:
-                $sql = 'INSERT INTO ' . $tab . ' (post_id, filename)
+                $sql = 'INSERT INTO ' . $tab . ' (post_id, youtube_id)
                           VALUES ( ?, ?)';
-                $params = [$post_id, get_assoc_element($post, 'userpic-file-video')];
+                $params = [$post_id, get_assoc_element($post, 'video-link')];
                 break;
             case FILTER_QUOTES:
                 $sql = 'INSERT INTO ' . $tab . ' (post_id, text, author)
@@ -627,11 +627,10 @@
                  * Если счетчик промотров по пользователю увеличивать не нужно - просто убрать этот код
                  */
                 $sql = 'UPDATE reviews 
-                  SET ' . $counter_field . ' = ' .$counter_field . ' + 1
+                  SET ' . $counter_field . ' = ' . $counter_field . ' + 1
                   WHERE  user_id=' . $user_id . ' AND post_id=' . $post_id . ';';
                 $res = mysqli_query($connection, $sql);
-            }
-            else  {
+            } else {
                 $sql = 'DELETE FROM ' . $table . '  WHERE  user_id=' . $user_id . ' AND post_id=' . $post_id . ';';
                 $res = mysqli_query($connection, $sql);
             }
@@ -768,4 +767,19 @@
         $sql = 'SELECT IFNULL(SUM(counter), 0) AS reviews_count FROM reviews WHERE post_id = ' . $post_id . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные для пагинации', true);
         return (!$data || was_error($data)) ? 0 : intval(get_assoc_element($data, 'reviews_count'));
+    }
+
+    /**
+     * Функцци удаляет пост по его номеру, если он принадлежит текущему пользователю
+     * @param $connection
+     * @param $post_id
+     * @param $auth_user_id
+     * @return bool
+     */
+    function delete_post ($connection, $post_id, $auth_user_id) {
+        $post_id = mysqli_real_escape_string($connection, $post_id);
+        $auth_user_id = mysqli_real_escape_string($connection, $auth_user_id);
+        $sql = 'DELETE FROM posts WHERE id=' . $post_id . ' AND user_id=' . $auth_user_id . ';';
+        $res = mysqli_query($connection, $sql);
+        return ($res) ? true : false;
     }

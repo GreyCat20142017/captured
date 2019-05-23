@@ -219,8 +219,7 @@
      * @param string $youtube_url Ссылка на youtube видео
      * @return bool
      */
-    function get_youtube_vlidation_result ($id) {
-        $youtube_url = 'https://www.youtube.com/watch?v=' . $id;
+    function check_youtube_url ($youtube_url) {
         $res = false;
         $id = extract_youtube_id($youtube_url);
         if ($id) {
@@ -232,4 +231,18 @@
             }
         }
         return $res;
+    }
+
+    /**
+     * Функция возвращает результат валидации ссылки youtube
+     * @param $video
+     * @return string
+     */
+    function get_youtube_validation_result ($video) {
+        $result = 'Поле должно быть либо корректным id yotube (длиной 11 символов) либо правильной ссылкой youtube';
+        $youtube_url = $video;
+        if (mb_strlen(trim($video), 'utf-8') === 11) {
+            $youtube_url = 'https://www.youtube.com/watch?v=' . $video;
+        }
+        return (filter_var($youtube_url, FILTER_VALIDATE_URL) && check_youtube_url($youtube_url)) ? '' : $result;
     }
