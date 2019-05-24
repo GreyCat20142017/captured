@@ -463,6 +463,7 @@
             mysqli_query($connection, "COMMIT");
         } else {
             mysqli_query($connection, "ROLLBACK");
+            $new_id = 0;
         }
 
         return $new_id ?? 0;
@@ -483,9 +484,11 @@
                 $params = [$post_id, get_assoc_element($post, 'userpic-file-photo')];
                 break;
             case FILTER_VIDEOS:
+                $youtube_url = get_assoc_element($post, 'video-link');
+                $youtube_id =  extract_youtube_id($youtube_url);
                 $sql = 'INSERT INTO ' . $tab . ' (post_id, youtube_id)
                           VALUES ( ?, ?)';
-                $params = [$post_id, get_assoc_element($post, 'video-link')];
+                $params = [$post_id, $youtube_id ?? ''];
                 break;
             case FILTER_QUOTES:
                 $sql = 'INSERT INTO ' . $tab . ' (post_id, text, author)

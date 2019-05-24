@@ -4,6 +4,7 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+
         if (isset($_POST['publish_photo'])) {
             $fields = [
                 'photo-heading' => ['description' => 'Заголовок', 'required' => true],
@@ -55,7 +56,9 @@
 
         $image_fields = get_file_fields($fields);
         if ($status_ok) {
-            try_upload_files($image_fields, $_FILES, $errors, $upload_to,  $post);
+            if (!empty($image_fields)) {
+                try_upload_files($image_fields, $_FILES, $errors, $upload_to, $post);
+            }
             $title = get_assoc_element($post, array_keys($fields)[0]);
             $add_result = add_post($connection, $post, $title, $tab, get_auth_user_property('id'));
 

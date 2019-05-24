@@ -29,9 +29,8 @@
                     </div>
 
                     <div class="search__tab-content">
-                        <?= $posts_content; ?>
+                        <?= $posts_content ?? '' ?>
                     </div>
-
 
                     <?= $pagination_content; ?>
 

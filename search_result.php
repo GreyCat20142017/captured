@@ -15,7 +15,8 @@
     $active_tab = isset($_GET['filter']) ? trim(strip_tags($_GET['filter'])) : FILTER_ALL;
     $active_sort = SORT_DATE;
 
-    $search_string = isset($_POST['search']) ? strip_tags($_POST['search']) : (get_auth_user_property('last_search', $search_string ?? '') ?? '');
+    $search_string = isset($_POST['search']) ? strip_tags($_POST['search']) : (get_auth_user_property('last_search',
+            $search_string ?? '') ?? '');
 
     $category_id = empty($active_tab) || $active_tab === FILTER_ALL ? null :
         get_id_by_value($connection, 'categories', 'content_type', $active_tab);
@@ -43,14 +44,23 @@
         'active_script' => $_SERVER['PHP_SELF']
     ]);
 
+    if (empty($posts)) {
 
-    $content = ($active_tab === FILTER_ALL) ?
-        include_template('profile_subscriptions.php', [
-            'subscriptions' => $posts,
-            'is_own' => false,
-            'logged_user_id' => get_auth_user_property('id')
-        ]) :
-        get_post_content($posts, 'search__tabs-item ', true);
+        $content = include_template('no_result.php', [
+            'back' => $_SERVER['HTTP_REFERER'] ?? 'popular.php'
+        ]);
+
+    } else {
+
+        $content = ($active_tab === FILTER_ALL) ?
+            include_template('profile_subscriptions.php', [
+                'subscriptions' => $posts,
+                'is_own' => false,
+                'logged_user_id' => get_auth_user_property('id')
+            ]) :
+            get_post_content($posts, 'search__tabs-item ', true);
+
+    }
 
     $page_content = include_template('search_result.php', [
         'user' => $user,

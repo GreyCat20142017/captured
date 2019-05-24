@@ -71,4 +71,6 @@
     define('UI_START', 'UI');
     define('TRANCATED_COUNT', mb_strlen(uniqid(UI_START, true)) + 1);
 
+    define('YOUTUBE_ID_LENGTH', 11);
+
 

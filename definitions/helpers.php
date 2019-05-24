@@ -1,5 +1,9 @@
 <?php
     /**
+     *  Функции от HTML ACademy
+     */
+
+    /**
      * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
      *
      * Примеры использования:
@@ -122,11 +126,16 @@
     }
 
     /**
-     * Функция от HTML Academy. Извлекает из ссылки на youtube видео его уникальный ID
-     * @param string $youtube_url Ссылка на youtube видео
+     * Функция извлекает из ссылки на youtube видео его уникальный ID
+     * @param string $youtube_url Ссылка на youtube видео либо сам ID
      * @return array
      */
     function extract_youtube_id ($youtube_url) {
+
+        if (mb_strlen(trim($youtube_url), 'utf-8') === YOUTUBE_ID_LENGTH) {
+            return $youtube_url;
+        }
+
         $id = false;
         $parts = parse_url($youtube_url);
         if ($parts) {

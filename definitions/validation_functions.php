@@ -239,7 +239,7 @@
      * @return string
      */
     function get_youtube_validation_result ($video) {
-        $result = 'Поле должно быть либо корректным id yotube (длиной 11 символов) либо правильной ссылкой youtube';
+        $result = 'Поле должно быть либо корректным videoId yotube (длиной 11 символов) либо правильной ссылкой youtube';
         $youtube_url = $video;
         if (mb_strlen(trim($video), 'utf-8') === 11) {
             $youtube_url = 'https://www.youtube.com/watch?v=' . $video;
