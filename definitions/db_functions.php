@@ -781,7 +781,7 @@
     function delete_post ($connection, $post_id, $auth_user_id) {
         $post_id = mysqli_real_escape_string($connection, $post_id);
         $auth_user_id = mysqli_real_escape_string($connection, $auth_user_id);
-        $sql = 'DELETE FROM posts WHERE id=' . $post_id . ' AND user_id=' . $auth_user_id . ';';
+        $sql = 'DELETE FROM posts WHERE id = ' . $post_id . ' AND user_id = ' . $auth_user_id . ';';
         $res = mysqli_query($connection, $sql);
         return ($res) ? true : false;
     }
@@ -796,7 +796,20 @@
         $user_id = mysqli_real_escape_string($connection, $user_id);
         $sql = 'SELECT COUNT(*) AS unread_messages FROM messages WHERE to_id = ' . $user_id . ' AND was_read = 0;';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о непрочитанных сообщениях', true);
-        return ($data) ? intval(get_assoc_element($data, 'unread_messages')) : 0;
+        return (!$data || was_error($data)) ? 0 : intval(get_assoc_element($data, 'unread_messages'));
+    }
+
+    /**
+     * Возвращает подписки пользователя
+     * @param $connection
+     * @param $user_id
+     * @return int
+     */
+    function get_auth_user_subscriptions ($connection,  $user_id) {
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $sql = 'SELECT blogger_id from subscriptions WHERE subscriber_id = '. $user_id . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о подписках', false);
+        return (!$data || was_error($data)) ? [] : $data;
     }
 
     /**
@@ -810,8 +823,8 @@
     function switch_unread_status ($connection, $correspondent_id, $user_id) {
         $correspondent_id = mysqli_real_escape_string($connection, $correspondent_id);
         $user_id = mysqli_real_escape_string($connection, $user_id);
-        $sql = $sql = 'UPDATE messages  SET was_read = 1 WHERE from_id=' . $correspondent_id . ' AND to_id=' . $user_id .
-            ' AND was_read=0;';
+        $sql = $sql = 'UPDATE messages  SET was_read = 1 WHERE from_id = ' . $correspondent_id . ' AND to_id = ' . $user_id .
+            ' AND was_read = 0;';
         $res = mysqli_query($connection, $sql);
         return ($res) ? true : false;
     }

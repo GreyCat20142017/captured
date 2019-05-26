@@ -51,12 +51,15 @@
         ]);
 
     } else {
-
+        $logged_user_id = get_auth_user_property('id');
+        $auth_user_subscriptions = array_values(array_column( get_auth_user_subscriptions($connection, $logged_user_id),
+            'blogger_id'));
         $content = ($active_tab === FILTER_ALL) ?
             include_template('profile_subscriptions.php', [
                 'subscriptions' => $posts,
                 'is_own' => false,
-                'logged_user_id' => get_auth_user_property('id')
+                'logged_user_id' => $logged_user_id,
+                'auth_user_subscriptions' => $auth_user_subscriptions
             ]) :
             get_post_content($posts, 'search__tabs-item ', true);
 

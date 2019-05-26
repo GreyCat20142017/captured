@@ -38,7 +38,9 @@
                         <a class="profile__user-button user__button user__button--subscription button button--main"
                         <a <?= get_subscription_href_title(get_pure_data($user, 'user_id'),
                             'Подписаться/отписаться от автора ' . get_pure_data($user, 'username')); ?>>
-                            Подписаться
+                            <?= in_array(get_pure_data($user, 'user_id'),
+                                $auth_user_subscriptions ?? []) ?
+                                'Отписаться' : 'Подписаться'; ?>
                         </a>
                         <a class="profile__user-button user__button user__button--writing button button--green"
                             <?= get_message_href_title($user); ?>>Сообщение</a>

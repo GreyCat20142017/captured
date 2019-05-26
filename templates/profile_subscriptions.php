@@ -48,10 +48,13 @@
                 </div>
 
                 <div class="post-mini__user-buttons user__buttons">
-                    <a <?= get_subscription_href_title(get_pure_data($subscription,
-                        'blogger_id', 'Подписаться/отписаться')); ?>
+                    <a <?= get_subscription_href_title(get_pure_data($subscription, 'blogger_id',
+                        'Подписаться/отписаться')); ?>
                         class="post-mini__user-button user__button user__button--subscription button button--main"
-                        type="button">Подписаться
+                        type="button">
+                        <?= in_array(get_pure_data($subscription, 'blogger_id'),
+                            $auth_user_subscriptions ?? []) ?
+                            'Отписаться' : 'Подписаться'; ?>
                     </a>
                 </div>
 

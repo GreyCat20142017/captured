@@ -16,7 +16,7 @@
     $search_string = get_auth_user_property('last_search', $search_string ?? '') ?? '';
 
     if (isset($_GET['user'])) {
-        $user_id = isset($_GET['user']) ? intval(strip_tags($_GET['user'])) : null;
+        $user_id = isset($_GET['user']) ? intval(strip_tags($_GET['user'])) : 0;
     } else {
         $user_id = $logged_user_id;
     }
@@ -69,10 +69,15 @@
         case SUBSCRIPTIONS:
             {
                 $subcriptions = get_user_subscriptions($connection, $user_id);
+                $auth_user_subscriptions = array_values(array_column(
+                    $is_own_profile ? $subcriptions : get_auth_user_subscriptions($connection, $logged_user_id),
+                    'blogger_id'));
+
                 $content = include_template('profile_subscriptions.php', [
                     'subscriptions' => $subcriptions,
                     'is_own' => $is_own_profile,
-                    'logged_user_id' => $logged_user_id
+                    'logged_user_id' => $logged_user_id,
+                    'auth_user_subscriptions' => $auth_user_subscriptions
                 ]);
                 break;
             }
@@ -88,6 +93,16 @@
             'error_message' => 'В БД отсутствует информация о пользователе с id ' . $user_id
         ]);
     } else {
+        /**
+         * Если профиль собственный, то вообще для этой части шаблона информация о подписках лишняя
+         * Можно передать в шаблон просто пустой массив и не ходить в базу
+         */
+        $auth_user_subscriptions = $is_own_profile ? [] : (
+            $auth_user_subscriptions ?? array_values(array_column(
+                $is_own_profile ? $subcriptions : get_auth_user_subscriptions($connection, $logged_user_id),
+                'blogger_id'))
+        );
+
         $page_content = include_template('profile.php', [
             'user' => $db_user,
             'profile_tab_content' => $content,
@@ -95,7 +110,8 @@
             'active_user' => $user,
             'active_query' => $_SERVER['QUERY_STRING'],
             'active_script' => $_SERVER['PHP_SELF'],
-            'is_own' => $is_own_profile
+            'is_own' => $is_own_profile,
+            'auth_user_subscriptions' => $auth_user_subscriptions
         ]);
 
         $_SESSION[CAPTURED_SESSION]['current_user'] = $user_id;
