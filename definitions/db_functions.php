@@ -410,7 +410,7 @@
                        u.id AS correspondent_id,
                        u.name AS correspondent_name,
                        u.avatar AS correspondent_avatar
-                 FROM (SELECT SUM(IF(from_id = ' . $user_id . ' AND was_read = 0, 1, 0)) AS unread_count,
+                 FROM (SELECT SUM(IF(from_id != ' . $user_id . ' AND was_read = 0, 1, 0)) AS unread_count,
                               SUM(1) AS total_count,
                               MAX(id) AS last_id,
                               IF(from_id = ' . $user_id . ', to_id, from_id) AS correspondent_id
@@ -627,12 +627,11 @@
         } else {
             if (!empty($counter_field)) {
                 /**
-                 * Если счетчик промотров по пользователю увеличивать не нужно - просто убрать этот код
+                 * Если счетчик просмотров по пользователю увеличивать не нужно - просто закомментировать этот код
                  */
-                $sql = 'UPDATE reviews 
-                  SET ' . $counter_field . ' = ' . $counter_field . ' + 1
-                  WHERE  user_id=' . $user_id . ' AND post_id=' . $post_id . ';';
-                $res = mysqli_query($connection, $sql);
+//                $sql = 'UPDATE reviews  SET ' . $counter_field . ' = ' . $counter_field . ' + 1 WHERE  user_id=' . $user_id . ' AND post_id=' . $post_id . ';';
+//                $res = mysqli_query($connection, $sql);
+                  $res = false;
             } else {
                 $sql = 'DELETE FROM ' . $table . '  WHERE  user_id=' . $user_id . ' AND post_id=' . $post_id . ';';
                 $res = mysqli_query($connection, $sql);
@@ -783,6 +782,36 @@
         $post_id = mysqli_real_escape_string($connection, $post_id);
         $auth_user_id = mysqli_real_escape_string($connection, $auth_user_id);
         $sql = 'DELETE FROM posts WHERE id=' . $post_id . ' AND user_id=' . $auth_user_id . ';';
+        $res = mysqli_query($connection, $sql);
+        return ($res) ? true : false;
+    }
+
+    /**
+     * Функция возвращает общее количество непрочитанных сообщений, адресованных пользователю
+     * @param $connection
+     * @param $user_id
+     * @return int
+     */
+    function get_unread_count ($connection,  $user_id) {
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $sql = 'SELECT COUNT(*) AS unread_messages FROM messages WHERE to_id = ' . $user_id . ' AND was_read = 0;';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о непрочитанных сообщениях', true);
+        return ($data) ? intval(get_assoc_element($data, 'unread_messages')) : 0;
+    }
+
+    /**
+     * Функция устанавливает статус "прочтен" всем непрочтенным ообщениям от пользователя авторизованному пользователю
+     * при открытии вкладки сообщений от этого пользователя
+     * @param $connection
+     * @param $correspondent_id
+     * @param $user_id
+     * @return bool
+     */
+    function switch_unread_status ($connection, $correspondent_id, $user_id) {
+        $correspondent_id = mysqli_real_escape_string($connection, $correspondent_id);
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $sql = $sql = 'UPDATE messages  SET was_read = 1 WHERE from_id=' . $correspondent_id . ' AND to_id=' . $user_id .
+            ' AND was_read=0;';
         $res = mysqli_query($connection, $sql);
         return ($res) ? true : false;
     }

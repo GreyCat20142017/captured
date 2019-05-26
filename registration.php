@@ -54,7 +54,8 @@
         'user_name' => get_auth_user_property('name'),
         'active_content' => '',
         'filter_type' => null,
-        'filter_value' => null
+        'filter_value' => null,
+        'unread_count' => is_auth_user() ? get_unread_count($connection, get_auth_user_property('id')) : 0
     ]);
 
     $layout_content = include_template('layout.php',

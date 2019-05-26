@@ -45,7 +45,8 @@
         'active_content' => null,
         'filter_type' => 'none',
         'filter_value' => null,
-        'search_string' => $search_string
+        'search_string' => $search_string,
+        'unread_count' => get_unread_count($connection, get_auth_user_property('id'))
     ]);
 
     $layout_content = include_template('layout.php',
@@ -55,7 +56,8 @@
             'title' => 'Readme: добавление публикации',
             'is_auth' => is_auth_user(),
             'body_classname' => is_auth_user() ? 'page--main  page__main--adding-post' : '',
-            'user_name' => get_auth_user_property('name')
+            'user_name' => get_auth_user_property('name'),
+            'need_js' => true
         ]);
 
     print($layout_content);

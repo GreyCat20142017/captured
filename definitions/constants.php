@@ -11,7 +11,7 @@
     define('MAX_TEXT_LENGTH', 222);
     define('SHORT_TEXT_LENGTH', 22);
     define('RECORDS_PER_PAGE', 6);
-    define('COMMENTS_PREVIEW_COUNT', 2);
+    define('COMMENTS_PREVIEW_COUNT', 3);
 
     /**
      * Константы валидации и типов

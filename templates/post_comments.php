@@ -1,15 +1,23 @@
 <?php if (empty($expand) || !$expand): ?>
+
     <div class="comments">
-        <a class="comments__button button"
-           href="profile-posts.php?id=<?= get_pure_data($post, 'id'); ?>">
-            Показать комментарии
-        </a>
+        <?php if (intval(get_pure_data($post, 'comments_count')) === 0): ?>
+            <span class="comments__button button"> Комментариев нет</span>
+        <?php else: ?>
+            <a class="comments__button button"
+               href="<?= rebuild_query_string($active_script, $active_query, 'expand',
+                   intval(get_pure_data($post, 'post_id'))); ?>">
+                Показать комментарии
+            </a>
+        <?php endif; ?>
     </div>
+
 <?php else: ?>
+
     <div class="comments">
         <div class="comments__list-wrapper">
 
-            <?php if (count(empty($comments) || $comments === 0)): ?>
+            <?php if (count($comments ?? []) === 0): ?>
 
                 <small> К этому посту пока нет комментариев</small>
 
@@ -43,13 +51,25 @@
                         </li>
                     <?php endforeach; ?>
                 </ul>
-                <a class="comments__more-link" href="#">
-                    <span>Показать все комментарии</span>
-                    <sup class="comments__amount">45</sup>
-                </a>
 
+                <?php if ($need_more_comments): ?>
+                    <a class="comments__more-link"
+                       href="<?= rebuild_query_string($active_script, $active_query, 'all_comments',
+                           !($shown)); ?>">
+                        <span><?= $shown ? 'Cкрыть больше ' . COMMENTS_PREVIEW_COUNT . ' комментариев' : 'Показать все комментарии'; ?></span>
+                        <sup class="comments__amount"><?= isnull(get_pure_data($post, 'comments_count'),
+                                0); ?> </sup>
+                    </a>
+                <? endif; ?>
+
+                <a class="comments__button button"
+                   href="<?= rebuild_query_string($active_script, $active_query, 'expand',
+                       0); ?>">
+                    Скрыть комментарии
+                </a>
             <?php endif; ?>
 
         </div>
     </div>
+
 <?php endif; ?>

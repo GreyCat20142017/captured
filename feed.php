@@ -38,7 +38,8 @@
         'active_content' => CONTENT_FEED,
         'filter_type' => 'filter',
         'filter_value' => $active_tab,
-        'search_string' => $search_string
+        'search_string' => $search_string,
+        'unread_count' => get_unread_count($connection, get_auth_user_property('id'))
     ]);
 
     $layout_content = include_template('layout.php',

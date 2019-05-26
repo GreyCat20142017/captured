@@ -16,6 +16,10 @@
     $correspondent_id = isset($_GET['user']) ? intval(strip_tags($_GET['user'])) : 0;
     $user_id = intval(get_auth_user_property('id', 0));
 
+    if (isset($_GET['user']) && !empty($correspondent_id) && !empty($user_id)) {
+        switch_unread_status($connection, $correspondent_id, $user_id);
+    }
+
     require_once('message_validation.php');
 
     $messages = empty($correspondent_id) ? [] : get_messages($connection, $user_id, $correspondent_id);
@@ -37,7 +41,8 @@
         'active_content' => CONTENT_MESSAGES,
         'filter_type' => 'user',
         'filter_value' => $correspondent_id,
-        'search_string' => $search_string
+        'search_string' => $search_string,
+        'unread_count' => get_unread_count($connection, get_auth_user_property('id'))
     ]);
 
     $layout_content = include_template('layout.php', [

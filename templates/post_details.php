@@ -67,7 +67,7 @@
                                 <a class="comments__more-link"
                                    href="<?= rebuild_query_string($active_script, $active_query, 'all_comments',
                                        !($shown)); ?>">
-                                    <span><?= $shown ? 'Cкрыть комментарии' : 'Показать все комментарии'; ?></span>
+                                    <span><?= $shown ? 'Cкрыть больше ' . COMMENTS_PREVIEW_COUNT . ' комментариев' : 'Показать все комментарии'; ?></span>
                                     <sup class="comments__amount"><?= isnull(get_pure_data($post, 'comments_count'),
                                             0); ?> </sup>
                                 </a>

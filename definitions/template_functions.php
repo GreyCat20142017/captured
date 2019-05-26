@@ -23,16 +23,20 @@
      * @param $posts
      * @return string
      */
-    function get_post_content (&$posts, $classname, $common_feed = true) {
+    function get_post_content (&$posts, $classname, $common_feed = true, $expanded_id = 0, $comments = [], $show_all = false) {
         $content = '';
         foreach ($posts as $post) {
             $is_own = isset($post['is_own_post']) ? (intval($post['is_own_post']) === 1) : false;
-            $expand = false;
 
+            $expand = intval($expanded_id) === intval(get_assoc_element($post, 'post_id'));
             $comments_content = $common_feed ? '' : include_template('post_comments.php', [
                 'post' => $post,
                 'expand' => $expand,
-                'comments' => []
+                'comments' => $comments,
+                'need_more_comments' => $expand && (intval(COMMENTS_PREVIEW_COUNT) < intval(get_assoc_element($post, 'comments_count'))),
+                'active_query' => $_SERVER['QUERY_STRING'],
+                'active_script' => $_SERVER['PHP_SELF'],
+                'shown' => $show_all
             ]);
 
             $header_postfix = $common_feed ? 'common' : 'profile_' . ($is_own ? 'own' : 'repost');

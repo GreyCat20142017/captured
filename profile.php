@@ -21,6 +21,15 @@
         $user_id = $logged_user_id;
     }
 
+    if (isset($_GET['expand'])) {
+        $show_all = !empty($_GET['all_comments']);
+        $expanded_id = intval(strip_tags($_GET['expand']));
+        $expanded_comments = get_post_comments($connection, $expanded_id, $show_all ? null : COMMENTS_PREVIEW_COUNT);
+    } else {
+        $expanded_id = 0;
+        $expanded_comments = [];
+    }
+
     $is_own_profile = ($user_id === $logged_user_id);
     $db_user = empty($user_id) ? [] : get_user_info($connection, $user_id);
 
@@ -44,7 +53,7 @@
             {
                 $posts = get_posts_for_profile($connection, $user_id);
                 $content = include_template('profile_posts.php', [
-                    'inner_part' => get_post_content($posts, 'profile', false)
+                    'inner_part' => get_post_content($posts, 'profile', false, $expanded_id, $expanded_comments, $show_all ?? false)
                 ]);
                 break;
             }
@@ -85,7 +94,7 @@
             'active_tab' => $active_tab,
             'active_user' => $user,
             'active_query' => $_SERVER['QUERY_STRING'],
-            'active_script' =>  $_SERVER['PHP_SELF'],
+            'active_script' => $_SERVER['PHP_SELF'],
             'is_own' => $is_own_profile
         ]);
 
@@ -98,7 +107,8 @@
         'active_content' => '',
         'filter_type' => null,
         'filter_value' => null,
-        'search_string' => $search_string
+        'search_string' => $search_string,
+        'unread_count' => get_unread_count($connection, get_auth_user_property('id'))
     ]);
 
     $layout_content = include_template('layout.php',

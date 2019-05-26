@@ -63,7 +63,8 @@
         'active_content' => '',
         'filter_type' => null,
         'filter_value' => null,
-        'search_string' => $search_string
+        'search_string' => $search_string,
+        'unread_count' => is_auth_user() ? get_unread_count($connection, get_auth_user_property('id')) : 0
     ]);
 
     $layout_content = include_template('layout.php', [
