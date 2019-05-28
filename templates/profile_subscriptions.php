@@ -48,6 +48,7 @@
                 </div>
 
                 <div class="post-mini__user-buttons user__buttons">
+                    <?php if(is_auth_user()): ?>
                     <a <?= get_subscription_href_title(get_pure_data($subscription, 'blogger_id',
                         'Подписаться/отписаться')); ?>
                         class="post-mini__user-button user__button user__button--subscription button button--main"
@@ -56,6 +57,7 @@
                             $auth_user_subscriptions ?? []) ?
                             'Отписаться' : 'Подписаться'; ?>
                     </a>
+                    <?php endif; ?>
                 </div>
 
             </li>

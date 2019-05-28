@@ -4,7 +4,7 @@
      * @return bool
      */
     function is_auth_user () {
-        return isset($_SESSION[CAPTURED_SESSION]);
+        return (isset($_SESSION[CAPTURED_SESSION]) && !empty(get_auth_user_property ('id',0)));
     }
 
     /**

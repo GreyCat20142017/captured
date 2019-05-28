@@ -182,9 +182,14 @@
      */
     function get_like_href_title (&$post) {
         $author_id = get_pure_data($post, 'user_id');
-        return intval($author_id) === intval(get_auth_user_property('id')) ? 'title ="Собственный пост нельзя лайкнуть"' :
-            'href="like.php?post=' . get_pure_data($post, 'post_id') . '&user=' . get_auth_user_property('id') . '" 
+        if (is_auth_user()) {
+            $result = intval($author_id) === intval(get_auth_user_property('id')) ? 'title ="Собственный пост нельзя лайкнуть"' :
+                'href="like.php?post=' . get_pure_data($post, 'post_id') . '&user=' . get_auth_user_property('id') . '" 
              title="Лайк/дизлайк"';
+        } else {
+            $result = ' title="Необходимо залогиниться ..." ';
+        }
+        return $result;
     }
 
     /**
@@ -194,9 +199,14 @@
      */
     function get_repost_href_title (&$post) {
         $author_id = get_pure_data($post, 'user_id');
-        return intval($author_id) === intval(get_auth_user_property('id')) ? 'title ="Собственный пост нельзя зарепостить"' :
-            'href="repost.php?post=' . get_pure_data($post, 'post_id') . '&user=' . get_auth_user_property('id') . '" 
+        if (is_auth_user()) {
+            $result = intval($author_id) === intval(get_auth_user_property('id')) ? 'title ="Собственный пост нельзя зарепостить"' :
+                'href="repost.php?post=' . get_pure_data($post, 'post_id') . '&user=' . get_auth_user_property('id') . '" 
              title="Репост"';
+        } else {
+            $result = ' title="Необходимо залогиниться ..." ';
+        }
+        return $result;
     }
 
     /**
@@ -206,9 +216,14 @@
      */
     function get_subscription_href_title ($blogger_id, $title = '') {
         $subscriber_id = get_auth_user_property('id');
-        return intval($blogger_id) === intval($subscriber_id) ? 'title="Нельзя подписаться на самого себя"' :
-            'href="subscription.php?subscriber=' . $subscriber_id . '&blogger=' . $blogger_id . '" 
+        if (is_auth_user()) {
+            $result = intval($blogger_id) === intval($subscriber_id) ? 'title="Нельзя подписаться на самого себя"' :
+                'href="subscription.php?subscriber=' . $subscriber_id . '&blogger=' . $blogger_id . '" 
              title="' . $title . '"';
+        } else {
+            $result = ' title="Необходимо залогиниться ..." ';
+        }
+        return $result;
     }
 
     /**
@@ -253,6 +268,42 @@
             ' title ="Нельзя удалить чужую публикацию" ' :
             ' href="delete_post.php?post=' . $post_id . '" title="Удалить эту публикацию" ';
     }
+
+    /**
+     * Аналог 1С-овской isnull, но для шаблона. Возвращает либо передаваемый параметр, либо передаваемое значение,
+     * возвращаемое в случае если параметр - пустое значение
+     * @param $parameter
+     * @param $default_value
+     * @return mixed
+     */
+    function isnull ($parameter, $default_value) {
+        return empty($parameter) ? $default_value : $parameter;
+    }
+
+    /**
+     * Идея позаимствована из функциии, найденной на просторах интернета. Возвращает favicon для url
+     * @param $url
+     * @return string
+     */
+    function get_favicon ($url) {
+//        $host = get_pure_data(parse_url($url), 'host');
+//        $scheme = get_pure_data(parse_url($url), 'scheme');
+//        $url = str_replace($scheme . '://', '', $host);
+//        return !empty($url) ? 'https://www.google.com/s2/favicons?domain=' . $url : '';
+        return EMPTY_FILE;
+    }
+
+    /**
+     * Возвращает псевдопустое изображение для подавления некрасивого текста ALT для отсутствующих аватаров
+     * Также уточняет url изображения, если какое-либо из них не было загружено через интерфейс регистрации
+     * @param $url
+     * @return string
+     */
+    function get_avatar ($fn) {
+        $path = substr($fn, 0, 2) === UI_START ? get_assoc_element(PATHS, AVATARS) : '';
+        return !empty($fn) ? $path . $fn : EMPTY_AVATAR;
+    }
+
 
     function get_photo(&$post, $fieldname = 'filename') {
         $fn = get_pure_data($post, $fieldname);

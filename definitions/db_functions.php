@@ -239,13 +239,15 @@
             return $user_status;
         }
 
-        $sql = 'INSERT INTO users ( email, name, user_password) 
-                          VALUES ( ?, ?, ?)';
+        $sql = 'INSERT INTO users ( email, name, user_password, info, avatar) 
+                          VALUES ( ?, ?, ?, ?, ?)';
 
         $stmt = db_get_prepare_stmt($connection, $sql, [
             get_assoc_element($user, 'email'),
             get_assoc_element($user, 'name'),
-            password_hash(get_assoc_element($user, 'password'), PASSWORD_DEFAULT)
+            password_hash(get_assoc_element($user, 'password'), PASSWORD_DEFAULT),
+            get_assoc_element($user, 'text-info'),
+            get_assoc_element($user, 'userpic-file')
         ]);
 
         $res = mysqli_stmt_execute($stmt);

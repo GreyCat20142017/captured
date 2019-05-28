@@ -28,11 +28,11 @@
             'comments' => $comments
         ]);
 
-        $comments_form_content = include_template('comments_form.php', [
+        $comments_form_content = !empty($current_user) ? include_template('comments_form.php', [
             'active_query' => $_SERVER['QUERY_STRING'],
             'active_script' => $_SERVER['PHP_SELF'],
             'errors' => $errors
-        ]);
+        ]) : '';
 
         $dependent_content = include_template('dependent_' .
             get_element(TEMPLATE_NAME, get_assoc_element($post, 'category_id')) . '.php', [
@@ -58,7 +58,7 @@
         'shown' => $show_all
     ]);
 
-    $header_content = include_template(is_auth_user() ? 'header_logged.php' : 'header_short.php', [
+    $header_content = include_template(is_auth_user() ? 'header_logged.php' : 'header_normal.php', [
         'user_name' => get_auth_user_property('name'),
         'active_content' => '',
         'filter_type' => null,

@@ -47,7 +47,7 @@
         'active_script' =>  $_SERVER['PHP_SELF']
     ]);
 
-    $header_content = include_template('header_logged.php', [
+    $header_content = include_template(is_auth_user() ? 'header_logged.php' : 'header_normal.php', [
         'user_name' => get_auth_user_property('name'),
         'active_content' => CONTENT_POPULAR,
         'filter_type' => 'filter',

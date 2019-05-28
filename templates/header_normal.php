@@ -12,7 +12,7 @@
             <div class="header__search">
                 <label class="visually-hidden">Поиск</label>
                 <input class="header__search-input form__input" type="search"
-                       name="search" value="<?= strip_tags($search_string); ?>">
+                       name="search" value="<?= strip_tags($search_string ?? ''); ?>">
                 <button class=" header__search-button button" type="submit" name="find">
                 <svg class="header__search-icon" width="18" height="18">
                     <use xlink:href="#icon-search"></use>

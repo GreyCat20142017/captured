@@ -28,7 +28,11 @@
 
     define('VALID_FILE_TYPES', [
         'image/png',
-        'image/jpeg']);
+        'image/jpeg',
+        'image/svg+xml',
+        'image/svg+xmlns',
+        'text/plain'
+    ]);
 
     define('PATHS', [
         PHOTOS => 'img/photos/',
@@ -39,11 +43,6 @@
     define('EMPTY_FILE', '/img/no_image.svg');
     define('EMPTY_AVATAR', '/img/user.svg');
 
-//    define('VALID_FILE_TYPES', [
-//        PHOTOS => 'photos/', ['image/png', 'image/jpeg'],
-//        VIDEOS => 'videos/',
-//        AVATARS => 'avatars/', ['image/png', 'image/jpeg', 'image/svg']
-//    ]);
 
     define('GET_DATA_STATUS', [
         'db_error' => 'Ошибка БД при получении данных',
@@ -57,14 +56,12 @@
     define('TEST_EMAIL', 'nrz3siaatg81@mail.ru');
 
     /**
-     * Типы контента, фильтров и  Tabs для профиля пользователя
+     * Типы контента, фильтров и Tabs для профиля пользователя
      */
 
     define('CONTENT_FEED', 'feed');
     define('CONTENT_POPULAR', 'popular');
     define('CONTENT_MESSAGES', 'messages');
-
-
 
     define('CUSTOM_FILE_PROPERTY', 'Original filename');
     define('UI_START', 'UI');

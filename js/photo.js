@@ -1,8 +1,7 @@
 'use strict';
 
 (function () {
-  var PHOTO_KEY = 'data-id';
-  var FILE_TYPES = ['jpg', 'jpeg', 'png'];
+  var FILE_TYPES = ['jpg', 'jpeg', 'png', 'svg'];
   var HIDDEN_CLASSNAME = 'visually-hidden';
   var MAX_SIZE = 200000;
 
@@ -47,7 +46,7 @@
 
   var clearPicture = function () {
     if (links.wrapper && links.uploadFile && links.imgPreview && links.fileName) {
-    addClassName(links.wrapper, HIDDEN_CLASSNAME);
+      addClassName(links.wrapper, HIDDEN_CLASSNAME);
       links.imgPreview.src = '';
       links.fileName.textContent = '';
       links.uploadFile.files = {};
@@ -65,14 +64,14 @@
   };
 
   var main = document.body;
-  var container = getElementBySelector(main, '.adding-post__input-file-container.form__input-container');
+  var container = getElementBySelector(main, '.form__input-container');
 
   var links = {
-    imgPreview: getElementBySelector(container, '.adding-post__image'),
-    fileName: getElementBySelector(container, '.adding-post__file-name'),
-    uploadFile: getElementBySelector(container, '.adding-post__input-file'),
-    deleteFile: getElementBySelector(container, '.adding-post__delete-button'),
-    wrapper: getElementBySelector(container, '.adding-post__file')
+    imgPreview: getElementBySelector(container, '.form__image'),
+    fileName: getElementBySelector(container, '.form__file-name'),
+    uploadFile: getElementBySelector(container, '.form__input-file'),
+    deleteFile: getElementBySelector(container, '.form__delete-button'),
+    wrapper: getElementBySelector(container, '.form__file')
   };
 
   main = null;
@@ -83,6 +82,7 @@
     links.uploadFile.addEventListener('change', onUploadFileChange);
     links.deleteFile.addEventListener('click', onClearFile);
   };
+
 
 
 })();

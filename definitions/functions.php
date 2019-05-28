@@ -233,39 +233,6 @@
     }
 
     /**
-     * Идея позаимствована из функциии, найденной на просторах интернета. Возвращает favicon для url
-     * @param $url
-     * @return string
-     */
-    function get_favicon ($url) {
-//        $host = get_pure_data(parse_url($url), 'host');
-//        $scheme = get_pure_data(parse_url($url), 'scheme');
-//        $url = str_replace($scheme . '://', '', $host);
-//        return !empty($url) ? 'https://www.google.com/s2/favicons?domain=' . $url : '';
-        return EMPTY_FILE;
-    }
-
-    /**
-     * Возвращает псевдопустое изображение для подавления некрасивого текста ALT для отсутствующих аватаров
-     * @param $url
-     * @return string
-     */
-    function get_avatar ($url) {
-        return !empty($url) ? $url : EMPTY_AVATAR;
-    }
-
-    /**
-     * Аналог 1С-овской isnull, но для шаблона. Возвращает либо передаваемый параметр, либо передаваемое значение,
-     * возвращаемое в случае если параметр - пустое значение
-     * @param $parameter
-     * @param $default_value
-     * @return mixed
-     */
-    function isnull ($parameter, $default_value) {
-        return empty($parameter) ? $default_value : $parameter;
-    }
-
-    /**
      * Функция "пересобирает" строку запроса при изменении одного из параметров
      * Пример использования:
      * 'active_query' => $_SERVER['QUERY_STRING'], - пример передаваемых в шаблон параметров
@@ -317,14 +284,3 @@
     function get_pure_youtube_link($post, $field_name) {
      return 'http://www.youtube.com/embed/'. get_pure_data($post, $field_name) . '?autoplay=0';
     }
-
-
-//    function get_server_filename($fn) {
-//        return stristr ( $fn , '_', true) . strrchr ( $fn , '.' );
-//    }
-//
-//    function get_original_filename($fn, $limit = 50) {
-//        $ui = stristr ( $fn , '_', true) ;
-//        $result = substr( $fn , mb_strlen ($ui, 'utf-8') + 1);
-//        return $result;
-//    }

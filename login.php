@@ -11,7 +11,7 @@
         'status' => $status_text
     ]);
 
-    $header_content = include_template('header_short.php', [
+    $header_content = include_template('header_normal.php', [
         'active_content' => '',
         'filter_type' => null,
         'filter_value' => null

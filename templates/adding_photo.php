@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <div class="adding-post__file form__file">
+            <div class="adding-post__file form__file visually-hidden">
                 <div class="adding-post__image-wrapper form__image-wrapper">
                     <img class="adding-post__image form__image" src="img/rock-adding.png" alt="Загруженное фото"
                          width="360" height="250">

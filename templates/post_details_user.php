@@ -34,12 +34,14 @@
 </div>
 
 <div class="post-details__user-buttons user__buttons">
-    <?php if (intval(get_pure_data($user, 'user_id')) !== intval($current_user)) : ?>
-        <a class="user__button user__button--subscription button button--main" <?= get_subscription_href_title(get_pure_data($user,
-            'user_id'), 'Подписаться/отписаться'); ?>>
-            Подписаться
-        </a>
-        <a class="user__button user__button--writing button button--green"
-            <?= get_message_href_title($user); ?>>Сообщение</a>
+    <?php if (!empty($current_user)): ?>
+        <?php if (intval(get_pure_data($user, 'user_id')) !== intval($current_user)) : ?>
+            <a class="user__button user__button--subscription button button--main" <?= get_subscription_href_title(get_pure_data($user,
+                'user_id'), 'Подписаться/отписаться'); ?>>
+                Подписаться
+            </a>
+            <a class="user__button user__button--writing button button--green"
+                <?= get_message_href_title($user); ?>>Сообщение</a>
+        <?php endif; ?>
     <?php endif; ?>
 </div>

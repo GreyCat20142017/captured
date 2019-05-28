@@ -55,7 +55,7 @@
                     <form class="comments__form form" action="messages.php?user=<?= $active_user; ?>" method="post">
                         <div class="comments__my-avatar">
                             <img class="comments__picture"
-                                 src="<?= get_auth_user_property('avatar', EMPTY_AVATAR); ?>" alt="Аватар пользователя">
+                                 src="<?= get_avatar(get_auth_user_property('avatar', EMPTY_AVATAR)); ?>" alt="Аватар пользователя">
                         </div>
                         <textarea class="comments__textarea form__textarea" name="message"
                                   placeholder="Ваше сообщение"></textarea>

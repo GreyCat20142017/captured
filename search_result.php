@@ -86,7 +86,7 @@
         'active_script' => $_SERVER['PHP_SELF']
     ]);
 
-    $header_content = include_template(is_auth_user() ? 'header_logged.php' : 'header_short.php', [
+    $header_content = include_template(is_auth_user() ? 'header_logged.php' : 'header_normal.php', [
         'user_name' => get_auth_user_property('name'),
         'active_content' => '',
         'filter_type' => null,
