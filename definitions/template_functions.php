@@ -253,3 +253,9 @@
             ' title ="Нельзя удалить чужую публикацию" ' :
             ' href="delete_post.php?post=' . $post_id . '" title="Удалить эту публикацию" ';
     }
+
+    function get_photo(&$post, $fieldname = 'filename') {
+        $fn = get_pure_data($post, $fieldname);
+        $path =  substr($fn, 0, 2) === UI_START ? get_assoc_element(PATHS, PHOTOS) : '';
+        return $path . $fn;
+    }

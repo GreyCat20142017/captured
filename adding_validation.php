@@ -54,10 +54,14 @@
         $errors = get_validation_result($fields, $post, $_FILES);
         $status_ok = empty(get_form_validation_classname($errors)) && is_auth_user();
 
+
         $image_fields = get_file_fields($fields);
         if ($status_ok) {
             if (!empty($image_fields)) {
-                try_upload_files($image_fields, $_FILES, $errors, $upload_to, $post);
+                $result = try_upload_files($image_fields, $_FILES, $errors, $upload_to, $post);
+                if (!empty($result)) {
+                    $post['original_filename'] = strip_tags($result);
+                }
             }
             $title = get_assoc_element($post, array_keys($fields)[0]);
             $add_result = add_post($connection, $post, $title, $tab, get_auth_user_property('id'));

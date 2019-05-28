@@ -59,7 +59,7 @@
         <div class="adding-post__buttons">
             <button class="adding-post__submit button button--main" type="submit" name="publish_video">Опубликовать
             </button>
-            <a class="adding-post__close" href="#">Закрыть</a>
+            <a class="adding-post__close" href="close.php">Закрыть</a>
         </div>
     </form>
 </section>

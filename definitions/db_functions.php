@@ -479,9 +479,13 @@
     function add_child_entity ($connection, $post_id, $post, $tab) {
         switch ($tab) {
             case FILTER_PHOTOS:
-                $sql = 'INSERT INTO ' . $tab . ' (post_id, filename)
-                          VALUES ( ?, ?)';
-                $params = [$post_id, get_assoc_element($post, 'userpic-file-photo')];
+                $sql = 'INSERT INTO ' . $tab . ' (post_id, filename, original_filename)
+                          VALUES ( ?, ?, ?)';
+                $params = [
+                    $post_id,
+                    get_assoc_element($post, 'userpic-file-photo'),
+                    get_assoc_element($post, 'original_filename')
+                ];
                 break;
             case FILTER_VIDEOS:
                 $youtube_url = get_assoc_element($post, 'video-link');

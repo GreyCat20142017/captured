@@ -155,7 +155,7 @@
             $is_ok = in_array($file_type, VALID_FILE_TYPES) && ($file_size <= MAX_FILE_SIZE);
             return $is_ok ? '' : 'Загружаемый файл должен быть в формате jpeg, png, txt или pdf и размером не более 200Кб';
         }
-        return $is_required ? 'Необходимо загрузить файл в формате jpeg, png, txt или pdf  (не более 200Кб)' : '';
+        return $is_required ? 'Необходимо загрузить файл в формате jpeg, png  (не более 200Кб)' : '';
     }
 
     /**
@@ -184,11 +184,15 @@
         foreach ($file_fields as $field_name => $field) {
             $tmp_name = $files[$field_name]['tmp_name'];
             if (!empty($tmp_name) && is_uploaded_file($tmp_name)) {
-                $path = UI_START . uniqid('', true) . '_' .
-                    pathinfo($files[$field_name]['name'], PATHINFO_FILENAME) . '.' . pathinfo($files[$field_name]['name'], PATHINFO_EXTENSION);
+//                $path = UI_START . uniqid('', true) . '_' .
+//                    pathinfo($files[$field_name]['name'], PATHINFO_FILENAME) . '.' . pathinfo($files[$field_name]['name'], PATHINFO_EXTENSION);
+
+                $path = UI_START . uniqid('', true) . '.' .  pathinfo($files[$field_name]['name'], PATHINFO_EXTENSION);
+
                 if (check_and_repair_path($file_path)) {
                     move_uploaded_file($tmp_name, $file_path . $path);
                     $data[$field_name] = $path;
+                    $original_filename = pathinfo($files[$field_name]['name'], PATHINFO_FILENAME) . '.' . pathinfo($files[$field_name]['name'], PATHINFO_EXTENSION);
                 } else {
                     add_error_message($errors, $field_name, 'Произошла ошибка при создании папки для загрузки файлов');
                 }
@@ -199,6 +203,7 @@
                 }
             }
         }
+        return $original_filename ?? '';
     }
 
     /**

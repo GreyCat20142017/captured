@@ -37,7 +37,8 @@
             'adding-post__tabs-item filters__item tabs__item',
             'adding-post__tabs-link filters__button button',
             '',
-            true)
+            true),
+         'preload_photo' => ($active_tab === 1) && (count($_FILES) > 0)
     ]);
 
     $header_content = include_template('header_logged.php', [
@@ -57,7 +58,11 @@
             'is_auth' => is_auth_user(),
             'body_classname' => is_auth_user() ? 'page--main  page__main--adding-post' : '',
             'user_name' => get_auth_user_property('name'),
-            'need_js' => true
+            'need_js' => ($active_tab === 1)
         ]);
+
+    if (parse_url( $_SERVER['HTTP_REFERER'], PHP_URL_PATH) !==  $_SERVER['PHP_SELF']) {
+        $_SESSION[CAPTURED_SESSION]['back'] = $_SERVER['HTTP_REFERER'] ?? 'profile.php';
+    }
 
     print($layout_content);

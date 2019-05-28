@@ -159,6 +159,8 @@
         </div>
     </div>
 </footer>
-
+<?php if(isset($need_js) ?? false): ?>
+    <script src="../js/photo.js"></script>
+<?php endif; ?>
 </body>
 </html>

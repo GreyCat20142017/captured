@@ -309,6 +309,22 @@
         return $text_forms[2];
     }
 
+    /** Функция возвращает ссылку на видео youtube
+     * @param $post
+     * @param $field_name
+     * @return string
+     */
     function get_pure_youtube_link($post, $field_name) {
      return 'http://www.youtube.com/embed/'. get_pure_data($post, $field_name) . '?autoplay=0';
     }
+
+
+//    function get_server_filename($fn) {
+//        return stristr ( $fn , '_', true) . strrchr ( $fn , '.' );
+//    }
+//
+//    function get_original_filename($fn, $limit = 50) {
+//        $ui = stristr ( $fn , '_', true) ;
+//        $result = substr( $fn , mb_strlen ($ui, 'utf-8') + 1);
+//        return $result;
+//    }

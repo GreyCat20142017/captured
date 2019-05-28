@@ -31,11 +31,10 @@
         'image/jpeg']);
 
     define('PATHS', [
-        PHOTOS => 'photos/',
-        VIDEOS => 'videos/',
-        AVATARS => 'avatars/'
+        PHOTOS => 'img/photos/',
+        VIDEOS => 'img/videos/',
+        AVATARS => 'img/avatars/'
     ]);
-
 
     define('EMPTY_FILE', '/img/no_image.svg');
     define('EMPTY_AVATAR', '/img/user.svg');
@@ -72,5 +71,3 @@
     define('TRANCATED_COUNT', mb_strlen(uniqid(UI_START, true)) + 1);
 
     define('YOUTUBE_ID_LENGTH', 11);
-
-
