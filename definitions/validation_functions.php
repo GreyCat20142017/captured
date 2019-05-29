@@ -66,15 +66,27 @@
             if (get_assoc_element($field, 'required') &&
                 empty($current_field) &&
                 !in_array(FILE_RULE, get_assoc_element($field, 'validation_rules', true))) {
-                add_error_message($errors, $field_name, 'Поле ' . get_assoc_element($field, 'description') . ' (' . $field_name . ') необходимо заполнить');
+                add_error_message($errors, $field_name,
+                    'Поле ' . get_assoc_element($field, 'description') . ' (' . $field_name . ') необходимо заполнить');
             }
+
             if (isset($field['validation_rules']) && is_array($field['validation_rules'])) {
                 foreach ($field['validation_rules'] as $rule) {
                     $is_required = get_assoc_element($field, 'required');
                     $is_special = get_assoc_element($field, 'special');
-                    $result = ($rule === FILE_RULE) ?
-                        get_file_validation_result($field_name, $files, $is_required) :
-                        get_additional_validation_result($rule, $current_field);
+                    $rule_complexity = get_rule_complexity($rule);
+                    if ($rule === FILE_RULE) {
+                        $result = get_file_validation_result($field_name, $files, $is_required);
+
+                    } elseif (!$rule_complexity) {
+                        $result = get_additional_validation_result($rule, $current_field);
+                    } else {
+                        $function_arguments = get_assoc_element($rule_complexity, 'arguments', true);
+                        array_unshift($function_arguments, $form_data);
+                        $function_name = get_assoc_element($rule_complexity, 'rule');
+                        $result = call_user_func_array($function_name, $function_arguments);
+                    }
+
                     if (!empty($result) && ($is_required || $is_special)) {
                         add_error_message($errors, $field_name, $result);
                     }
@@ -82,6 +94,32 @@
             }
         }
         return $errors;
+    }
+
+    function nothing ($first, $second, $third) {
+
+    }
+
+    function equal_to ($data, $first, $second) {
+     return get_assoc_element($data, $first) === get_assoc_element($data, $second) ? '' :
+         'Значения полей ' . $first . ' и ' . $second . ' должны совпадать!';
+    }
+
+    /**
+     * @param $rule
+     * @return array|bool
+     */
+    function get_rule_complexity ($rule) {
+        $tmp = explode(':', $rule);
+        if (count($tmp) > 1) {
+            $result = [
+                'rule' => $tmp[0],
+                'arguments' =>  array_slice($tmp, 1)
+            ];
+        } else {
+            $result = false;
+        }
+        return $result;
     }
 
     /**
@@ -184,11 +222,7 @@
         foreach ($file_fields as $field_name => $field) {
             $tmp_name = $files[$field_name]['tmp_name'];
             if (!empty($tmp_name) && is_uploaded_file($tmp_name)) {
-//                $path = UI_START . uniqid('', true) . '_' .
-//                    pathinfo($files[$field_name]['name'], PATHINFO_FILENAME) . '.' . pathinfo($files[$field_name]['name'], PATHINFO_EXTENSION);
-
                 $path = UI_START . uniqid('', true) . '.' .  pathinfo($files[$field_name]['name'], PATHINFO_EXTENSION);
-
                 if (check_and_repair_path($file_path)) {
                     move_uploaded_file($tmp_name, $file_path . $path);
                     $data[$field_name] = $path;

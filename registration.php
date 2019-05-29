@@ -19,11 +19,15 @@
          */
         $fields = [
             'email' => ['description' => 'E-mail', 'required' => true, 'validation_rules' => ['email_validation']],
-            'password' => ['description' => 'Пароль', 'required' => true],
+            'password' => [
+                'description' => 'Пароль',
+                'required' => true,
+                'validation_rules' => ['equal_to:password:password-repeat']
+            ],
             'password-repeat' => [
                 'description' => 'Пароль',
                 'required' => true,
-                'validation_rules' => ['confirm:password']
+                'validation_rules' => ['equal_to:password:password-repeat']
             ],
             'name' => ['description' => 'Имя пользователя', 'required' => true],
             'text-info' => ['description' => 'Информация', 'required' => true],
