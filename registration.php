@@ -84,7 +84,7 @@
             'is_auth' => is_auth_user(),
             'body_classname' => is_auth_user() ? 'page--main' : '',
             'user_name' => get_auth_user_property('name'),
-            'need_js' => true
+            'js_scripts' => ['photo.js']
         ]);
 
     print($layout_content);

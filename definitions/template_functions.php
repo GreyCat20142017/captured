@@ -310,3 +310,7 @@
         $path =  substr($fn, 0, 2) === UI_START ? get_assoc_element(PATHS, PHOTOS) : '';
         return $path . $fn;
     }
+
+    function set_post_id(&$post, $suffix = '') {
+        return ' ' . POST_IDENTIFICATOR . $suffix .'="' . get_pure_data($post, 'post_id') . '" ';
+    }

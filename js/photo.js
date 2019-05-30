@@ -26,8 +26,8 @@
   };
 
   var loadPicture = function () {
-    if (links.wrapper && links.uploadFile && links.imgPreview && links.fileName) {
-      var file = links.uploadFile.files[0];
+    if (linkWrapper && linkUploadFile && linkImgPreview && linkFileName) {
+      var file = linkUploadFile.files[0];
       var fileName = file.name.toLowerCase();
       var matches = FILE_TYPES.some(function (item) {
         return fileName.endsWith(item);
@@ -35,21 +35,21 @@
       if (matches && (file.size <= MAX_SIZE)) {
         var reader = new FileReader();
         reader.addEventListener('load', function () {
-          links.imgPreview.src = reader.result;
+          linkImgPreview.src = reader.result;
         });
         reader.readAsDataURL(file);
-        links.fileName.textContent = fileName;
-        removeClassName(links.wrapper, HIDDEN_CLASSNAME);
+        linkFileName.textContent = fileName;
+        removeClassName(linkWrapper, HIDDEN_CLASSNAME);
       }
     }
   };
 
   var clearPicture = function () {
-    if (links.wrapper && links.uploadFile && links.imgPreview && links.fileName) {
-      addClassName(links.wrapper, HIDDEN_CLASSNAME);
-      links.imgPreview.src = '';
-      links.fileName.textContent = '';
-      links.uploadFile.files = {};
+    if (linkWrapper && linkUploadFile && linkImgPreview && linkFileName) {
+      addClassName(linkWrapper, HIDDEN_CLASSNAME);
+      linkImgPreview.src = '';
+      linkFileName.textContent = '';
+      linkUploadFile.files = {};
     }
   };
 
@@ -66,23 +66,18 @@
   var main = document.body;
   var container = getElementBySelector(main, '.form__input-container');
 
-  var links = {
-    imgPreview: getElementBySelector(container, '.form__image'),
-    fileName: getElementBySelector(container, '.form__file-name'),
-    uploadFile: getElementBySelector(container, '.form__input-file'),
-    deleteFile: getElementBySelector(container, '.form__delete-button'),
-    wrapper: getElementBySelector(container, '.form__file')
-  };
+  var linkImgPreview = getElementBySelector(container, '.form__image');
+  var linkFileName = getElementBySelector(container, '.form__file-name');
+  var linkUploadFile = getElementBySelector(container, '.form__input-file');
+  var linkDeleteFile = getElementBySelector(container, '.form__delete-button');
+  var linkWrapper = getElementBySelector(container, '.form__file');
 
-  main = null;
-  container = null;
-
-  if (links.wrapper && links.uploadFile && links.imgPreview && links.fileName) {
-    addClassName(links.wrapper, HIDDEN_CLASSNAME);
-    links.uploadFile.addEventListener('change', onUploadFileChange);
-    links.deleteFile.addEventListener('click', onClearFile);
-  };
-
+  if (linkWrapper && linkUploadFile && linkImgPreview && linkFileName) {
+    addClassName(linkWrapper, HIDDEN_CLASSNAME);
+    linkUploadFile.addEventListener('change', onUploadFileChange);
+    linkDeleteFile.addEventListener('click', onClearFile);
+  }
+  ;
 
 
 })();

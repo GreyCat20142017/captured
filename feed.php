@@ -22,7 +22,7 @@
         'posts_content' => get_post_content($posts, 'feed'),
         'promo_content' => get_various_content($banners, 'promo.php', 'banner'),
         'active_tab' => empty($active_tab) ? FILTER_ALL : $active_tab,
-        'content_classname' =>  empty($posts) ? 'feed__wrapper feed__wrapper--no-content' : 'feed__wrapper',
+        'content_classname' => empty($posts) ? 'feed__wrapper feed__wrapper--no-content' : 'feed__wrapper',
         'filters_content' => get_filters_content(
             $active_tab,
             $_SERVER['PHP_SELF'],
@@ -49,7 +49,8 @@
             'title' => empty($posts) ? 'Readme: моя лента (нет публикаций в текущем разделе)' : 'Readme: все',
             'is_auth' => is_auth_user(),
             'body_classname' => is_auth_user() ? 'page--main' : '',
-            'user_name' => get_auth_user_property('name')
+            'user_name' => get_auth_user_property('name'),
+            'js_scripts' => ['backend.js', 'ajax.js']
         ]);
 
     print($layout_content);

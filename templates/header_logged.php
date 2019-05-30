@@ -82,7 +82,7 @@
                                         </a>
                                     </li>
                                     <li class="header__profile-nav-item">
-                                        <a class="header__profile-nav-link" href="#">
+                                        <a class="header__profile-nav-link" href="user_config.php">
                           <span class="header__profile-nav-text">
                             Настройки
                           </span>

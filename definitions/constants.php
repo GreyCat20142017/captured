@@ -68,3 +68,5 @@
     define('TRANCATED_COUNT', mb_strlen(uniqid(UI_START, true)) + 1);
 
     define('YOUTUBE_ID_LENGTH', 11);
+
+    define('POST_IDENTIFICATOR', 'data-post');

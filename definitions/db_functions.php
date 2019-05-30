@@ -104,14 +104,7 @@
      * @param $connection
      * @return array|null
      */
-    function get_posts (
-        $connection,
-        $type,
-        $limit = RECORDS_PER_PAGE,
-        $offset = 0,
-        $sort = null,
-        $search_string = null
-    ) {
+    function get_posts ($connection, $type, $limit = RECORDS_PER_PAGE, $offset = 0, $sort = null, $search_string = null) {
         $search_string = mysqli_real_escape_string($connection, $search_string);
         $search_condition = empty($search_string) ? '' : ' MATCH(title, hashtag) AGAINST("*' . $search_string . '*" IN BOOLEAN MODE) ';
         $sort_condition = empty($sort) ? '' : ' ORDER BY ' . $sort . ' DESC ';
@@ -613,16 +606,19 @@
     function switch_common ($connection, $user_id, $post_id, $table, $counter_field = '') {
         $user_id = mysqli_real_escape_string($connection, $user_id);
         $post_id = mysqli_real_escape_string($connection, $post_id);
-        $sql = 'SELECT id  FROM ' . $table . ' WHERE user_id=' . $user_id . ' AND post_id=' . $post_id . ';';
+        $sql = 'SELECT id  FROM ' . $table . '  WHERE user_id = ' . $user_id . ' AND post_id = ' . $post_id . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные', true);
 
-        if (was_error($data)) {
+        /**
+         *  Если данные об авторе поста получить не удалось, то безопаснее не создавать запись и не изменять
+         */
+
+        if (was_error($data) || intval($user_id) === get_post_author($connection, $post_id)) {
             return false;
         }
 
         if (empty($data)) {
-            //mytodo Подумать: может, стОит добавить и здесь проверку, не является ли пост собственным.
-            // Но вообще это делается при формировании ссылки
+
             $sql = 'INSERT INTO ' . $table . ' ( user_id,  post_id) 
                           VALUES (?, ?)';
             $stmt = db_get_prepare_stmt($connection, $sql, [
@@ -633,17 +629,25 @@
         } else {
             if (!empty($counter_field)) {
                 /**
-                 * Если счетчик просмотров по пользователю увеличивать не нужно - просто закомментировать этот код
+                 * Если счетчик просмотров по пользователю увеличивать нужно (что вряд ли) - можно раскомментировать этот код
                  */
 //                $sql = 'UPDATE reviews  SET ' . $counter_field . ' = ' . $counter_field . ' + 1 WHERE  user_id=' . $user_id . ' AND post_id=' . $post_id . ';';
 //                $res = mysqli_query($connection, $sql);
-                  $res = false;
+                $res = false;
             } else {
-                $sql = 'DELETE FROM ' . $table . '  WHERE  user_id=' . $user_id . ' AND post_id=' . $post_id . ';';
+                $sql = 'DELETE FROM ' . $table . '  WHERE  user_id = ' . $user_id . ' AND post_id = ' . $post_id . ';';
                 $res = mysqli_query($connection, $sql);
             }
         }
         return ($res) ? true : false;
+    }
+
+    function get_post_author ($connection,  $post_id) {
+        $post_id = mysqli_real_escape_string($connection, $post_id);
+        $sql = 'SELECT user_id AS author_id from posts WHERE id = '. $post_id . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные об авторе поста ', true);
+        $author_id = (!$data || was_error($data)) ? 0 : intval(get_assoc_element($data, 'author_id'));
+        return $author_id;
     }
 
     /**
@@ -661,13 +665,12 @@
         $sql = 'SELECT id  FROM subscriptions WHERE subscriber_id=' . $subscriber_id . ' AND blogger_id=' . $blogger_id . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о подписках', true);
 
-        if (was_error($data)) {
+        if (was_error($data) || intval($user_id) === get_post_author($connection, $post_id)) {
             return false;
         }
 
         if (empty($data)) {
-            //mytodo Подумать: может, стОит добавить и здесь проверку, не является ли подписчик автором.
-            // Но вообще это делается при формировании ссылки
+
             $sql = 'INSERT INTO subscriptions ( subscriber_id, blogger_id) 
                           VALUES (?, ?)';
             $stmt = db_get_prepare_stmt($connection, $sql, [
@@ -833,4 +836,60 @@
             ' AND was_read = 0;';
         $res = mysqli_query($connection, $sql);
         return ($res) ? true : false;
+    }
+
+    /**
+     * Вспомогательная типовая функция для подсчета лайков-репостов подписок и т.д. по публикации
+     * @param $connection
+     * @param $post_id
+     * @param $table
+     * @return int
+     */
+    function get_records_count ($connection,  $post_id, $table) {
+        $post_id = mysqli_real_escape_string($connection, $post_id);
+        $sql = 'SELECT COUNT(*) AS total FROM ' . $table . ' WHERE post_id = ' . $post_id . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о количестве записей по условию', true);
+        return (!$data || was_error($data)) ? 0 : intval(get_assoc_element($data, 'total'));
+    }
+
+    /** Функция возвращает количество лайков по post_id
+     * @param $connection
+     * @param $post_id
+     * @return int
+     */
+    function get_likes_count ($connection,  $post_id) {
+        return get_records_count ($connection,  $post_id, 'likes');
+    }
+
+    /** Функция возвращает количество репостов по post_id
+     * @param $connection
+     * @param $post_id
+     * @return int
+     */
+    function get_reposts_count ($connection,  $post_id) {
+        return get_records_count ($connection,  $post_id, 'reposts');
+    }
+
+    /** Функция возвращает количество комментариев по post_id
+     * @param $connection
+     * @param $post_id
+     * @return int
+     */
+    function get_comments_count ($connection,  $post_id) {
+        return get_records_count ($connection,  $post_id, 'comments');
+    }
+
+    /**
+     * Функция возвращает основную информацию о пользователе из таблицы users
+     * @param $connection
+     * @param $user_id
+     * @return array|null
+     */
+    function get_user_basic_info ($connection, $user_id) {
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $sql = 'SELECT id as user_id, avatar, name, registration_date, info, email                     
+                FROM users AS u                   
+                WHERE id = ' . $user_id . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о пользователе', true);
+        return (!$data || was_error($data)) ? [] : $data;
     }

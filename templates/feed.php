@@ -6,7 +6,7 @@
         <section class="feed">
             <h2 class="visually-hidden">Лента</h2>
 
-            <div class="<?= $content_classname; ?>">
+            <div class="<?= $content_classname; ?> js-posts-container">
                 <?= $posts_content; ?>
             </div>
 

@@ -58,7 +58,7 @@
             'is_auth' => is_auth_user(),
             'body_classname' => is_auth_user() ? 'page--main  page__main--adding-post' : '',
             'user_name' => get_auth_user_property('name'),
-            'need_js' => ($active_tab === 1)
+            'js_scripts' => ($active_tab === 1) ? ['photo.js'] : null
         ]);
 
     if (parse_url( $_SERVER['HTTP_REFERER'], PHP_URL_PATH) !==  $_SERVER['PHP_SELF']) {

@@ -12,5 +12,5 @@
         $post_id = intval(strip_tags($_GET['post']));
 
         switch_like($connection, $user_id, $post_id);
-        header("Location: " . $_SERVER['HTTP_REFERER']);
+         header("Location: " . $_SERVER['HTTP_REFERER']);
     }

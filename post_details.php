@@ -73,7 +73,8 @@
         'title' => 'Readme: подробно о публикации',
         'is_auth' => is_auth_user(),
         'body_classname' => is_auth_user() ? 'page--main' : '',
-        'user_name' => get_auth_user_property('name')
+        'user_name' => get_auth_user_property('name'),
+        'js_scripts' => ['backend.js', 'ajax.js']
     ]);
 
     if ($is_post_ok) {

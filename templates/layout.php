@@ -159,8 +159,10 @@
         </div>
     </div>
 </footer>
-<?php if(isset($need_js) ?? false): ?>
-    <script src="../js/photo.js"></script>
+<?php if (!empty($js_scripts)): ?>
+    <?php foreach ($js_scripts as $js_script): ?>
+        <script src="../js/<?= $js_script; ?>"></script>
+    <?php endforeach; ?>
 <?php endif; ?>
 </body>
 </html>

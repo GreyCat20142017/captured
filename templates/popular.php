@@ -57,7 +57,7 @@
         </div>
 
 
-        <div class="<?= $content_classname; ?>">
+        <div class="<?= $content_classname; ?> js-posts-container">
             <?= $posts_content; ?>
         </div>
 

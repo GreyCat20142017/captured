@@ -24,7 +24,7 @@
         'pages' => range(1, $page_count),
         'active_page' => $page,
         'active_query' => $_SERVER['QUERY_STRING'],
-        'active_script' =>  $_SERVER['PHP_SELF']
+        'active_script' => $_SERVER['PHP_SELF']
     ]);
 
     $page_content = include_template('popular.php', [
@@ -44,7 +44,7 @@
             'visually-hidden',
             false),
         'active_query' => $_SERVER['QUERY_STRING'],
-        'active_script' =>  $_SERVER['PHP_SELF']
+        'active_script' => $_SERVER['PHP_SELF']
     ]);
 
     $header_content = include_template(is_auth_user() ? 'header_logged.php' : 'header_normal.php', [
@@ -63,7 +63,8 @@
             'title' => empty($posts) ? 'Readme: моя лента (нет публикаций в текущем разделе)' : 'Readme: все',
             'is_auth' => is_auth_user(),
             'body_classname' => is_auth_user() ? 'page' : '',
-            'user_name' => get_auth_user_property('name')
+            'user_name' => get_auth_user_property('name'),
+            'js_scripts' => ['backend.js', 'ajax.js']
         ]);
 
     print($layout_content);
