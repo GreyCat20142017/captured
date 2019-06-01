@@ -63,9 +63,23 @@
     clearPicture();
   };
 
-  var main = document.body;
-  var container = getElementBySelector(main, '.form__input-container');
+  var endsWithSupport = function () {
+    if (!String.prototype.endsWith) {
+      String.prototype.endsWith = function (searchString, position) {
+        var subjectString = this.toString();
+        if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length) {
+          position = subjectString.length;
+        }
+        position -= searchString.length;
+        var lastIndex = subjectString.indexOf(searchString, position);
+        return lastIndex !== -1 && lastIndex === position;
+      };
+    }
+  };
 
+  endsWithSupport();
+
+  var container = document.querySelector('.form__input-container');
   var linkImgPreview = getElementBySelector(container, '.form__image');
   var linkFileName = getElementBySelector(container, '.form__file-name');
   var linkUploadFile = getElementBySelector(container, '.form__input-file');
@@ -77,7 +91,5 @@
     linkUploadFile.addEventListener('change', onUploadFileChange);
     linkDeleteFile.addEventListener('click', onClearFile);
   }
-  ;
-
 
 })();

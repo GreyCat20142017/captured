@@ -3,9 +3,13 @@
     require_once('init.php');
 
     if (!is_auth_user()) {
+        dump(is_auth_user());
         exit();
     }
 
+    /**
+     * Лайки -----------------------------------------------------
+     */
     if (!empty($_GET['change_like']) && !empty($_GET['post'])) {
 
         $user_id = intval(get_auth_user_property('id'));
@@ -28,6 +32,9 @@
         ]);
     }
 
+    /**
+     * Репосты ---------------------------------------------------
+     */
     if (!empty($_GET['change_repost']) && !empty($_GET['post'])) {
 
         $user_id = intval(get_auth_user_property('id'));
@@ -37,7 +44,6 @@
         echo json_encode([
             'post' => $post_id
         ]);
-
     }
 
     if (!empty($_GET['get_reposts_count']) && !empty($_GET['post'])) {
@@ -48,6 +54,33 @@
         echo json_encode([
             'post' => $post_id,
             'reposts' => $count
+        ]);
+    }
+
+    /**
+     * Подписки --------------------------------------------------
+     */
+    if (!empty($_GET['change_subscription'])  && !empty($_GET['blogger'])) {
+
+        $subscriber_id = intval(get_auth_user_property('id'));
+        $blogger_id = intval(strip_tags($_GET['blogger']));
+        $subscribed = switch_subscription($connection, $subscriber_id, $blogger_id);
+        header('Content-Type: application/json');
+        echo json_encode([
+            'blogger' => $blogger_id,
+            'subscribed' => $subscribed
+        ]);
+
+    }
+
+    if (!empty($_GET['get_subscribers_count']) && !empty($_GET['blogger'])) {
+
+        $blogger_id = intval(strip_tags($_GET['blogger']));
+        $count = get_subscribers_count($connection, $blogger_id);
+        header('Content-Type: application/json');
+        echo json_encode([
+            'blogger' => $blogger_id,
+            'subscribers' => $count
         ]);
 
     }

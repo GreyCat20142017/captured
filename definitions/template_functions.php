@@ -314,3 +314,7 @@
     function set_post_id(&$post, $suffix = '') {
         return ' ' . POST_IDENTIFICATOR . $suffix .'="' . get_pure_data($post, 'post_id') . '" ';
     }
+
+    function set_blogger_id(&$blogger, $suffix = '', $field_name = 'user_id') {
+        return ' ' . BLOGGER_IDENTIFICATOR . $suffix .'="' . get_pure_data($blogger, $field_name) . '" ';
+    }

@@ -10,17 +10,22 @@
 
     $show_all = !empty($_GET['all_comments']);
 
-    $current_user = get_auth_user_property('id', 0);
+    $current_user = intval(get_auth_user_property('id', 0));
 
     $is_post_ok = (!empty($post_id) && !empty($post));
 
     require_once('comment_validation.php');
 
     if ($is_post_ok) {
+
+        $auth_user_subscriptions = is_auth_user() ?
+            array_values(array_column(get_auth_user_subscriptions($connection, $current_user), 'blogger_id')) : [];
+
         $user = get_user_info($connection, intval(get_assoc_element($post, 'user_id')));
         $user_content = include_template('post_details_user.php', [
             'user' => $user,
-            'current_user' => $current_user
+            'current_user' => $current_user,
+            'auth_user_subscriptions' => $auth_user_subscriptions
         ]);
 
         $comments = get_post_comments($connection, $post_id, $show_all ? null : COMMENTS_PREVIEW_COUNT);
@@ -74,7 +79,7 @@
         'is_auth' => is_auth_user(),
         'body_classname' => is_auth_user() ? 'page--main' : '',
         'user_name' => get_auth_user_property('name'),
-        'js_scripts' => ['backend.js', 'ajax.js']
+        'js_scripts' => ['backend.js', 'ajax_subscriptions.js']
     ]);
 
     if ($is_post_ok) {

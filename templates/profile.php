@@ -24,8 +24,9 @@
                         </span>
                     </p>
                     <p class="profile__rating-item user__rating-item user__rating-item--subscribers">
-                        <span class="user__rating-amount"><?= isnull(get_pure_data($user, 'subscribers_count'),
-                                0); ?></span>
+                        <span class="user__rating-amount" <?= set_blogger_id($user, '-content'); ?>>
+                            <?= isnull(get_pure_data($user, 'subscribers_count'), 0); ?>
+                        </span>
                         <span class="profile__rating-text user__rating-text">
                               <?= get_text_form(get_pure_data($user, 'subscribers_count'),
                                   ['подписчик', 'подписчика', 'подписчиков']); ?>
@@ -37,7 +38,8 @@
                     <div class="profile__user-buttons user__buttons">
                         <a class="profile__user-button user__button user__button--subscription button button--main"
                         <a <?= get_subscription_href_title(get_pure_data($user, 'user_id'),
-                            'Подписаться/отписаться от автора ' . get_pure_data($user, 'username')); ?>>
+                            'Подписаться/отписаться от автора ' . get_pure_data($user, 'username')); ?>
+                            <?= set_blogger_id($user); ?>>
                             <?= in_array(get_pure_data($user, 'user_id'),
                                 $auth_user_subscriptions ?? []) ?
                                 'Отписаться' : 'Подписаться'; ?>

@@ -104,7 +104,14 @@
      * @param $connection
      * @return array|null
      */
-    function get_posts ($connection, $type, $limit = RECORDS_PER_PAGE, $offset = 0, $sort = null, $search_string = null) {
+    function get_posts (
+        $connection,
+        $type,
+        $limit = RECORDS_PER_PAGE,
+        $offset = 0,
+        $sort = null,
+        $search_string = null
+    ) {
         $search_string = mysqli_real_escape_string($connection, $search_string);
         $search_condition = empty($search_string) ? '' : ' MATCH(title, hashtag) AGAINST("*' . $search_string . '*" IN BOOLEAN MODE) ';
         $sort_condition = empty($sort) ? '' : ' ORDER BY ' . $sort . ' DESC ';
@@ -484,7 +491,7 @@
                 break;
             case FILTER_VIDEOS:
                 $youtube_url = get_assoc_element($post, 'video-link');
-                $youtube_id =  extract_youtube_id($youtube_url);
+                $youtube_id = extract_youtube_id($youtube_url);
                 $sql = 'INSERT INTO ' . $tab . ' (post_id, youtube_id)
                           VALUES ( ?, ?)';
                 $params = [$post_id, $youtube_id ?? ''];
@@ -642,9 +649,9 @@
         return ($res) ? true : false;
     }
 
-    function get_post_author ($connection,  $post_id) {
+    function get_post_author ($connection, $post_id) {
         $post_id = mysqli_real_escape_string($connection, $post_id);
-        $sql = 'SELECT user_id AS author_id from posts WHERE id = '. $post_id . ';';
+        $sql = 'SELECT user_id AS author_id from posts WHERE id = ' . $post_id . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные об авторе поста ', true);
         $author_id = (!$data || was_error($data)) ? 0 : intval(get_assoc_element($data, 'author_id'));
         return $author_id;
@@ -656,7 +663,7 @@
      * @param $connection
      * @param $subscriber_id
      * @param $post_id
-     * @return bool
+     * @return bool || array =
      */
     function switch_subscription ($connection, $subscriber_id, $blogger_id) {
         $subscriber_id = mysqli_real_escape_string($connection, $subscriber_id);
@@ -665,12 +672,12 @@
         $sql = 'SELECT id  FROM subscriptions WHERE subscriber_id=' . $subscriber_id . ' AND blogger_id=' . $blogger_id . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о подписках', true);
 
-        if (was_error($data) || intval($user_id) === get_post_author($connection, $post_id)) {
+        if (was_error($data) || intval($subscriber_id) !== intval(get_auth_user_property('id'))
+            || intval($subscriber_id) === intval($blogger_id)) {
             return false;
         }
 
         if (empty($data)) {
-
             $sql = 'INSERT INTO subscriptions ( subscriber_id, blogger_id) 
                           VALUES (?, ?)';
             $stmt = db_get_prepare_stmt($connection, $sql, [
@@ -678,11 +685,13 @@
                 $blogger_id
             ]);
             $res = mysqli_stmt_execute($stmt);
+            $result = $res ? true : false;
         } else {
             $sql = 'DELETE FROM subscriptions WHERE subscriber_id=' . $subscriber_id . ' AND blogger_id=' . $blogger_id . ';';
             $res = mysqli_query($connection, $sql);
+            $result = $res ? false : true;
         }
-        return ($res) ? true : false;
+        return $result;
     }
 
     /**
@@ -801,7 +810,7 @@
      * @param $user_id
      * @return int
      */
-    function get_unread_count ($connection,  $user_id) {
+    function get_unread_count ($connection, $user_id) {
         $user_id = mysqli_real_escape_string($connection, $user_id);
         $sql = 'SELECT COUNT(*) AS unread_messages FROM messages WHERE to_id = ' . $user_id . ' AND was_read = 0;';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о непрочитанных сообщениях', true);
@@ -814,9 +823,9 @@
      * @param $user_id
      * @return int
      */
-    function get_auth_user_subscriptions ($connection,  $user_id) {
+    function get_auth_user_subscriptions ($connection, $user_id) {
         $user_id = mysqli_real_escape_string($connection, $user_id);
-        $sql = 'SELECT blogger_id from subscriptions WHERE subscriber_id = '. $user_id . ';';
+        $sql = 'SELECT blogger_id from subscriptions WHERE subscriber_id = ' . $user_id . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о подписках', false);
         return (!$data || was_error($data)) ? [] : $data;
     }
@@ -839,13 +848,13 @@
     }
 
     /**
-     * Вспомогательная типовая функция для подсчета лайков-репостов подписок и т.д. по публикации
+     * Вспомогательная типовая функция для подсчета лайков-репостов-комментариев по публикации
      * @param $connection
      * @param $post_id
      * @param $table
      * @return int
      */
-    function get_records_count ($connection,  $post_id, $table) {
+    function get_records_count ($connection, $post_id, $table) {
         $post_id = mysqli_real_escape_string($connection, $post_id);
         $sql = 'SELECT COUNT(*) AS total FROM ' . $table . ' WHERE post_id = ' . $post_id . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о количестве записей по условию', true);
@@ -857,8 +866,8 @@
      * @param $post_id
      * @return int
      */
-    function get_likes_count ($connection,  $post_id) {
-        return get_records_count ($connection,  $post_id, 'likes');
+    function get_likes_count ($connection, $post_id) {
+        return get_records_count($connection, $post_id, 'likes');
     }
 
     /** Функция возвращает количество репостов по post_id
@@ -866,8 +875,8 @@
      * @param $post_id
      * @return int
      */
-    function get_reposts_count ($connection,  $post_id) {
-        return get_records_count ($connection,  $post_id, 'reposts');
+    function get_reposts_count ($connection, $post_id) {
+        return get_records_count($connection, $post_id, 'reposts');
     }
 
     /** Функция возвращает количество комментариев по post_id
@@ -875,8 +884,8 @@
      * @param $post_id
      * @return int
      */
-    function get_comments_count ($connection,  $post_id) {
-        return get_records_count ($connection,  $post_id, 'comments');
+    function get_comments_count ($connection, $post_id) {
+        return get_records_count($connection, $post_id, 'comments');
     }
 
     /**
@@ -892,4 +901,11 @@
                 WHERE id = ' . $user_id . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о пользователе', true);
         return (!$data || was_error($data)) ? [] : $data;
+    }
+
+    function get_subscribers_count ($connection, $blogger_id) {
+        $blogger_id = mysqli_real_escape_string($connection, $blogger_id);
+        $sql = 'SELECT COUNT(*) AS total FROM subscriptions WHERE blogger_id = ' . $blogger_id . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о количестве записей по условию', true);
+        return (!$data || was_error($data)) ? 0 : intval(get_assoc_element($data, 'total'));
     }

@@ -70,3 +70,5 @@
     define('YOUTUBE_ID_LENGTH', 11);
 
     define('POST_IDENTIFICATOR', 'data-post');
+    define('BLOGGER_IDENTIFICATOR', 'data-blogger');
+    define('SUBSCRIBER_IDENTIFICATOR', 'data-subscriber');

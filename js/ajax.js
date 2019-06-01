@@ -14,16 +14,16 @@
 
   var changeLike = function (postId) {
     if (window.backend) {
-      window.backend.getPostDdata(AJAX_METHODS.GET, 'api.php?change_like=1&post=' + postId, onChangeLikeSuccess, onError, false);
+      window.backend.getPostData(AJAX_METHODS.GET, 'api.php?change_like=1&post=' + postId, onChangeLikeSuccess, onError, false);
     }
   };
 
   var onChangeLikeSuccess = function (response) {
-    window.backend.getPostDdata(AJAX_METHODS.GET, 'api.php?get_likes_count=1&post=' + response['post'], onSuccessGetLikesCount, onError, false);
+    window.backend.getPostData(AJAX_METHODS.GET, 'api.php?get_likes_count=1&post=' + response['post'], onSuccessGetLikesCount, onError, false);
   };
 
   var onSuccessGetLikesCount = function (response) {
-    var span = linkContainer.querySelector('span[data-post-like="' + response['post'] + '"]');
+    var span = linkContainer.querySelector('span[' + POST_ID  + '-like="' + response['post'] + '"]');
     if (span) {
       span.textContent = '' + response['likes'];
     }
@@ -31,16 +31,16 @@
 
   var changeRepost = function (postId) {
     if (window.backend) {
-      window.backend.getPostDdata(AJAX_METHODS.GET, 'api.php?change_repost=1&post=' + postId, onChangeRepostSuccess, onError, false);
+      window.backend.getPostData(AJAX_METHODS.GET, 'api.php?change_repost=1&post=' + postId, onChangeRepostSuccess, onError, false);
     }
   };
 
   var onChangeRepostSuccess = function (response) {
-    window.backend.getPostDdata(AJAX_METHODS.GET, 'api.php?get_reposts_count=1&post=' + response['post'], onSuccessGetRepostsCount, onError, false);
+    window.backend.getPostData(AJAX_METHODS.GET, 'api.php?get_reposts_count=1&post=' + response['post'], onSuccessGetRepostsCount, onError, false);
   };
 
   var onSuccessGetRepostsCount = function (response) {
-    var span = linkContainer.querySelector('span[data-post-repost="' + response['post'] + '"]');
+    var span = linkContainer.querySelector('span[' + POST_ID  + '-repost="' + response['post'] + '"]');
     if (span) {
       span.textContent = '' + response['reposts'];
     }
@@ -58,7 +58,7 @@
     }
     evt.preventDefault();
 
-    while (!element.classList.contains('post__indicator') && element !== linkContainer) {
+    while (!element['classList'] || !element.classList.contains('post__indicator') && element !== linkContainer) {
       element = element.parentNode;
     }
 
@@ -78,10 +78,16 @@
     return false;
   };
 
-  var linkContainer = document.querySelector('.js-posts-container');
+  /**
+   * Если IE - то без ajax
+   */
+  if (navigator.userAgent.indexOf('Trident/') < 0) {
+    var linkContainer = document.querySelector('.js-posts-container');
 
-  if (linkContainer) {
-    linkContainer.addEventListener('click', onContainerClick);
+    if (linkContainer) {
+      linkContainer.addEventListener('click', onContainerClick);
+    }
   }
+
 
 })();

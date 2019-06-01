@@ -36,9 +36,9 @@
                         </span>
                     </p>
                     <p class="post-mini__rating-item user__rating-item user__rating-item--subscribers">
-                        <span
-                            class="post-mini__rating-amount user__rating-amount"><?= isnull(get_pure_data($subscription,
-                                'subscribers_count'), 0); ?>
+                        <span class="post-mini__rating-amount user__rating-amount"
+                            <?= set_blogger_id($subscription, '-content', 'blogger_id'); ?>>
+                            <?= isnull(get_pure_data($subscription,'subscribers_count'), 0); ?>
                         </span>
                         <span class="post-mini__rating-text user__rating-text">
                                <?= get_text_form(get_pure_data($subscription, 'subscribers_count'),
@@ -52,7 +52,7 @@
                     <a <?= get_subscription_href_title(get_pure_data($subscription, 'blogger_id',
                         'Подписаться/отписаться')); ?>
                         class="post-mini__user-button user__button user__button--subscription button button--main"
-                        type="button">
+                        <?= set_blogger_id($subscription, '', 'blogger_id'); ?>>
                         <?= in_array(get_pure_data($subscription, 'blogger_id'),
                             $auth_user_subscriptions ?? []) ?
                             'Отписаться' : 'Подписаться'; ?>
