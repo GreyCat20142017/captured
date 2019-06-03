@@ -920,3 +920,13 @@
     function update_user($connection, &$user) {
         return false;
     }
+
+    function recovery_and_get_password ($connection, $email) {
+        $email = mysqli_real_escape_string($connection, $email);
+        $new_password = uniqid('P');
+        $new_hash = password_hash($new_password, PASSWORD_DEFAULT);
+
+        $sql = 'UPDATE users  SET  user_password = "' . $new_hash . '" WHERE email = "' . $email . '";';
+        $res = mysqli_query($connection, $sql);
+        return ($res) ? ['email' => $email, 'password' => $new_password] : false;
+    }

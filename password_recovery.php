@@ -29,7 +29,8 @@
         $status_ok = empty(get_form_validation_classname($errors));
         if ($status_ok) {
             $db_status_ok = false;
-            $check_result = get_user_by_email($connection, get_assoc_element($user, 'email'));
+            $email = get_assoc_element($user, 'email');
+            $check_result = get_user_by_email($connection, $email);
             switch (get_assoc_element($check_result, 'status')) {
                 case get_assoc_element(GET_DATA_STATUS, 'data_received'):
                     $db_status_ok = true;
@@ -46,6 +47,10 @@
             }
             if ($db_status_ok) {
                 $status_text = '';
+                $password_data = recovery_and_get_password($connection, $email);
+                if (!empty($password_data)) {
+                    send_new_password($password_data);
+                }
                 header('Location: login.php');
             }
         }
@@ -53,7 +58,8 @@
 
     $page_content = include_template('password_recovery.php', [
         'user' => $user,
-        'errors' => $errors
+        'errors' => $errors,
+        'title' => get_field_validation_message($errors, 'email')
     ]);
 
     $header_content = include_template('header_short.php', []);

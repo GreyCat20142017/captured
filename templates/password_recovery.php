@@ -30,7 +30,7 @@
                 </div>
                 <label class="visually-hidden">Логин</label>
                 <span class="form__error-label form__error-label--login">Неверный логин</span>
-                <p>Новый пароль будет отправлен по e-mail</p>
+                <p><?= empty($title)? 'Новый пароль будет отправлен по e-mail': $title; ?> </p>
                 <button class="authorization__submit button button--main" type="submit" name="recovery"
                         title="Если указанные данные верны, пароль будет выслан по e-mail">Воccтановить
                 </button>
