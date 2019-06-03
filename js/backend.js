@@ -6,28 +6,8 @@
   var RESPONSE_TIMEOUT = 8000;
   var STATUS_OK = 200;
 
-  var getHTTPRequest = function () {
-    var xhr = new XMLHttpRequest();
-    if (!xhr) {
-      try {
-        xhr = new ActiveXObject('Msxml2.XMLHTTP');
-      } catch (exception) {
-        try {
-          xhr = new ActiveXObject('Microsoft.XMLHTTP');
-        } catch (anotherException) {
-          xhr = null;
-        }
-      }
-    }
-    return xhr;
-  };
-
   var getPostData = function (method, url, onLoad, onError, data) {
-    var xhr = getHTTPRequest();
-    if (!xhr) {
-      return false
-    }
-
+    var xhr =  new XMLHttpRequest();
     xhr.responseType = RESPONSE_TYPE;
 
     xhr.addEventListener('load', function () {

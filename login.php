@@ -26,4 +26,5 @@
             'is_auth' => is_auth_user(),
             'user_name' => get_auth_user_property('name')
         ]);
+
     print($layout_content);

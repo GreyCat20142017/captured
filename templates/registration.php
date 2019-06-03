@@ -25,7 +25,7 @@
                 <label class="registration__label form__label" for="email">Имя<span
                         class="form__input-required">*</span></label>
                 <div class="form__input-section">
-                    <input class="registration__input form__input" id="registration-email" type="text" name="name"
+                    <input class="registration__input form__input" id="registration-name" type="text" name="name"
                            value="<?= get_pure_data($user, 'name'); ?>" placeholder="Укажите имя" required>
                     <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span>
                     </button>

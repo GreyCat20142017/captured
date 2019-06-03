@@ -30,7 +30,7 @@
                 'validation_rules' => ['equal_to:password:password-repeat']
             ],
             'name' => ['description' => 'Имя пользователя', 'required' => true],
-            'text-info' => ['description' => 'Информация', 'required' => true],
+            'text-info' => ['description' => 'Информация', 'required' => false],
             'userpic-file' => ['description' => 'Аватар', 'required' => false, 'validation_rules' => [FILE_RULE]]
         ];
 

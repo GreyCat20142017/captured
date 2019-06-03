@@ -77,7 +77,8 @@
                     $rule_complexity = get_rule_complexity($rule);
                     if ($rule === FILE_RULE) {
                         $result = get_file_validation_result($field_name, $files, $is_required);
-
+                    } elseif ($rule === HASH_RULE) {
+                        hash_tag_validation(get_assoc_element($form_data, $field_name), $field_name, $errors);
                     } elseif (!$rule_complexity) {
                         $result = get_additional_validation_result($rule, $current_field);
                     } else {
@@ -246,9 +247,20 @@
      * @param $field_name
      * @param $error_message
      */
-    function add_error_message (&$errors, $field_name, $error_message) {
-        if (isset($errors) && array_key_exists($field_name, $errors)) {
-            array_push($errors[$field_name], $error_message);
+    function add_error_message (&$array, $field_name, $error_message) {
+        if (isset($array) && array_key_exists($field_name, $array)) {
+            array_push($array[$field_name], $error_message);
+        }
+    }
+
+    /**
+     * Добавляет только уникальные значения в массив
+     * @param $array
+     * @param $error_message
+     */
+    function add_if_not_exist (&$array,  $error_message) {
+        if (isset($array) && !in_array($error_message, $array)) {
+            array_push( $array, $error_message);
         }
     }
 
@@ -262,7 +274,7 @@
         $res = false;
         $id = extract_youtube_id($youtube_url);
         if ($id) {
-            $api_data = ['id' => $id, 'part' => 'id,status', 'key' => 'AIzaSyDkxJIV293lh3sfvW4GEi3WRVUvEQml_Mc'];
+            $api_data = ['id' => $id, 'part' => 'id, status', 'key' => 'AIzaSyDkxJIV293lh3sfvW4GEi3WRVUvEQml_Mc'];
             $url = "https://www.googleapis.com/youtube/v3/videos?" . http_build_query($api_data);
             $resp = file_get_contents($url);
             if ($resp && $json = json_decode($resp, true)) {
@@ -284,4 +296,43 @@
             $youtube_url = 'https://www.youtube.com/watch?v=' . $video;
         }
         return (filter_var($youtube_url, FILTER_VALIDATE_URL) && check_youtube_url($youtube_url)) ? '' : $result;
+    }
+
+    /**
+     * Функция добавляет ошибки валидации хеш-тега в массив ошибок, в случае наличия таковых
+     * @param $hashtag
+     * @param $field_name
+     * @param $errors
+     */
+    function hash_tag_validation ($hashtag, $field_name, &$errors) {
+        if (!empty($hashtag)) {
+            $tags = explode(' ', $hashtag);
+            $tags_errors = [];
+            foreach ($tags as $tag) {
+                if (mb_substr($tag, 0, 1) !== '#') {
+                    add_if_not_exist($tags_errors,  SINGLE_TAG_RULES[NEED_START_HASH] ?? ' ошибка');
+                }
+                if ((mb_substr($tag, 0, 1) === '#') && (mb_strlen($tag, 'utf-8') < HASH_TAG_MIN_LENGTH)) {
+                    add_if_not_exist($tags_errors,  SINGLE_TAG_RULES[NOT_ONLY_HASH] ?? ' ошибка');
+                }
+                if ((mb_substr($tag, 0, 1) === '#') && (mb_strlen($tag, 'utf-8') > HASH_TAG_MAX_LENGTH)) {
+                    add_if_not_exist($tags_errors,  SINGLE_TAG_RULES[MAX_HASH_LENGTH] ?? 'ошибка');
+                }
+                $hash_count = preg_match_all('/#/', $tag, $hashes_in_tag);
+                if ($hash_count > 1) {
+                    add_if_not_exist($tags_errors, SINGLE_TAG_RULES[NEED_SPACE] ?? 'ошибка');
+                }
+            };
+
+            if (count($tags) > count(array_unique($tags))) {
+                add_if_not_exist($tags_errors,  COMMON_TAG_RULES[DOUBLE_DETECTED] ?? 'ошибка');
+            }
+            if (count(array_unique($tags)) > HASH_TAG_MAX_AMOUNT) {
+                add_if_not_exist($tags_errors, COMMON_TAG_RULES[TOO_MANY_TAGS] ?? 'ошибка');
+            }
+
+            if (count($tags_errors) > 0) {
+                add_error_message($errors, $field_name, implode(' | ', $tags_errors));
+            }
+        }
     }

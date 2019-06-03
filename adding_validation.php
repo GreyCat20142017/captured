@@ -8,7 +8,8 @@
         if (isset($_POST['publish_photo'])) {
             $fields = [
                 'photo-heading' => ['description' => 'Заголовок', 'required' => true],
-                'userpic-file-photo' => ['description' => 'Фото', 'required' => true, 'validation_rules' => [FILE_RULE]]
+                'userpic-file-photo' => ['description' => 'Фото', 'required' => true, 'validation_rules' => [FILE_RULE]],
+                'hashtag' =>  ['description' => 'Хэштег', 'required' => false, 'validation_rules' => [HASH_RULE]]
             ];
             $upload_to = get_assoc_element(PATHS,PHOTOS);
             $tab = FILTER_PHOTOS;
@@ -16,7 +17,8 @@
         if (isset($_POST['publish_video'])) {
             $fields = [
                 'video-heading' => ['description' => 'Заголовок', 'required' => true],
-                'video-link' => ['description' => 'Видео', 'required' => true, 'validation_rules' => ['youtube_validation']]
+                'video-link' => ['description' => 'Видео', 'required' => true, 'validation_rules' => ['youtube_validation']],
+                'hashtag' =>  ['description' => 'Хэштег', 'required' => false, 'validation_rules' => [HASH_RULE]]
             ];
             $upload_to = get_assoc_element(PATHS,VIDEOS);
             $tab = FILTER_VIDEOS;
@@ -25,14 +27,17 @@
             $fields = [
                 'quote-heading' => ['description' => 'Заголовок', 'required' => true],
                 'quote-text' => ['description' => 'Цитата', 'required' => true],
-                'quote-author' => ['description' => 'Автор', 'required' => true]
+                'quote-author' => ['description' => 'Автор', 'required' => true],
+                'hashtag' =>  ['description' => 'Хэштег', 'required' => false, 'validation_rules' => [HASH_RULE]]
             ];
             $tab = FILTER_QUOTES;
         }
         if (isset($_POST['publish_text'])) {
             $fields = [
                 'text-heading' => ['description' => 'Заголовок', 'required' => true],
-                'post-text' => ['description' => 'Текст поста', 'required' => true]
+                'post-text' => ['description' => 'Текст поста', 'required' => true],
+                'hashtag' =>  ['description' => 'Хэштег', 'required' => false, 'validation_rules' => [HASH_RULE]]
+
             ];
             $tab = FILTER_TEXTS;
         }
@@ -40,7 +45,8 @@
             $fields = [
                 'link-heading' => ['description' => 'Заголовок', 'required' => true],
                 'post-link' => ['description' => 'Ссылка', 'required' => true, 'validation_rules' => ['url_validation']],
-                'post-text' => ['description' => 'Описание', 'required' => true]
+                'post-text' => ['description' => 'Описание', 'required' => true],
+                'hashtag' =>  ['description' => 'Хэштег', 'required' => false, 'validation_rules' => [HASH_RULE]]
             ];
             $tab = FILTER_LINKS;
         }
@@ -49,7 +55,6 @@
         $post = array_map(function ($item) {
             return trim(strip_tags($item));
         }, $_POST);
-
 
         $errors = get_validation_result($fields, $post, $_FILES);
         $status_ok = empty(get_form_validation_classname($errors)) && is_auth_user();

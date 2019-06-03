@@ -16,6 +16,21 @@
             </div>
         </div>
 
+        <div class="adding-post__input-wrapper form__input-wrapper <?= get_field_validation_classname($errors,
+            'hashtag'); ?>">
+            <label class="adding-post__label form__label" for="hashtag">Хэштеги</label>
+            <div class="form__input-section">
+                <input class="adding-post__input form__input" id="hashtag" type="text" name="hashtag"
+                       placeholder="Введите заголовок" value="<?= get_pure_data($post, 'hashtag'); ?>">
+                <button class="form__error-button button" type="button">!<span
+                        class="visually-hidden">Информация об ошибке</span></button>
+                <div class="form__error-text">
+                    <h3 class="form__error-title">Ошибка при заполнении поля</h3>
+                    <p class="form__error-desc"><?= get_field_validation_message($errors, 'hashtag'); ?></p>
+                </div>
+            </div>
+        </div>
+
         <div class="adding-post__textarea-wrapper form__input-wrapper <?= get_field_validation_classname($errors,
             'video-link'); ?>">
             <label class="adding-post__label form__label" for="post-link">Видео на youtube (yotube-id или ссылка)</label>
@@ -56,6 +71,7 @@
                 </div>
             </div>
         <?php endif; ?>
+
         <div class="adding-post__buttons">
             <button class="adding-post__submit button button--main" type="submit" name="publish_video">Опубликовать
             </button>

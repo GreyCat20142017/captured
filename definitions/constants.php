@@ -1,40 +1,21 @@
 <?php
 
     require_once ('filters_constants.php');
+    require_once ('validation_constants.php');
 
     define('SORT_COMMENTS', 'comments_count');
     define('SORT_LIKES', 'likes_count');
     define('SORT_DATE', 'post_id');
 
     define('TEMPLATE_FOLDER', 'templates/');
+//    define('TEMPLATE_FOLDER', 'mdbtemplates/');
 
     define('MAX_TEXT_LENGTH', 222);
     define('SHORT_TEXT_LENGTH', 22);
     define('RECORDS_PER_PAGE', 6);
     define('COMMENTS_PREVIEW_COUNT', 3);
 
-    /**
-     * Константы валидации и типов
-     */
-    define('ERROR_KEY', 'error');
-    define('EMPTY_ITEM', 'Выберите элемент');
-    define('FILE_RULE', 'file_validation');
-    define('MAX_FILE_SIZE', 200000);
-
-
-    define('PHOTOS', 'photos');
-    define('VIDEOS', 'videos');
-    define('AVATARS', 'avatars');
-
-    define('VALID_FILE_TYPES', [
-        'image/png',
-        'image/jpeg',
-        'image/svg+xml',
-        'image/svg+xmlns',
-        'text/plain'
-    ]);
-
-    define('PATHS', [
+       define('PATHS', [
         PHOTOS => 'img/photos/',
         VIDEOS => 'img/videos/',
         AVATARS => 'img/avatars/'

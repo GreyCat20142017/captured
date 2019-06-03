@@ -449,12 +449,13 @@
 
         mysqli_query($connection, "START TRANSACTION");
 
-        $sql = 'INSERT INTO posts (category_id, user_id,  title)
-                          VALUES ( ?, ?, ?)';
+        $sql = 'INSERT INTO posts (category_id, user_id,  title, hashtag)
+                          VALUES ( ?, ?, ?, ?)';
         $stmt = db_get_prepare_stmt($connection, $sql, [
             $category_id,
             $user_id,
-            $title
+            $title,
+            get_assoc_element($post, 'hashtag')
         ]);
         $res = mysqli_stmt_execute($stmt);
         $new_id = $res ? mysqli_insert_id($connection) : 0;
@@ -903,9 +904,19 @@
         return (!$data || was_error($data)) ? [] : $data;
     }
 
+    /**
+     * Функция возвращает количество подписчиков у блогера с указанным id
+     * @param $connection
+     * @param $blogger_id
+     * @return int
+     */
     function get_subscribers_count ($connection, $blogger_id) {
         $blogger_id = mysqli_real_escape_string($connection, $blogger_id);
         $sql = 'SELECT COUNT(*) AS total FROM subscriptions WHERE blogger_id = ' . $blogger_id . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о количестве записей по условию', true);
         return (!$data || was_error($data)) ? 0 : intval(get_assoc_element($data, 'total'));
+    }
+
+    function update_user($connection, &$user) {
+        return false;
     }

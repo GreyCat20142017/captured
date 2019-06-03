@@ -110,7 +110,7 @@
                 <div class="footer__site-nav">
                     <ul class="footer__info-pages">
                         <li class="footer__info-page">
-                            <a class="footer__page-link" href="#">О проекте</a>
+                            <a class="footer__page-link" href="in_developing.php">О проекте</a>
                         </li>
                         <li class="footer__info-page">
                             <a class="footer__page-link" href="#">Реклама</a>
