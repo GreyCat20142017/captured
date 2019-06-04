@@ -290,31 +290,30 @@
      * @param $data
      * @return int
      */
-    function send_new_password($data) {
+    function send_new_password ($data) {
         try {
             $transport = new Swift_SmtpTransport('phpdemo.ru', 25);
             $transport->setUsername('keks@phpdemo.ru');
             $transport->setPassword('htmlacademy');
 
-                $message_text = 'Уважаемый пользователь.'. PHP_EOL .
-                    'Ваш новый пароль: ' . get_assoc_element($data ,'password') . PHP_EOL .
-                    'Рекомендуется сменить его при первом входе в систему.';
-                $message = new Swift_Message('Уведомление от сервиса «Captured»');
-                $type = $message->getHeaders()->get('Content-Type');
-                $type->setValue('text/plain');
-                $type->setParameter('charset', 'utf-8');
-                /**
-                 * Здесь должно бы быть get_assoc_element($data, 'email'), но вдруг 'левые' адреса все-таки существуют.
-                 * Поэтому... так...
-                 */
-                $message->setTo([TEST_EMAIL => 'Пользователю сервиса']);
-                $message->setBody($message_text, 'text/plain');
-                $message->setFrom('keks@phpdemo.ru', 'Captured');
-                $mailer = new Swift_Mailer($transport);
-                $result = $mailer->send($message);
+            $message_text = 'Уважаемый пользователь.' . PHP_EOL .
+                'Ваш новый пароль: ' . get_assoc_element($data, 'password') . PHP_EOL .
+                'Рекомендуется сменить его при первом входе в систему.';
+            $message = new Swift_Message('Уведомление от сервиса «Captured»');
+            $type = $message->getHeaders()->get('Content-Type');
+            $type->setValue('text/plain');
+            $type->setParameter('charset', 'utf-8');
+            /**
+             * Здесь должно бы быть get_assoc_element($data, 'email'), но вдруг 'левые' адреса все-таки существуют.
+             * Поэтому... так...
+             */
+            $message->setTo([TEST_EMAIL => 'Пользователю сервиса']);
+            $message->setBody($message_text, 'text/plain');
+            $message->setFrom('keks@phpdemo.ru', 'Captured');
+            $mailer = new Swift_Mailer($transport);
+            $result = $mailer->send($message);
 
-            }
-         catch (Exception $e) {
+        } catch (Exception $e) {
         }
         return $result;
     }

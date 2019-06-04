@@ -69,15 +69,35 @@
                         </div>
 
                         <div class="registration__textarea-wrapper form__textarea-wrapper">
-                            <label class="registration__label form__label" for="text-info">Информация о себе</label>
+                            <label class="registration__label form__label" for="info">Информация о себе</label>
                             <div class="form__input-section">
-                    <textarea class="registration__textarea form__textarea form__input" id="info" name="info"
-                              placeholder="Коротко о себе в свободной форме" name="info"><?= get_pure_data($user,
-                            'info'); ?>
-
-                    </textarea>
+                                <textarea class="registration__textarea form__textarea form__input" id="info"
+                                          name="info" placeholder="Коротко о себе в свободной форме" name="info">
+                                    <?= get_pure_data($user, 'info'); ?>
+                                </textarea>
                             </div>
                         </div>
+
+                        <div class="registration__input-wrapper form__input-wrapper form__input-wrapper--oneline
+                        <?= get_field_validation_classname($errors, 'delete-avatar'); ?>">
+                            <div class="form__input-section">
+                                <input class="registration__input form__input visually-hidden control" id="delete-avatar" type="checkbox"
+                                       name="delete-avatar"
+                                       value="<?= get_pure_data($user, 'delete-avatar'); ?>"
+                                       title="Удалить аватар при сохранении записи в БД">
+                                <label class="registration__label form__label" for="delete-avatar">Удалить аватар (если был) при
+                                    обновлении данных в БД</label>
+
+                                <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span>
+                                </button>
+                                <div class="form__error-text">
+                                    <h3 class="form__error-title">Заголовок сообщения</h3>
+                                    <p class="form__error-desc"><?= get_field_validation_message($errors,
+                                            'delete-avatar'); ?></p>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="registration__input-file-container form__input-container">
                             <div class="registration__input-file-wrapper form__input-file-wrapper
                                 <?= get_field_validation_classname($errors, 'avatar'); ?>">
@@ -174,6 +194,8 @@
                                 </div>
                             </div>
                         </div>
+                        <p><?= $status_text ?? ''; ?></p>
+                        <p><?= $status_text ?? ''; ?></p>
                         <button class="registration__submit button button--main" type="submit" name="change_password">
                             Изменить пароль
                         </button>

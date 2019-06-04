@@ -17,8 +17,6 @@
 
     $active_tab = isset($_GET['section']) ? intval(trim(strip_tags($_GET['section']))) : 1;
 
-    dump($active_tab);
-
     $db_user = get_user_basic_info($connection, $user_id);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -30,8 +28,9 @@
             $fields = [
                 'email' => ['description' => 'E-mail', 'required' => true, 'validation_rules' => ['email_validation']],
                 'name' => ['description' => 'Имя пользователя', 'required' => true],
-                'text-info' => ['description' => 'Информация', 'required' => true],
-                'avatar' => ['description' => 'Аватар', 'required' => false, 'validation_rules' => [FILE_RULE]]
+                'info' => ['description' => 'Информация', 'required' => true],
+                'avatar' => ['description' => 'Аватар', 'required' => false, 'validation_rules' => [FILE_RULE]],
+                'delete-avatar' => ['description' => 'Удалить аватар', 'required' => false]
             ];
         }
 
@@ -45,7 +44,8 @@
                 'password-repeat' => [
                     'description' => 'Пароль',
                     'required' => true,
-                    'validation_rules' => ['equal_to:password:password-repeat']]
+                    'validation_rules' => ['equal_to:password:password-repeat']
+                ]
             ];
         }
 
@@ -56,13 +56,17 @@
         if ($status_ok) {
             $upload_to = get_assoc_element(PATHS, AVATARS);
             try_upload_files($image_fields, $_FILES, $errors, $upload_to, $user);
-            $update_result = update_user($connection, $user);
-            if ($update_result) {
-               header('Location:' . $_SERVER['HTTP_REFERER']);
-            } else {
-                $status_text = 'Не удалось обновить параметры';
-                exit();
+            $update_result = ($active_tab === 1) ?
+                update_user($connection, $user_id, $user, array_key_exists('delete-avatar', $user)) :
+                update_user_password($connection, $user_id, $user);
+            if ($update_result && is_array($update_result)) {
+                $_SESSION[CAPTURED_SESSION]['name'] = get_assoc_element($update_result, 'name');
+                $_SESSION[CAPTURED_SESSION]['avatar'] = get_assoc_element($update_result, 'avatar');
+                header('Location: profile.php');
+            } elseif ($update_result) {
+                header('Location: profile.php');
             }
+            $status_text = 'Не удалось обновить параметры';
         } else {
             $status_text = 'Необходимо исправить ошибки перед повторной отправкой формы';
             $_FILES = [];
@@ -76,7 +80,8 @@
     $page_content = include_template('user_config.php', [
         'user' => $db_user,
         'errors' => $errors,
-        'active' => $active_tab
+        'active' => $active_tab,
+        'status_text' => $status_text ?? ''
     ]);
 
     $header_content = include_template('header_logged.php', [

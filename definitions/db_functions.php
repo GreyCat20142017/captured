@@ -917,10 +917,55 @@
         return (!$data || was_error($data)) ? 0 : intval(get_assoc_element($data, 'total'));
     }
 
-    function update_user($connection, &$user) {
-        return false;
+    /**
+     * Функция обновляет параметры пользователя в т.ч. при необходимости удаляет аватар
+     * @param      $connection
+     * @param      $user_id
+     * @param      $user
+     * @param bool $delete_avatar
+     * @return bool
+     */
+    function update_user($connection, $user_id, &$user, $delete_avatar = false) {
+        $need_update_avatar = $delete_avatar || !empty(get_assoc_element($user, 'avatar'));
+        $sql = 'UPDATE users SET  email = ?, name = ?, info = ? ' .
+            ($need_update_avatar ? ' , avatar = ? ' : '') . ' WHERE id = ? ;';
+        $params = [
+            get_assoc_element($user, 'email'),
+            get_assoc_element($user, 'name'),
+            get_assoc_element($user, 'info')
+        ];
+        if ($need_update_avatar) {
+            array_push($params, $delete_avatar ? '' : get_assoc_element($user, 'avatar'));
+        }
+        array_push($params, $user_id);
+
+        $stmt = db_get_prepare_stmt($connection, $sql, $params);
+        $res = mysqli_stmt_execute($stmt);
+        return ($res) ? get_user_basic_info ($connection, $user_id) : false;
     }
 
+    /**
+     * Функция обновляет пароль пользователя по данным формы
+     * @param $connection
+     * @param $user_id
+     * @param $user
+     * @return bool
+     */
+    function update_user_password ($connection, $user_id, &$user) {
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $password = mysqli_real_escape_string($connection, get_assoc_element($user, 'password'));
+        $new_hash = password_hash($password, PASSWORD_DEFAULT);
+        $sql = 'UPDATE users  SET  user_password = "' . $new_hash . '" WHERE id = ' . $user_id . ';';
+        $res = mysqli_query($connection, $sql);
+        return ($res) ? true : false;
+    }
+
+    /**
+     * Функция устанавливает новый пароль и возвращает массив с паролем и e-mail. В случае ошибки возвращает false
+     * @param $connection
+     * @param $email
+     * @return array|bool
+     */
     function recovery_and_get_password ($connection, $email) {
         $email = mysqli_real_escape_string($connection, $email);
         $new_password = uniqid('P');
