@@ -28,7 +28,7 @@
                         </ul>
                     </div>
 
-                    <div class="search__tab-content">
+                    <div class="search__tab-content" style="margin-bottom: 15px;">
                         <?= $posts_content ?? '' ?>
                     </div>
 

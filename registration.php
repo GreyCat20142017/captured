@@ -22,14 +22,18 @@
             'password' => [
                 'description' => 'Пароль',
                 'required' => true,
-                'validation_rules' => ['equal_to:password:password-repeat']
+                'validation_rules' => ['equal_to:password:password-repeat', 'check_length:2:30']
             ],
             'password-repeat' => [
                 'description' => 'Пароль',
                 'required' => true,
-                'validation_rules' => ['equal_to:password:password-repeat']
+                'validation_rules' => ['equal_to:password:password-repeat', 'check_length:2:30']
             ],
-            'name' => ['description' => 'Имя пользователя', 'required' => true],
+            'name' => [
+                'description' => 'Имя пользователя',
+                'required' => true,
+                'validation_rules' => ['check_length:2:30']
+            ],
             'text-info' => ['description' => 'Информация', 'required' => false],
             'userpic-file' => ['description' => 'Аватар', 'required' => false, 'validation_rules' => [FILE_RULE]]
         ];

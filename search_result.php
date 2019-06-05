@@ -28,7 +28,7 @@
 
     }
     if ($active_tab === FILTER_ALL) {
-        $page_count = get_posts_authors_total_pages($connection, RECORDS_PER_PAGE, $search_string);
+        $page_count = get_posts_authors_total_pages($connection, RECORDS_PER_PAGE, true, $search_string);
         $posts = get_posts_authors($connection, RECORDS_PER_PAGE, ($page - 1) * RECORDS_PER_PAGE, $search_string);
     } else {
         $page_count = get_posts_total_pages($connection, RECORDS_PER_PAGE, $category_id);
@@ -59,7 +59,7 @@
                 'subscriptions' => $posts,
                 'is_own' => false,
                 'logged_user_id' => $logged_user_id,
-                'auth_user_subscriptions' => $auth_user_subscriptions
+                'auth_user_subscriptions' => $auth_user_subscriptions,
             ]) :
             get_post_content($posts, 'search__tabs-item ', true);
 

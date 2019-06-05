@@ -249,7 +249,7 @@
     function rebuild_query_string ($script, $query, $param, $value) {
         mb_parse_str($query, $items);
         $items[$param] = $value;
-        if ($param !== 'page' && isset($items['page']) ) {
+        if ($param !== 'page' && isset($items['page'])) {
             $items['page'] = 1;
         }
         return $script . '?' . http_build_query($items);
@@ -281,8 +281,8 @@
      * @param $field_name
      * @return string
      */
-    function get_pure_youtube_link($post, $field_name) {
-     return 'http://www.youtube.com/embed/'. get_pure_data($post, $field_name) . '?autoplay=0';
+    function get_pure_youtube_link ($post, $field_name) {
+        return 'http://www.youtube.com/embed/' . get_pure_data($post, $field_name) . '?autoplay=0';
     }
 
     /**
@@ -314,6 +314,22 @@
             $result = $mailer->send($message);
 
         } catch (Exception $e) {
+        }
+        return $result;
+    }
+
+    /**
+     * Возвращает часть оригинального имени файла, если оно превышает размер поля в БД. В противном случае - всё имя.
+     * @param $name
+     * @param $limit
+     * @return string
+     */
+    function get_limited_name ($name, $limit) {
+        if (mb_strlen($name, 'utf-8') <= $limit) {
+            $result = $name;
+        } else {
+            $extention = strrchr($name, '.');
+            $result = mb_substr($name, 0, $limit - mb_strlen($extention)) . $extention;
         }
         return $result;
     }

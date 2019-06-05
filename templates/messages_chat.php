@@ -27,4 +27,7 @@
             </li>
         <?php endforeach; ?>
     </ul>
+    <div style="margin-top: 20px;">
+        <?= $pagination_content ?? ''; ?>
+    </div>
 <?php endif; ?>

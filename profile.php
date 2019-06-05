@@ -45,13 +45,16 @@
 
     $active_param = isset($_GET['tab']) ? intval(strip_tags($_GET['tab'])) : 1;
     $active_param = (($active_param <= 0) || ($active_param > count(TABS))) ? 1 : $active_param;
-
     $active_tab = TABS[$active_param - 1];
+
+    $page = isset($_GET['page']) ? intval(strip_tags($_GET['page'])) : 1;
+    $page_count = 1;
 
     switch ($active_tab) {
         case POSTS:
             {
-                $posts = get_posts_for_profile($connection, $user_id);
+                $page_count = get_profile_posts_total_pages ($connection, $user_id, RECORDS_PER_PAGE);
+                $posts = get_posts_for_profile($connection, $user_id, RECORDS_PER_PAGE, ($page - 1) * RECORDS_PER_PAGE);
                 $content = include_template('profile_posts.php', [
                     'inner_part' => get_post_content($posts, 'profile', false, $expanded_id, $expanded_comments, $show_all ?? false)
                 ]);
@@ -59,7 +62,8 @@
             }
         case LIKES:
             {
-                $likes = get_authors_likes($connection, $user_id);
+                $page_count =  get_profile_likes_total_pages ($connection, $user_id, RECORDS_PER_PAGE);
+                $likes = get_authors_likes($connection, $user_id, RECORDS_PER_PAGE, ($page - 1) * RECORDS_PER_PAGE);
                 $content = include_template('profile_likes.php', [
                     'likes' => $likes,
                     'is_own' => $is_own_profile
@@ -68,7 +72,8 @@
             }
         case SUBSCRIPTIONS:
             {
-                $subcriptions = get_user_subscriptions($connection, $user_id);
+                $page_count =  get_profile_subscriptions_total_pages ($connection, $user_id, RECORDS_PER_PAGE);
+                $subcriptions = get_user_subscriptions($connection, $user_id, RECORDS_PER_PAGE, ($page - 1) * RECORDS_PER_PAGE);
                 $auth_user_subscriptions = array_values(array_column(
                     $is_own_profile ? $subcriptions : get_auth_user_subscriptions($connection, $logged_user_id),
                     'blogger_id'));
@@ -103,6 +108,14 @@
                 'blogger_id'))
         );
 
+        $pagination_content = include_template('pagination.php', [
+            'page_count' => $page_count,
+            'pages' => range(1, $page_count),
+            'active_page' => $page,
+            'active_query' => $_SERVER['QUERY_STRING'],
+            'active_script' => $_SERVER['PHP_SELF']
+        ]);
+
         $page_content = include_template('profile.php', [
             'user' => $db_user,
             'profile_tab_content' => $content,
@@ -111,7 +124,8 @@
             'active_query' => $_SERVER['QUERY_STRING'],
             'active_script' => $_SERVER['PHP_SELF'],
             'is_own' => $is_own_profile,
-            'auth_user_subscriptions' => $auth_user_subscriptions
+            'auth_user_subscriptions' => $auth_user_subscriptions,
+            'pagination_content' => $pagination_content ?? ''
         ]);
 
         $_SESSION[CAPTURED_SESSION]['current_user'] = $user_id;

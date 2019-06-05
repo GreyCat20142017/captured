@@ -27,8 +27,12 @@
         if (isset($_POST['change_base'])) {
             $fields = [
                 'email' => ['description' => 'E-mail', 'required' => true, 'validation_rules' => ['email_validation']],
-                'name' => ['description' => 'Имя пользователя', 'required' => true],
-                'info' => ['description' => 'Информация', 'required' => true],
+                'name' => [
+                    'description' => 'Имя пользователя',
+                    'required' => true,
+                    'validation_rules' => ['check_length:2:30']
+                ],
+                'info' => ['description' => 'Информация', 'required' => false],
                 'avatar' => ['description' => 'Аватар', 'required' => false, 'validation_rules' => [FILE_RULE]],
                 'delete-avatar' => ['description' => 'Удалить аватар', 'required' => false]
             ];
@@ -39,12 +43,12 @@
                 'password' => [
                     'description' => 'Пароль',
                     'required' => true,
-                    'validation_rules' => ['equal_to:password:password-repeat']
+                    'validation_rules' => ['equal_to:password:password-repeat', 'check_length:2:30']
                 ],
                 'password-repeat' => [
                     'description' => 'Пароль',
                     'required' => true,
-                    'validation_rules' => ['equal_to:password:password-repeat']
+                    'validation_rules' => ['equal_to:password:password-repeat', 'check_length:2:30']
                 ]
             ];
         }

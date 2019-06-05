@@ -1,7 +1,7 @@
 <?php
     /**
      * Функция возращает название класса для формы на основе переданного массива с результатами валидации
-     * @param $errors
+     * @param        $errors
      * @param string $status
      * @return string
      */
@@ -25,10 +25,10 @@
     }
 
     /**
-     * Функция возращает название класса для обертки поля формы на основе переданного массива с результатами валидации и названия поля
-     * Для изображения передается название класса.
-     * @param $errors
-     * @param $field_name
+     * Функция возращает название класса для обертки поля формы на основе переданного массива с результатами валидации
+     * и названия поля Для изображения передается название класса.
+     * @param        $errors
+     * @param        $field_name
      * @param string $success_classname
      * @return string
      */
@@ -38,9 +38,9 @@
         return is_array($field_errors) && count($field_errors) > 0 ? ' form__input-wrapper--error ' : $success_classname;
     }
 
-
     /**
-     * Функция возвращает описание ошибок валадации для поля по массиву ошибок и названию поля (название поля - ключ в массиве с ошибками)
+     * Функция возвращает описание ошибок валадации для поля по массиву ошибок и названию поля (название поля - ключ в
+     * массиве с ошибками)
      * @param $errors
      * @param $field_name
      * @return string
@@ -51,8 +51,8 @@
     }
 
     /**
-     * Функция возвращает результат валидации в виде ассоциативного массива с ключом 'Имя поля' по массиву с описанием полей формы
-     * Сначала добавляются результаты проверок на required, затем - результаты дополнительных специфических
+     * Функция возвращает результат валидации в виде ассоциативного массива с ключом 'Имя поля' по массиву с описанием
+     * полей формы Сначала добавляются результаты проверок на required, затем - результаты дополнительных специфических
      * @param $fields
      * @param $form_data
      * @param $files
@@ -71,7 +71,8 @@
             }
 
             if (isset($field['validation_rules']) && is_array($field['validation_rules'])) {
-                foreach ($field['validation_rules'] as $rule) {
+                $rules = $field['validation_rules'];
+                foreach ($rules as $rule) {
                     $is_required = get_assoc_element($field, 'required');
                     $is_special = get_assoc_element($field, 'special');
                     $rule_complexity = get_rule_complexity($rule);
@@ -84,6 +85,7 @@
                     } else {
                         $function_arguments = get_assoc_element($rule_complexity, 'arguments', true);
                         array_unshift($function_arguments, $form_data);
+                        array_push($function_arguments, $field_name);
                         $function_name = get_assoc_element($rule_complexity, 'rule');
                         $result = call_user_func_array($function_name, $function_arguments);
                     }
@@ -100,10 +102,29 @@
     function nothing ($first, $second, $third) {
 
     }
-
+    /** Всмомогательная функция для "сложных" правил валидации. Проверяет совпадение двух указанных полей формы
+     * @param $data
+     * @param $first
+     * @param $second
+     * @return string
+     *
+     */
     function equal_to ($data, $first, $second) {
-     return get_assoc_element($data, $first) === get_assoc_element($data, $second) ? '' :
-         'Значения полей ' . $first . ' и ' . $second . ' должны совпадать!';
+        return get_assoc_element($data, $first) === get_assoc_element($data, $second) ? '' :
+            'Значения полей ' . $first . ' и ' . $second . ' должны совпадать!';
+    }
+
+    /**
+     * /** Всмомогательная функция для "сложных" правил валидации. Проверяет длину строки.
+     * @param $value
+     * @param $min
+     * @param $max
+     * @return string
+     */
+    function check_length ($data, $min, $max, $field_name) {
+        $value = get_assoc_element($data, $field_name);
+        $result = (mb_strlen($value, 'utf-8') >= intval($min) && mb_strlen($value, 'utf-8') <= intval($max));
+        return $result ? '' : 'Поле должно быть строкой длиной от ' . $min . ' до ' . $max . ' символов';
     }
 
     /**
@@ -115,7 +136,7 @@
         if (count($tmp) > 1) {
             $result = [
                 'rule' => $tmp[0],
-                'arguments' =>  array_slice($tmp, 1)
+                'arguments' => array_slice($tmp, 1)
             ];
         } else {
             $result = false;
@@ -176,7 +197,8 @@
     }
 
     /**
-     * Функция проверяет, являются ли загружаемые файлы допустимого типа. Дальнейшие действия по загрузке и проверке вынесены в другую функцию
+     * Функция проверяет, являются ли загружаемые файлы допустимого типа. Дальнейшие действия по загрузке и проверке
+     * вынесены в другую функцию
      * @param $field_name
      * @param $files
      * @param $is_required
@@ -223,18 +245,20 @@
         foreach ($file_fields as $field_name => $field) {
             $tmp_name = $files[$field_name]['tmp_name'];
             if (!empty($tmp_name) && is_uploaded_file($tmp_name)) {
-                $path = UI_START . uniqid('', true) . '.' .  pathinfo($files[$field_name]['name'], PATHINFO_EXTENSION);
+                $path = UI_START . uniqid('', true) . '.' . pathinfo($files[$field_name]['name'], PATHINFO_EXTENSION);
                 if (check_and_repair_path($file_path)) {
                     move_uploaded_file($tmp_name, $file_path . $path);
                     $data[$field_name] = $path;
-                    $original_filename = pathinfo($files[$field_name]['name'], PATHINFO_FILENAME) . '.' . pathinfo($files[$field_name]['name'], PATHINFO_EXTENSION);
+                    $original_filename = pathinfo($files[$field_name]['name'],
+                            PATHINFO_FILENAME) . '.' . pathinfo($files[$field_name]['name'], PATHINFO_EXTENSION);
                 } else {
                     add_error_message($errors, $field_name, 'Произошла ошибка при создании папки для загрузки файлов');
                 }
             } else {
                 $is_required = get_assoc_element($field, 'required');
                 if ($is_required) {
-                    add_error_message($errors, $field_name, 'Загрузка файла невозможна: ' . $files[$field_name]['tmp_name']);
+                    add_error_message($errors, $field_name,
+                        'Загрузка файла невозможна: ' . $files[$field_name]['tmp_name']);
                 }
             }
         }
@@ -258,9 +282,9 @@
      * @param $array
      * @param $error_message
      */
-    function add_if_not_exist (&$array,  $error_message) {
+    function add_if_not_exist (&$array, $error_message) {
         if (isset($array) && !in_array($error_message, $array)) {
-            array_push( $array, $error_message);
+            array_push($array, $error_message);
         }
     }
 
@@ -310,13 +334,13 @@
             $tags_errors = [];
             foreach ($tags as $tag) {
                 if (mb_substr($tag, 0, 1) !== '#') {
-                    add_if_not_exist($tags_errors,  SINGLE_TAG_RULES[NEED_START_HASH] ?? ' ошибка');
+                    add_if_not_exist($tags_errors, SINGLE_TAG_RULES[NEED_START_HASH] ?? ' ошибка');
                 }
                 if ((mb_substr($tag, 0, 1) === '#') && (mb_strlen($tag, 'utf-8') < HASH_TAG_MIN_LENGTH)) {
-                    add_if_not_exist($tags_errors,  SINGLE_TAG_RULES[NOT_ONLY_HASH] ?? ' ошибка');
+                    add_if_not_exist($tags_errors, SINGLE_TAG_RULES[NOT_ONLY_HASH] ?? ' ошибка');
                 }
                 if ((mb_substr($tag, 0, 1) === '#') && (mb_strlen($tag, 'utf-8') > HASH_TAG_MAX_LENGTH)) {
-                    add_if_not_exist($tags_errors,  SINGLE_TAG_RULES[MAX_HASH_LENGTH] ?? 'ошибка');
+                    add_if_not_exist($tags_errors, SINGLE_TAG_RULES[MAX_HASH_LENGTH] ?? 'ошибка');
                 }
                 $hash_count = preg_match_all('/#/', $tag, $hashes_in_tag);
                 if ($hash_count > 1) {
@@ -325,10 +349,14 @@
             };
 
             if (count($tags) > count(array_unique($tags))) {
-                add_if_not_exist($tags_errors,  COMMON_TAG_RULES[DOUBLE_DETECTED] ?? 'ошибка');
+                add_if_not_exist($tags_errors, COMMON_TAG_RULES[DOUBLE_DETECTED] ?? 'ошибка');
             }
             if (count(array_unique($tags)) > HASH_TAG_MAX_AMOUNT) {
                 add_if_not_exist($tags_errors, COMMON_TAG_RULES[TOO_MANY_TAGS] ?? 'ошибка');
+            }
+
+            if (mb_strlen($hashtag, 'utf-8') > 255) {
+                add_if_not_exist($tags_errors, 'Длина хештега не должна превышать 255 символов');
             }
 
             if (count($tags_errors) > 0) {

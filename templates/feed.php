@@ -20,11 +20,13 @@
                 <?= $filters_content; ?>
             </ul>
         </section>
-
         <aside class="promo">
             <?= $promo_content; ?>
         </aside>
-
     </div>
+    <div class="container" style="max-width: 760px; transform: translateX(-200px)">
+        <?= $pagination_content ?? ''; ?>
+    </div>
+
 </main>
 

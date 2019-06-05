@@ -173,8 +173,8 @@
      * @param $connection
      * @return array|null
      */
-    function get_banners ($connection) {
-        $sql = 'SELECT id, text, reference, description FROM banners ORDER BY creation_date DESC;';
+    function get_banners ($connection, $limit = BANNERS_COUNT) {
+        $sql = 'SELECT id, text, reference, description FROM banners ORDER BY creation_date DESC LIMIT ' . $limit . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о баннерах');
         return (!$data || was_error($data)) ? [] : $data;
     }
@@ -310,7 +310,7 @@
      * @param $author_id
      * @return array|null
      */
-    function get_authors_likes ($connection, $author_id) {
+    function get_authors_likes ($connection, $author_id, $limit = RECORDS_PER_PAGE, $offset = 0) {
         $author_id = mysqli_real_escape_string($connection, $author_id);
         $sql = 'SELECT l.post_id,
                      l.user_id AS fan_id,
@@ -324,7 +324,8 @@
                      JOIN posts AS p ON l.post_id = p.id
                      JOIN users AS uu ON p.user_id = uu.id
                      JOIN users AS u ON l.user_id = u.id
-                WHERE p.user_id = ' . $author_id . ';';
+                WHERE p.user_id = ' . $author_id . ' ORDER BY l.id DESC 
+                LIMIT ' . $limit . ' OFFSET ' . $offset . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о лайках');
         return (!$data || was_error($data)) ? [] : $data;
     }
@@ -335,7 +336,7 @@
      * @param $user_id
      * @return array|null
      */
-    function get_user_subscriptions ($connection, $user_id) {
+    function get_user_subscriptions ($connection, $user_id, $limit = RECORDS_PER_PAGE, $offset = 0) {
         $user_id = mysqli_real_escape_string($connection, $user_id);
         $sql = 'SELECT t.blogger_id, t.posts_count, t.subscribers_count, u.name AS blogger_name, u.avatar, u.registration_date
                     FROM (SELECT tmp.blogger_id, sum(tmp.posts_count) AS posts_count, sum(tmp.subscribers_count) AS subscribers_count
@@ -351,7 +352,8 @@
                                                  ON s.blogger_id = nocte.blogger_id
                                 GROUP BY s.blogger_id) AS tmp
                           GROUP BY tmp.blogger_id) AS t
-                                JOIN users AS u ON t.blogger_id = u.id';
+                                JOIN users AS u ON t.blogger_id = u.id
+                          LIMIT ' . $limit . ' OFFSET ' . $offset . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о подписках');
         return (!$data || was_error($data)) ? [] : $data;
     }
@@ -377,7 +379,7 @@
      * @param $post_id
      * @return array|null
      */
-    function get_messages ($connection, $user_id, $corresponent_id = null) {
+    function get_messages ($connection, $user_id, $corresponent_id = null,  $limit = RECORDS_PER_PAGE, $offset = 0) {
         $user_id = mysqli_real_escape_string($connection, $user_id);
         $corresponent_id = !empty($corresponent_id) ? mysqli_real_escape_string($connection,
             $corresponent_id) : $corresponent_id;
@@ -391,7 +393,8 @@
                        u.avatar AS author_avatar
                        FROM messages AS m
                 JOIN  users AS u ON m.from_id = u.id
-                       ' . $users_condition . ' ORDER BY m.id DESC LIMIT  ' . RECORDS_PER_PAGE . ' OFFSET 0;';
+                       ' . $users_condition . ' ORDER BY m.id DESC 
+                LIMIT ' . $limit . ' OFFSET ' . $offset . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о поcте');
         return (!$data || was_error($data)) ? [] : $data;
     }
@@ -482,12 +485,13 @@
     function add_child_entity ($connection, $post_id, $post, $tab) {
         switch ($tab) {
             case FILTER_PHOTOS:
+                $original_filename = get_limited_name(get_assoc_element($post, 'original_filename'), 32);
                 $sql = 'INSERT INTO ' . $tab . ' (post_id, filename, original_filename)
                           VALUES ( ?, ?, ?)';
                 $params = [
                     $post_id,
                     get_assoc_element($post, 'userpic-file-photo'),
-                    get_assoc_element($post, 'original_filename')
+                    $original_filename
                 ];
                 break;
             case FILTER_VIDEOS:
@@ -730,11 +734,13 @@
      * @return int
      *
      */
-    function get_posts_authors_total_pages ($connection, $limit, $search_string = null) {
+    function get_posts_authors_total_pages ($connection, $limit, $authors, $search_string = null) {
+        $query_expression =  $authors ? 'DISTINCT user_id' : '*';
         $search_condition = !empty($search_string) ?
             ' WHERE MATCH(p.title, p.hashtag) AGAINST("*' . mysqli_real_escape_string($connection,
                 $search_string) . '*" IN BOOLEAN MODE) ' : '';
-        $sql = 'SELECT CEIL(COUNT(*) / ' . $limit . ') AS page_count, COUNT(*) AS total_records FROM posts ' . $search_condition . ' GROUP BY user_id;';
+        $sql = 'SELECT CEIL(COUNT(' . $query_expression . ') / ' . $limit . ') AS page_count, 
+                       COUNT('. $query_expression . ') AS total_records FROM posts ' . $search_condition . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные для пагинации', true);
         return (!$data || was_error($data)) ? 1 : intval(get_assoc_element($data, 'page_count'));
     }
@@ -974,4 +980,96 @@
         $sql = 'UPDATE users  SET  user_password = "' . $new_hash . '" WHERE email = "' . $email . '";';
         $res = mysqli_query($connection, $sql);
         return ($res) ? ['email' => $email, 'password' => $new_password] : false;
+    }
+
+    /**
+     * Функция возвращает результаты расчета общего количества страниц для пагинации по постам и репостам в профиле.
+     * Передается соединение, id пользователя и число записей на страницу
+     * @param      $connection
+     * @param      $limit
+     * @param      $user_id
+     * @return     int
+     */
+    function get_profile_posts_total_pages ($connection, $user_id, $limit) {
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $sql = 'SELECT CEIL(SUM(total_records) / ' . $limit . ') AS page_count, SUM(total_records) AS total_records
+                    FROM (SELECT COUNT(DISTINCT id) AS total_records
+                          FROM posts
+                          WHERE user_id = ' . $user_id . '
+                          UNION
+                          (SELECT COUNT(DISTINCT post_id) AS total_records FROM reposts 
+                          WHERE user_id = ' . $user_id . ')) AS tmp;';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные для пагинации', true);
+        return (!$data || was_error($data)) ? 1 : intval(get_assoc_element($data, 'page_count'));
+    }
+
+    /**
+     * Функция возвращает результаты расчета общего количества страниц для лайков в профиле.
+     * Передается соединение, id пользователя и число записей на страницу
+     * @param      $connection
+     * @param      $limit
+     * @param      $user_id
+     * @return     int
+     */
+    function get_profile_likes_total_pages ($connection, $user_id, $limit) {
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $sql = 'SELECT CEIL(COUNT(*)/' . $limit . ') AS page_count, COUNT(*) AS total_records
+                FROM likes AS l
+                       JOIN posts AS p ON l.post_id = p.id
+                WHERE p.user_id = ' . $user_id . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные для пагинации', true);
+        return (!$data || was_error($data)) ? 1 : intval(get_assoc_element($data, 'page_count'));
+    }
+
+    /**
+     * Функция возвращает результаты расчета общего количества страниц для подписок в профиле.
+     * Передается соединение, id пользователя и число записей на страницу
+     * @param      $connection
+     * @param      $limit
+     * @param      $user_id
+     * @return     int
+     */
+    function get_profile_subscriptions_total_pages ($connection, $user_id, $limit) {
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $sql = 'SELECT CEIL(COUNT(*)/' . $limit . ') AS page_count, COUNT(*) AS total_records
+                FROM subscriptions                      
+                WHERE subscriber_id = ' . $user_id . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные для пагинации', true);
+        return (!$data || was_error($data)) ? 1 : intval(get_assoc_element($data, 'page_count'));
+    }
+
+    /**
+     * Функция возвращает результаты расчета общего количества страниц для ленты пользователя.
+     * Передается соединение, id пользователя и число записей на страницу
+     * @param      $connection
+     * @param      $limit
+     * @param      $user_id
+     * @return     int
+     */
+    function get_feed_total_pages ($connection, $user_id, $limit) {
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $sql = 'SELECT CEIL(COUNT(*)/' . $limit . ') AS page_count, COUNT(*) AS total_records
+                FROM posts AS p
+                       JOIN subscriptions AS s ON p.user_id = s.blogger_id
+                WHERE s.subscriber_id = ' . $user_id . ';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные для пагинации', true);
+        return (!$data || was_error($data)) ? 1 : intval(get_assoc_element($data, 'page_count'));
+    }
+
+    /**
+     * Функция возвращает результаты расчета общего количества сообщений для двух пользователей.
+     * Передается соединение, id пользователей и число записей на страницу
+     * @param      $connection
+     * @param      $limit
+     * @param      $user_id
+     * @return     int
+     */
+    function  get_messages_total_pages ($connection, $user_id, $corresponent_id = null, $limit) {
+        $user_id = mysqli_real_escape_string($connection, $user_id);
+        $sql = 'SELECT CEIL(COUNT(*)/' . $limit . ') AS page_count, COUNT(*) AS total_records
+                FROM messages AS p
+                WHERE from_id = ' . $user_id . ' AND to_id = ' . $corresponent_id  . ' OR  
+                      from_id = ' . $corresponent_id . ' AND to_id = ' . $user_id   .';';
+        $data = get_data_from_db($connection, $sql, 'Невозможно получить данные для пагинации', true);
+        return (!$data || was_error($data)) ? 1 : intval(get_assoc_element($data, 'page_count'));
     }

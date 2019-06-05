@@ -78,6 +78,9 @@
                 <div class="profile__tab-content">
                     <?= $profile_tab_content ?? ''; ?>
                 </div>
+                <div style="max-width: 760px; padding: 15px;">
+                    <?= $pagination_content ?? ''; ?>
+                </div>
             </div>
         </div>
     </div>

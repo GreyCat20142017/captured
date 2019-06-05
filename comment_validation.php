@@ -3,7 +3,11 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_comment'])) {
 
         $fields = [
-            'comment' => ['description' => 'Комментарий', 'required' => true]
+            'comment' => [
+                'description' => 'Комментарий',
+                'required' => true,
+                'validation_rules' => ['check_length:0:255']
+            ]
         ];
 
         $comment = array_map(function ($item) {

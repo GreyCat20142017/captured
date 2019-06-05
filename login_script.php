@@ -15,7 +15,7 @@
          */
         $fields = [
             'email' => ['description' => 'E-mail', 'required' => true, 'validation_rules' => ['email_validation']],
-            'password' => ['description' => 'Пароль', 'required' => true]
+            'password' => ['description' => 'Пароль', 'required' => true, 'validation_rules' => ['check_length:2:30']]
         ];
 
         $errors = get_validation_result($fields, $user, $_FILES);

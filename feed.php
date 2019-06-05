@@ -14,13 +14,27 @@
     $search_string = get_auth_user_property('last_search', $search_string ?? '') ?? '';
     $active_tab = isset($_GET['filter']) ? strip_tags($_GET['filter']) : null;
 
-    $posts = get_posts_for_feed($connection, get_auth_user_property('id'), $active_tab);
+    $page = isset($_GET['page']) ? intval(strip_tags($_GET['page'])) : 1;
+
+    $user_id = intval(get_auth_user_property('id'));
+    $page_count = get_feed_total_pages($connection, $user_id, RECORDS_PER_PAGE);
+    $posts = get_posts_for_feed($connection, $user_id, $active_tab, RECORDS_PER_PAGE,
+        ($page - 1) * RECORDS_PER_PAGE);
     $banners = get_banners($connection);
+
+    $pagination_content = include_template('pagination.php', [
+        'page_count' => $page_count,
+        'pages' => range(1, $page_count),
+        'active_page' => $page,
+        'active_query' => $_SERVER['QUERY_STRING'],
+        'active_script' => $_SERVER['PHP_SELF']
+    ]);
 
     $page_content = include_template('feed.php', [
         'user' => $user,
         'posts_content' => get_post_content($posts, 'feed'),
         'promo_content' => get_various_content($banners, 'promo.php', 'banner'),
+        'pagination_content' => ($page_count > 1) ? $pagination_content : '',
         'active_tab' => empty($active_tab) ? FILTER_ALL : $active_tab,
         'content_classname' => empty($posts) ? 'feed__wrapper feed__wrapper--no-content' : 'feed__wrapper',
         'filters_content' => get_filters_content(
