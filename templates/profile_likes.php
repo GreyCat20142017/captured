@@ -26,9 +26,7 @@
                 <div class="post-mini__preview">
                     <a class="post-mini__link" href="post_details.php?post=<?= get_pure_data($like, 'post_id'); ?>" title="Перейти на публикацию">
                         <div class="post-mini__image-wrapper">
-                            <img class="post-mini__image" src="<?= get_pure_data($like, 'filename'); ?>" width="109"
-                                 height="109"
-                                 alt="Превью публикации">
+                            <?= get_post_preview_tag($like); ?>
                         </div>
                         <span class="visually-hidden">Фото</span>
                     </a>

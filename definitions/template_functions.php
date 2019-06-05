@@ -23,7 +23,14 @@
      * @param $posts
      * @return string
      */
-    function get_post_content (&$posts, $classname, $common_feed = true, $expanded_id = 0, $comments = [], $show_all = false) {
+    function get_post_content (
+        &$posts,
+        $classname,
+        $common_feed = true,
+        $expanded_id = 0,
+        $comments = [],
+        $show_all = false
+    ) {
         $content = '';
         foreach ($posts as $post) {
             $is_own = isset($post['is_own_post']) ? (intval($post['is_own_post']) === 1) : false;
@@ -33,7 +40,8 @@
                 'post' => $post,
                 'expand' => $expand,
                 'comments' => $comments,
-                'need_more_comments' => $expand && (intval(COMMENTS_PREVIEW_COUNT) < intval(get_assoc_element($post, 'comments_count'))),
+                'need_more_comments' => $expand && (intval(COMMENTS_PREVIEW_COUNT) < intval(get_assoc_element($post,
+                            'comments_count'))),
                 'active_query' => $_SERVER['QUERY_STRING'],
                 'active_script' => $_SERVER['PHP_SELF'],
                 'shown' => $show_all
@@ -304,17 +312,67 @@
         return !empty($fn) ? $path . $fn : EMPTY_AVATAR;
     }
 
-
-    function get_photo(&$post, $fieldname = 'filename') {
+    /**
+     * Функция возвращает путь к фото (в зависимости от того, было ли оно загружено через интерфейс программы или нет)
+     *    *
+     * @param        $post
+     * @param string $fieldname
+     * @return string
+     */
+    function get_photo (&$post, $fieldname = 'filename') {
         $fn = get_pure_data($post, $fieldname);
-        $path =  substr($fn, 0, 2) === UI_START ? get_assoc_element(PATHS, PHOTOS) : '';
+        $path = substr($fn, 0, 2) === UI_START ? get_assoc_element(PATHS, PHOTOS) : '';
         return $path . $fn;
     }
 
-    function set_post_id(&$post, $suffix = '') {
-        return ' ' . POST_IDENTIFICATOR . $suffix .'="' . get_pure_data($post, 'post_id') . '" ';
+    /**
+     * Функция устанавливает атрибуты для использования в JS
+     * @param        $post
+     * @param string $suffix
+     * @return string
+     */
+    function set_post_id (&$post, $suffix = '') {
+        return ' ' . POST_IDENTIFICATOR . $suffix . '="' . get_pure_data($post, 'post_id') . '" ';
     }
 
-    function set_blogger_id(&$blogger, $suffix = '', $field_name = 'user_id') {
-        return ' ' . BLOGGER_IDENTIFICATOR . $suffix .'="' . get_pure_data($blogger, $field_name) . '" ';
+    /**
+     * Функция устанавливает атрибуты для использования в JS
+     * @param        $blogger
+     * @param string $suffix
+     * @param string $field_name
+     * @return string
+     */
+    function set_blogger_id (&$blogger, $suffix = '', $field_name = 'user_id') {
+        return ' ' . BLOGGER_IDENTIFICATOR . $suffix . '="' . get_pure_data($blogger, $field_name) . '" ';
     }
+
+    /**
+     * Функция возвращает тег для превью в зависимости от типа публикации
+     * @param $post
+     * @return string
+     */
+    function get_post_preview_tag (&$post) {
+        $category_id = intval(get_assoc_element($post, 'category_id'));
+        switch ($category_id) {
+            case 1:
+                {
+                    $tag = '<img class="post-mini__image" src="' . get_photo($post, 'photo') .
+                        '" width="109" height="109" alt="Превью публикации">';
+                    break;
+                }
+            case 2:
+                {
+                    $tag = '<iframe class="post-video__preview" 
+                                id="rzJhacp9z9I" width="109" height="109" src="http://www.youtube.com/embed/rzJhacp9z9I?autoplay=0">
+                            </iframe>';
+                    break;
+                }
+            default:
+                {
+                    $tag = FILTER_SVG[$category_id] ?? '';
+                }
+
+        }
+        return $tag;
+    }
+

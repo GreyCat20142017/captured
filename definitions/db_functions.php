@@ -305,11 +305,12 @@
     }
 
     /**
-     * Функция возвращает данные о лайках, полученных постами пользователя или пустой массив
+     * Грязненькая функция возвращает данные о лайках, полученных постами пользователя или пустой массив
      * @param $connection
      * @param $author_id
      * @return array|null
      */
+    //mytodo Прямо вот не хорошо это 1 и 2...
     function get_authors_likes ($connection, $author_id, $limit = RECORDS_PER_PAGE, $offset = 0) {
         $author_id = mysqli_real_escape_string($connection, $author_id);
         $sql = 'SELECT l.post_id,
@@ -318,12 +319,16 @@
                      u.avatar AS fan_avatar,
                      l.creation_date,
                      p.user_id AS author_id,
-                     uu.name   AS author_name,       
-                     "" as filename 
+                     uu.name   AS author_name,
+                     p.category_id,          
+                     IFNULL(ph.filename, "") as photo,
+                     IFNULL(v.youtube_id, "") as video
                 FROM likes AS l
                      JOIN posts AS p ON l.post_id = p.id
+                     LEFT OUTER JOIN photos AS ph ON p.id = ph.post_id AND p.category_id = 1
+                     LEFT OUTER JOIN videos AS v ON p.id = v.post_id AND p.category_id = 2
                      JOIN users AS uu ON p.user_id = uu.id
-                     JOIN users AS u ON l.user_id = u.id
+                     JOIN users AS u ON l.user_id = u.id                     
                 WHERE p.user_id = ' . $author_id . ' ORDER BY l.id DESC 
                 LIMIT ' . $limit . ' OFFSET ' . $offset . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о лайках');
