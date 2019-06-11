@@ -333,3 +333,33 @@
         }
         return $result;
     }
+
+    /**
+     * Функция возвращает разницу между текущим моментом и заданной датой в "человеческом" формате
+     * @param $date
+     * @return string
+     */
+    function get_time_ago ($date, $without_ago = false) {
+        $text = $without_ago ? '' : ' назад';
+        $current_date = date_create("now");
+        $limit_date = empty($date) ? $current_date : date_create($date);
+        $diff = date_diff($current_date, $limit_date);
+        if ($current_date < $limit_date) {
+            $result = 'в будущем';
+        } elseif ($diff->y > 1) {
+            $result = 'более ' . $diff->y . ' лет' . $text;
+        } elseif ($diff->y > 0) {
+            $result = 'более года' . $text;
+        } elseif ($diff->m > 0) {
+            $result = 'более ' . $diff->m . ' ' . get_text_form($diff->m, ['месяца', 'месяцев', 'месяцев']) . $text;
+        } elseif ($diff->d > 0) {
+            $result = 'более ' . $diff->d . ' ' . get_text_form($diff->d, ['дня', 'дней', 'дней']) . $text;
+        } elseif ($diff->h > 0) {
+            $result = 'около ' . $diff->h . ' ' . get_text_form($diff->h, ['часа', 'часов', 'часов']) . $text;
+        } elseif ($diff->i > 0) {
+            $result = 'около ' . $diff->i . ' ' . get_text_form($diff->i, ['минуты', 'минут', 'минут']) . $text;
+        } else {
+            $result = 'менее минуты' . $text;
+        }
+        return $result;
+    }

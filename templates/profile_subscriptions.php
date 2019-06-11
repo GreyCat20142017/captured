@@ -21,8 +21,8 @@
                             <span><?= get_pure_data($subscription, 'blogger_name'); ?></span>
                         </a>
                         <time class="post-mini__time user__additional"
-                              datetime="2014-03-20T20:20"><?= get_pure_data($subscription,
-                                'registration_date'); ?></time>
+                              datetime="2014-03-20T20:20"><?= get_time_ago(get_pure_data($subscription,
+                                'registration_date'), true) . ' на сайте'; ?></time>
                     </div>
                 </div>
                 <div class="post-mini__rating user__rating">

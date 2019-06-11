@@ -41,7 +41,7 @@
                                         <span><?= get_pure_data($comment, 'username'); ?></span>
                                     </a>
                                     <time class="comments__time" datetime="2019-03-20">
-                                        <?= get_pure_data($comment, 'creation_date'); ?>
+                                        <?= get_time_ago(get_pure_data($comment, 'creation_date')); ?>
                                     </time>
                                 </div>
                                 <p class="comments__text">

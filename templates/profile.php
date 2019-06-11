@@ -11,8 +11,8 @@
                     </div>
                     <div class="profile__name-wrapper user__name-wrapper">
                         <span class="profile__name user__name"><?= get_pure_data($user, 'username'); ?></span>
-                        <time class="profile__user-time user__time" datetime="2014-03-20"><?= get_pure_data($user,
-                                'registration_date'); ?></time>
+                        <time class="profile__user-time user__time" datetime="2014-03-20"><?= get_time_ago(get_pure_data($user,
+                                'registration_date'), true) . ' на сайте'; ?></time>
                     </div>
                 </div>
                 <div class="profile__rating user__rating">

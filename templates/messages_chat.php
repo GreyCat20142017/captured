@@ -16,8 +16,9 @@
                            href="profile.php?user=<?= get_pure_data($message, 'author_id'); ?>">
                             <?= get_pure_data($message, 'author_name'); ?>
                         </a>
-                        <time class="messages__time" datetime="2019-05-01T14:40">
-                            <?= get_pure_data($message, 'creation_date'); ?>
+                        <time class="messages__time" datetime="2019-05-01T14:40"
+                              title="<?= get_pure_data($message, 'creation_date'); ?>">
+                            <?= get_time_ago(get_pure_data($message, 'creation_date')); ?>
                         </time>
                     </div>
                 </div>

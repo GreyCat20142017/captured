@@ -19,7 +19,8 @@
                         <div class="post-mini__action">
                             <span class="post-mini__activity user__additional"><?= get_like_text($is_own); ?></span>
                             <time class="post-mini__time user__additional"
-                                  datetime="2014-03-20T20:20"><?= get_pure_data($like, 'creation_date'); ?></time>
+                                  title="<?= get_pure_data($like, 'creation_date'); ?>"
+                                  datetime="2014-03-20T20:20"><?= get_time_ago(get_pure_data($like, 'creation_date')); ?></time>
                         </div>
                     </div>
                 </div>

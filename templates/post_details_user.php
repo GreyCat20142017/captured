@@ -11,14 +11,16 @@
         <a class="post-details__name user__name" href="profile.php?user=<?= get_pure_data($user, 'user_id'); ?>">
             <span><?= get_pure_data($user, 'username'); ?></span>
         </a>
-        <time class="post-details__time user__time" datetime="2014-03-20"><?= get_pure_data($user,
-                'registration_date'); ?></time>
+        <time class="post-details__time user__time" datetime="2014-03-20"
+            title = "<?= get_pure_data($user, 'registration_date'); ?>">
+            <?= get_time_ago(get_pure_data($user, 'registration_date'), true) . ' на сайте'; ?>
+        </time>
     </div>
 </div>
 <div class="post-details__rating user__rating">
     <p class="post-details__rating-item user__rating-item user__rating-item--subscribers">
         <span class="post-details__rating-amount user__rating-amount" <?= set_blogger_id($user, '-content'); ?>>
-            <?= isnull(get_pure_data($user,'subscribers_count'), 0); ?>
+            <?= isnull(get_pure_data($user, 'subscribers_count'), 0); ?>
         </span>
         <span class="post-details__rating-text user__rating-text">
               <?= get_text_form(get_pure_data($user, 'subscribers_count'),

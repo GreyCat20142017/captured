@@ -31,7 +31,8 @@
                                     <p class="messages__preview-text">
                                         <?= get_pure_data($correspondent, 'message_part'); ?>
                                     </p>
-                                    <time class="messages__preview-time" datetime="2019-05-01T14:40">
+                                    <time class="messages__preview-time" datetime="2019-05-01T14:40"
+                                          title= <?= get_pure_data($correspondent, 'creation_date'); ?>>
                                         <?= date('H:i', strtotime(get_pure_data($correspondent, 'creation_date'))); ?>
                                     </time>
                                 </div>
@@ -55,7 +56,8 @@
                     <form class="comments__form form" action="messages.php?user=<?= $active_user; ?>" method="post">
                         <div class="comments__my-avatar">
                             <img class="comments__picture"
-                                 src="<?= get_avatar(get_auth_user_property('avatar', EMPTY_AVATAR)); ?>" alt="Аватар пользователя">
+                                 src="<?= get_avatar(get_auth_user_property('avatar', EMPTY_AVATAR)); ?>"
+                                 alt="Аватар пользователя">
                         </div>
                         <textarea class="comments__textarea form__textarea" name="message"
                                   placeholder="Ваше сообщение"></textarea>

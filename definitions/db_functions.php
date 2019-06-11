@@ -636,11 +636,12 @@
 
         if (empty($data)) {
 
-            $sql = 'INSERT INTO ' . $table . ' ( user_id,  post_id) 
-                          VALUES (?, ?)';
+            $sql = 'INSERT INTO ' . $table . ' ( user_id,  post_id, counter) 
+                          VALUES (?, ?, ?)';
             $stmt = db_get_prepare_stmt($connection, $sql, [
                 $user_id,
-                $post_id
+                $post_id,
+                1
             ]);
             $res = mysqli_stmt_execute($stmt);
         } else {
