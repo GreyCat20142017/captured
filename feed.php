@@ -30,6 +30,26 @@
         'active_script' => $_SERVER['PHP_SELF']
     ]);
 
+    $filters_content = get_filters_content(
+        $active_tab,
+        $_SERVER['PHP_SELF'],
+        $_SERVER['QUERY_STRING'],
+        'feed__filters-item filters__item ',
+        'filters__button button ',
+        'visually-hidden',
+        false);
+
+    if (MDB) {
+        $filters_dropdown_content = get_filters_content(
+            $active_tab,
+            $_SERVER['PHP_SELF'],
+            $_SERVER['QUERY_STRING'],
+            'feed__filters-item filters__item dropdown-item',
+            'filters__button button ',
+            'visually-hidden',
+            false);
+    }
+
     $page_content = include_template('feed.php', [
         'user' => $user,
         'posts_content' => get_post_content($posts, 'feed'),
@@ -37,14 +57,7 @@
         'pagination_content' => ($page_count > 1) ? $pagination_content : '',
         'active_tab' => empty($active_tab) ? FILTER_ALL : $active_tab,
         'content_classname' => empty($posts) ? 'feed__wrapper feed__wrapper--no-content' : 'feed__wrapper',
-        'filters_content' => get_filters_content(
-            $active_tab,
-            $_SERVER['PHP_SELF'],
-            $_SERVER['QUERY_STRING'],
-            'feed__filters-item filters__item',
-            'filters__button button ',
-            'visually-hidden',
-            false)
+        'filters_content' => $filters_content
     ]);
 
     $header_content = include_template('header_logged.php', [
@@ -53,7 +66,8 @@
         'filter_type' => 'filter',
         'filter_value' => $active_tab,
         'search_string' => $search_string,
-        'unread_count' => get_unread_count($connection, get_auth_user_property('id'))
+        'unread_count' => get_unread_count($connection, get_auth_user_property('id')),
+        'filters_content' => $filters_dropdown_content ?? $filters_content
     ]);
 
     $layout_content = include_template('layout.php',

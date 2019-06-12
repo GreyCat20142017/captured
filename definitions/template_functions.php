@@ -114,7 +114,17 @@
         return $active === $current ? $class . '--active' : '';
     }
 
-    /**
+
+    /** Функция возвращае название класса в зависимости от того, является ли переключатель активным
+     * @param $active
+     * @param $current
+     * @return string
+     */
+    function get_mdb_active ($active, $current) {
+        return $active === $current ?  ' active' : '';
+    }
+
+     /**
      * Возвращает текст комментария для таблицы лайков
      * @param $is_own
      * @return string
@@ -176,7 +186,8 @@
                 'li_classname' => $li_classname,
                 'a_classname' => $a_classname . ' ' . $classbase . TEMPLATE_NAME[$i] . ' ' . $is_active,
                 'active_tab' => $active_tab,
-                'vh' => $vh
+                'vh' => $vh,
+                'filter_fa_mdb' => get_element(FILTER_FA_MDB, $i)
             ]);
             $content .= $item_content;
         }

@@ -7,8 +7,8 @@
     define('SORT_LIKES', 'likes_count');
     define('SORT_DATE', 'post_id');
 
-    define('TEMPLATE_FOLDER', 'templates/');
-//    define('TEMPLATE_FOLDER', 'mdbtemplates/');
+    define('MDB', true);
+    define('TEMPLATE_FOLDER', MDB ? 'mdbtemplates/' : 'templates/');
 
     define('MAX_TEXT_LENGTH', 222);
     define('SHORT_TEXT_LENGTH', 22);

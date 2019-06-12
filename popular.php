@@ -33,7 +33,7 @@
         'content_classname' => empty($posts) ? 'popular__posts popular__posts--no-content' : 'popular__posts',
         'active_tab' => $active_tab,
         'active_sort' => $active_sort,
-        'posts_content' => get_post_content($posts, 'popular', true),
+        'posts_content' => get_post_content($posts, MDB ? 'col-12 col-md-4 justify-space-between' :'popular', true),
         'pagination_content' => ($page_count > 1) ? $pagination_content : '',
         'filters_content' => get_filters_content(
             $active_tab,

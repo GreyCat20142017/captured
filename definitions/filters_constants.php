@@ -69,3 +69,12 @@
                                 <use xlink:href="#icon-filter-link"></use>
                             </svg>'
     ]);
+
+    define('FILTER_FA_MDB', [
+        "fas fa-th",
+        "fas fa-camera",
+        "fas fa-video",
+        "fas fa-book",
+        "fas fa-quote-left",
+        "fas fa-link"
+    ]);

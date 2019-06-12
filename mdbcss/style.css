@@ -1,0 +1,35 @@
+.body {
+    font-family: "Arial", sans-serif;
+}
+
+.fab {
+    min-width: 53px;
+    min-height: 53px;
+    border-radius: 50%;
+}
+
+.fab i {
+    color: grey;
+}
+
+.filters__button--active {
+    background-color: lightgrey;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    padding: 0;
+    white-space: nowrap;
+    -webkit-clip-path: inset(100%);
+    clip-path: inset(100%);
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+}
+
+.dropdown-menu {
+    min-width: 6.5rem!important;
+}
