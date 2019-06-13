@@ -33,24 +33,25 @@
 
 <body>
 
-<div style="font-family: Arial, sans-serif;	min-height: 100vh;">
+<div class="d-flex flex-column" style="font-family: Arial, sans-serif;	min-height: 100vh;">
 
     <?= $header_content; ?>
     <?= $page_content; ?>
 
-    <footer class="page-footer font-small indigo pt-4 mt-4">
+    <footer class="page-footer font-small indigo p-4 mt-auto text-center">
 
         <!-- Footer Links -->
         <div class="container text-center text-md-left mt-auto">
 
             <!-- Grid row -->
-            <div class="row">
+            <div class="row align-items-center">
 
                 <!-- Grid column -->
-                <div class="col-md-12 mt-md-0 mt-3">
+                <div class="col-12 col-md-10 mt-md-0 mt-3">
 
                     <!-- Content -->
-                    <h6>Идея проекта позаимствована у HTML Academy</h6>
+                    <h6>Идея проекта подсмотрена у <a class="text-white-50" href="https://htmlacademy.ru">HTML
+                            Academy</a></h6>
                     <p>
                         <small>Использована только идея и визуальный скелет проекта. Выполнено по принципу: "Что вижу -
                             то пою!"
@@ -60,8 +61,34 @@
                         <small>Контент изменен. Все совпадения с ТЗ случайны. Оригинальная верстка заменена на верстку с
                             использованием
                         </small>
-                        <a href="https://mdbootstrap.com/previews/free-templates/blog/home-page.html">Material Design
-                            Bootstrap</a></p>
+                        <a class="text-white-50"
+                           href="https://mdbootstrap.com/previews/free-templates/blog/home-page.html">
+                            Material Design Bootstrap
+                        </a>
+                    </p>
+                </div>
+
+                <div class="col-12 col-md-2 mt-md-0 mt-3">
+                    <ul class="list-unstyled d-flex flex-row flex-md-column">
+                        <li class="p-1">
+                            <a href="popular.php" title="Популярные">
+                                <i class="far fa-star btn-lg"></i>
+                                <span>Популярные</span>
+                            </a>
+                        </li>
+                        <li class="p-1">
+                            <a href="feed.php" title="Моя лента">
+                                <i class="fas fa-align-justify btn-lg"></i>
+                                <span>Моя лента</span>
+                            </a>
+                        </li>
+                        <li class="p-1">
+                            <a href="messages.php" title="Сообщения">
+                                <i class="far fa-comments btn-lg"></i>
+                                <span>Сообщения</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -84,6 +111,11 @@
     }
   });
 </script>
+<?php if (!empty($js_scripts)): ?>
+    <?php foreach ($js_scripts as $js_script): ?>
+        <script src="../js/<?= $js_script; ?>"></script>
+    <?php endforeach; ?>
+<?php endif; ?>
 </body>
 
 </html>

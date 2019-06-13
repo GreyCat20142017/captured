@@ -1,4 +1,4 @@
-<div class="<?= $classname; ?>">
+<div class="mb-2 <?= $classname; ?>">
     <article class="card p-4">
         <div class="card-body pt-3 px-3">
 

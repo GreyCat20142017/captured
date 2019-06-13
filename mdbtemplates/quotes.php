@@ -1,7 +1,7 @@
-<div class="<?= $classname; ?>">
+<div class="mb-2 <?= $classname; ?>">
 <article class="card p-4">
     <?= $post_header_content ?? ''; ?>
-    <div class="text-white text-center font-weight-bold d-flex align-items-start justify-content-center blue-gradient p-5">
+    <div class="text-white text-center font-weight-bold d-flex align-items-start justify-content-center blue-gradient p-5 rounded">
         <i class="fas fa-quote-left mr-1"></i>
         <blockquote>
             <p>

@@ -1,4 +1,4 @@
-USE readme;
+USE captured;
 
 # Чистка таблиц
 SET FOREIGN_KEY_CHECKS = 0;

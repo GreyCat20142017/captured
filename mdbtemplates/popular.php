@@ -31,7 +31,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="btn btn-light-blue form-check-label <?= get_mdb_active($active_sort,
+                        <a class="btn  btn-light-blue form-check-label <?= get_mdb_active($active_sort,
                             SORT_DATE, 'sorting__link'); ?>"
                            href="<?= rebuild_query_string($active_script, $active_query, 'sort', SORT_DATE); ?>"
                            title="Сортировка по дате создания">

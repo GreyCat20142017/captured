@@ -320,7 +320,7 @@
      */
     function get_avatar ($fn) {
         $path = substr($fn, 0, 2) === UI_START ? get_assoc_element(PATHS, AVATARS) : '';
-        return !empty($fn) ? $path . $fn : EMPTY_AVATAR;
+        return !empty($fn) && is_file_exists($path . $fn) ? $path . $fn : EMPTY_AVATAR;
     }
 
     /**
@@ -333,7 +333,7 @@
     function get_photo (&$post, $fieldname = 'filename') {
         $fn = get_pure_data($post, $fieldname);
         $path = substr($fn, 0, 2) === UI_START ? get_assoc_element(PATHS, PHOTOS) : '';
-        return $path . $fn;
+        return is_file_exists($path . $fn) ? $path . $fn  : EMPTY_FILE;
     }
 
     /**

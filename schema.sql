@@ -1,10 +1,10 @@
 #Однозначно, такая схема - это перебор. Но застарелые предрассудки пока победили...
 
-DROP DATABASE IF EXISTS readme;
+DROP DATABASE IF EXISTS captured;
 
-CREATE DATABASE readme DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+CREATE DATABASE captured DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 
-USE readme;
+USE captured;
 
 CREATE TABLE categories (
   id           INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,

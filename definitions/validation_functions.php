@@ -39,6 +39,20 @@
     }
 
     /**
+     * Функция возращает название класса mdb для обертки поля формы на основе переданного массива с результатами валидации
+     * и названия поля Для изображения передается название класса.
+     * @param        $errors
+     * @param        $field_name
+     * @param string $success_classname
+     * @return string
+     */
+    function get_mdb_validation_classname (&$errors, $field_name, $success_classname = 'is-valid') {
+        $success_classname = is_array($errors) && count($errors) === 0 ? '' : $success_classname;
+        $field_errors = get_assoc_element($errors, $field_name);
+        return is_array($field_errors) && count($field_errors) > 0 ? ' is-invalid ' : $success_classname;
+    }
+
+    /**
      * Функция возвращает описание ошибок валадации для поля по массиву ошибок и названию поля (название поля - ключ в
      * массиве с ошибками)
      * @param $errors

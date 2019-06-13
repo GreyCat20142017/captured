@@ -1,4 +1,4 @@
-<div class="<?= $classname; ?>">
+<div class="mb-2 <?= $classname; ?>">
 <article class="card p-4">
     <?= $post_header_content ?? ''; ?>
     <div class="mdb-color-text font-weight-bold text-center z-depth-1 d-flex flex-column align-items-center justify-content-center heavy-rain-gradient p-5">

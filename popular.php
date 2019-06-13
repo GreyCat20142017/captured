@@ -27,22 +27,35 @@
         'active_script' => $_SERVER['PHP_SELF']
     ]);
 
+    $filters_content = get_filters_content(
+        $active_tab,
+        $_SERVER['PHP_SELF'],
+        $_SERVER['QUERY_STRING'],
+        'popular__filters-item filters__item',
+        'filters__button button ',
+        'visually-hidden',
+        false);
+
+    if (MDB) {
+        $filters_dropdown_content = get_filters_content(
+            $active_tab,
+            $_SERVER['PHP_SELF'],
+            $_SERVER['QUERY_STRING'],
+            'popular__filters-item filters__item dropdown-item',
+            'filters__button button ',
+            'visually-hidden',
+            false);
+    }
+
     $page_content = include_template('popular.php', [
         'user' => $user,
         'active_tab' => empty($active_filter) ? FILTER_ALL : $active_filter,
         'content_classname' => empty($posts) ? 'popular__posts popular__posts--no-content' : 'popular__posts',
         'active_tab' => $active_tab,
         'active_sort' => $active_sort,
-        'posts_content' => get_post_content($posts, MDB ? 'col-12 col-md-4 justify-space-between' :'popular', true),
+        'posts_content' => get_post_content($posts, MDB ? 'col-12 col-md-4 justify-space-between' : 'popular', true),
         'pagination_content' => ($page_count > 1) ? $pagination_content : '',
-        'filters_content' => get_filters_content(
-            $active_tab,
-            $_SERVER['PHP_SELF'],
-            $_SERVER['QUERY_STRING'],
-            'popular__filters-item filters__item',
-            'filters__button button ',
-            'visually-hidden',
-            false),
+        'filters_content' => $filters_content,
         'active_query' => $_SERVER['QUERY_STRING'],
         'active_script' => $_SERVER['PHP_SELF']
     ]);
@@ -53,7 +66,8 @@
         'filter_type' => 'filter',
         'filter_value' => $active_tab,
         'search_string' => $search_string,
-        'unread_count' => get_unread_count($connection, get_auth_user_property('id'))
+        'unread_count' => get_unread_count($connection, get_auth_user_property('id')),
+        'filters_content' => $filters_dropdown_content ?? $filters_content
     ]);
 
     $layout_content = include_template('layout.php',

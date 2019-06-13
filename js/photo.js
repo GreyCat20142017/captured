@@ -49,7 +49,7 @@
       addClassName(linkWrapper, HIDDEN_CLASSNAME);
       linkImgPreview.src = '';
       linkFileName.textContent = '';
-      linkUploadFile.files = {};
+      linkUploadFile.value= '';
     }
   };
 

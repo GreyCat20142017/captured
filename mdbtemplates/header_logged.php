@@ -42,7 +42,7 @@
                         <div class="md-form my-0">
                             <input class="form-control border-light"
                                    type="search" name="search" placeholder="Поиск" aria-label="Поиск"
-                                   value="<?= strip_tags($search_string); ?>">
+                                   value="<?= strip_tags($search_string ?? ''); ?>">
                             <button class="btn p-1 mx-0 my-2 btn-floating" type="submit" title="Найти">
                                 <i class="fas fa-search text-white"></i>
                             </button>
@@ -52,7 +52,7 @@
                     <!-- Links -->
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link <?= get_switch_classname($active_content, CONTENT_POPULAR, 'active'); ?>"
+                            <a class="nav-link <?= get_mdb_active($active_content, CONTENT_POPULAR, 'active'); ?>"
                                 <?= get_content_href(CONTENT_POPULAR, $active_content, $filter_type, $filter_value); ?>
                                title="Популярные">
                                 <i class="far fa-star btn-lg"></i>
@@ -60,19 +60,21 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link <?= get_switch_classname($active_content, CONTENT_FEED, 'active'); ?>"
+                            <a class="nav-link <?= get_mdb_active($active_content, CONTENT_FEED, 'active'); ?>"
                                 <?= get_content_href(CONTENT_FEED, $active_content, $filter_type, $filter_value); ?>
                                title="Моя лента">
                                 <i class="fas fa-align-justify btn-lg"></i>
                                 <span class="d-md-none ml-2">Моя лента</span>
                             </a>
                         </li>
-                        <a class="nav-link <?= get_switch_classname($active_content, CONTENT_MESSAGES, 'active'); ?>"
-                            <?= get_content_href(CONTENT_MESSAGES, $active_content, $filter_type, $filter_value); ?>
-                           title="Сообщения">
-                            <i class="far fa-comments btn-lg"></i>
-                            <span class="d-md-none ml-2">Сообщения</span>
-                        </a>
+                        <li>
+                            <a class="nav-link <?= get_mdb_active($active_content, CONTENT_MESSAGES, 'active'); ?>"
+                                <?= get_content_href(CONTENT_MESSAGES, $active_content, $filter_type, $filter_value); ?>
+                               title="Сообщения">
+                                <i class="far fa-comments btn-lg"></i>
+                                <span class="d-md-none ml-2">Сообщения</span>
+                            </a>
+                        </li>
 
                         <li class="nav-item dropdown d-flex my-2 mx-3">
                             <img src="<?= get_avatar(get_auth_user_property('avatar')) ?>" width="40" height="40"

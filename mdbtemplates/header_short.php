@@ -1,21 +1,23 @@
-<header class="header page__header">
-    <div class="header__wrapper page__header-wrapper container">
-        <div class="header__logo-wrapper page__logo-wrapper">
+<header class="container shadow-sm">
+    <div class="row text-center">
+        <div class="col-12 col-md-4 text-center">
             <a class="header__logo-link header__logo-link--active">
-                <img class="header__logo" src="img/logo.svg" alt="Логотип readme" width="172" height="32">
+                <img class="img-fluid" src="img/roger.svg" alt="Альтернативный логотип capured" width="100" height="100">
             </a>
-            <p class="header__topic page__header-topic">
-                micro blogging
-            </p>
+            <h2 class="h5-responsive text-uppercase"
+                title="Основано на идее проекта Readme базового интенсива по PHP от HTML Academy">
+                Captured
+            </h2>
+            <p><small>Микробложек</small></p>
         </div>
-        <div class="header__nav-wrapper">
-            <nav class="header__nav">
-                <p class="header__register-slogan">
-                    Еще нет аккаунта?
+        <div class="col-12 col-md-7">
+            <nav class="d-flex align-items-center justify-content-center px-4 py-5">
+                <p class="h5-responsive mr-3">
+                    Нет учетной записи?
                 </p>
-                <ul class="header__user-nav">
+                <ul class="list-unstyled">
                     <li>
-                        <a class="header__user-button header__register-button button button--transparent"
+                        <a class="btn btn-indigo"
                            href="registration.php">Регистрация</a>
                     </li>
                 </ul>
