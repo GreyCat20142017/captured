@@ -3,7 +3,9 @@
     <a class="d-flex justify-content-start align-items-center"
        href="profile.php?user=<?= get_pure_data($post, 'user_id'); ?>" title="Автор">
         <div class="post__avatar-wrapper post__avatar-wrapper--repost">
-            <i class="fas fa-retweet btn-lg position-absolute indigo-text m-n4" title="Репост"></i>
+            <span class="btn-lg position-absolute indigo-text m-n4" title="Репост">
+                <?= get_inline_svg('sync-alt', 30, 30 ,"grey", "grey"); ?>
+            </span>
             <img class="rounded-circle" width="60" height="60" src="<?= get_avatar(get_pure_data($post, 'avatar')); ?>"
                  alt="Аватар пользователя">
 

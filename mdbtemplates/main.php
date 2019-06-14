@@ -1,23 +1,26 @@
 <main class="container p-5 shadow-lg mt-2 indigo text-white rounded">
     <h1 class="visually-hidden">Главная страница сайта Captured</h1>
     <div class="row">
-        <section class="col-12 col-md-6 text-center py-3">
+        <section class="col-12 col-md-6 text-center py-2">
             <h2 class="visually-hidden">Наши преимущества</h2>
             <p class="h4-responsive" title="МикроблоX без свитера">Бложек. По мотивам одного проекта.</p>
             <ul class="list-unstyled">
                 <li>
+                    <?= get_inline_svg('paw', 20, 20, "white", "white"); ?>
                     <p class="font-italic">
-                        <i class="fas fa-paw mx-3"></i>Очень интересненький проектик...
+                        Очень интересненький проектик...
                     </p>
                 </li>
                 <li>
+                    <?= get_inline_svg('paw', 20, 20, "white", "white"); ?>
                     <p class="font-italic">
-                        <i class="fas fa-paw mx-3"></i>Жаль, что только для "малиновых штанов"...
+                        Жаль, что только для "малиновых штанов"...
                     </p>
                 </li>
                 <li >
+                    <?= get_inline_svg('paw', 20, 20, "red", "red"); ?>
                     <p class="font-italic text-danger ">
-                        <i class="fas fa-paw mx-3"></i> Но... "Если есть на этом Плюке гравицапа, так достанем. Не такое доставали…" !
+                        Но... "Если есть на этом Плюке гравицапа, так достанем. Не такое доставали…" !
                     </p>
                 </li>
             </ul>

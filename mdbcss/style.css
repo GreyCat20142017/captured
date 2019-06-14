@@ -12,8 +12,28 @@
     color: grey;
 }
 
+.filters__button--active i {
+    color: hsla(255, 100%, 100%, 0.9);
+}
+
 .filters__button--active {
-    background-color: lightgrey;
+    background-color: hsl(216, 100%, 55%);
+}
+
+.filters__button--active svg {
+    fill: hsla(255, 100%, 100%, 0.9);
+    stroke: hsla(255, 100%, 100%, 0.9);
+    color: hsla(255, 100%, 100%, 0.9);
+}
+
+.filters__button span {
+    display: block;
+    padding: 2px 0;
+    min-width: 52px;
+}
+
+.filters__button--active span {
+    color: white;
 }
 
 .visually-hidden {
@@ -31,5 +51,10 @@
 }
 
 .dropdown-menu {
-    min-width: 6.5rem!important;
+    min-width: 6.5rem !important;
+}
+
+.messages__contacts-tab.active * {
+    color: white;
+    background-color: navy;
 }

@@ -1,7 +1,7 @@
 <header class="post__header post__author">
     <a class="" href="profile.php?user=<?= get_pure_data($post, 'user_id'); ?>" title="Автор">
-        <div class="card-body pt-3 px-3">
-            <div class="card-title d-flex mb-2">
+        <div class="card-body pt-2 px-3">
+            <div class="card-title d-flex mb-2 align-items-center">
                 <img src="<?= get_avatar(get_pure_data($post, 'avatar')); ?>"
                      width="50" height="50" class="rounded-circle z-depth-0 ml-3" alt="ava">
                 <div class="card-text d-flex flex-row mx-3 mt-3">

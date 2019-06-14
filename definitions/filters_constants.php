@@ -71,10 +71,10 @@
     ]);
 
     define('FILTER_FA_MDB', [
-        "fas fa-th",
-        "fas fa-camera",
-        "fas fa-video",
-        "fas fa-book",
-        "fas fa-quote-left",
-        "fas fa-link"
+        'th',
+        'camera',
+        'video',
+        'file-signature',
+        'quote-left',
+        'link'
     ]);

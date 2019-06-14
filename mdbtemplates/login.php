@@ -1,6 +1,5 @@
 <main class="container">
     <div class="row">
-
         <h1 class="col-12 text-center">Вход</h1>
 
         <section class="col-12  py-3 justify-content-center">
@@ -28,5 +27,6 @@
                 </div>
             </form>
         </section>
+
     </div>
 </main>

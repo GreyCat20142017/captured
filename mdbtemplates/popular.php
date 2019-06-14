@@ -31,7 +31,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="btn  btn-light-blue form-check-label <?= get_mdb_active($active_sort,
+                        <a class="btn btn-light-blue form-check-label <?= get_mdb_active($active_sort,
                             SORT_DATE, 'sorting__link'); ?>"
                            href="<?= rebuild_query_string($active_script, $active_query, 'sort', SORT_DATE); ?>"
                            title="Сортировка по дате создания">
@@ -50,7 +50,7 @@
                     <li>
                         <a class="fab btn p-3 rounded-circle rgba-white-slight <?= get_switch_classname($active_tab, FILTER_ALL); ?>"
                            href="feed.php?filter=<?= FILTER_ALL; ?>" title="Все">
-                            <i class="fas fa-th"></i>
+                            <?= get_inline_svg('th', 20, 20, "white", "white"); ?>
                         </a>
                     </li>
                     <?= $filters_content; ?>

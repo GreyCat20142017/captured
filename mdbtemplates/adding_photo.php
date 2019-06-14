@@ -1,81 +1,58 @@
-<section class="adding-post__photo tabs__content tabs__content--active">
+<section class="section">
     <h2 class="visually-hidden">Форма добавления фото</h2>
-    <form class="adding-post__form form" action="adding.php?tab=1" method="post" enctype="multipart/form-data">
+    <form class="needs-validation mx-auto col-11 p-3 white mdb-color-text rounded shadow-lg text-center"
+          action="adding.php?tab=1" method="post" enctype="multipart/form-data">
 
-        <div class="adding-post__input-wrapper form__input-wrapper <?= get_field_validation_classname($errors,
-            'photo-heading'); ?>">
-            <label class="adding-post__label form__label" for="photo-heading">Заголовок</label>
-            <div class="form__input-section">
-                <input class="adding-post__input form__input" id="photo-heading" type="text"
-                       name="photo-heading" value="<?= get_pure_data($post, 'photo-heading'); ?>"
-                       placeholder="Введите заголовок">
-                <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span>
-                </button>
-                <div class="form__error-text">
-                    <h3 class="form__error-title">Ошибка при заполнении поля</h3>
-                    <p class="form__error-desc"><?= get_field_validation_message($errors, 'photo-heading'); ?></p>
-                </div>
-            </div>
+        <div class="col-12 d-flex flex-column mt-2 text-left">
+            <label for="photo-heading">Заголовок</label>
+            <input class="form-control <?= get_mdb_validation_classname($errors, 'photo-heading'); ?>" type="text"
+                   name="photo-heading" id="photo-heading" required
+                   placeholder="Заголовок" value="<?= get_pure_data($post, 'photo-heading'); ?>">
+            <span class="invalid-feedback"><?= get_field_validation_message($errors, 'photo-heading') ?></span>
         </div>
 
-        <div class="adding-post__input-wrapper form__input-wrapper <?= get_field_validation_classname($errors,
-            'hashtag'); ?>">
-            <label class="adding-post__label form__label" for="hashtag">Хэштеги</label>
-            <div class="form__input-section">
-                <input class="adding-post__input form__input" id="hashtag" type="text" name="hashtag"
-                       placeholder="Введите заголовок" value="<?= get_pure_data($post, 'hashtag'); ?>">
-                <button class="form__error-button button" type="button">!<span
-                        class="visually-hidden">Информация об ошибке</span></button>
-                <div class="form__error-text">
-                    <h3 class="form__error-title">Ошибка при заполнении поля</h3>
-                    <p class="form__error-desc"><?= get_field_validation_message($errors, 'hashtag'); ?></p>
-                </div>
-            </div>
+        <div class="col-12 d-flex flex-column mt-2 text-left">
+            <label for="hashtag">Хештеги</label>
+            <input class="form-control <?= get_mdb_validation_classname($errors, 'hashtag'); ?>" type="text"
+                   name="hashtag" id="hashtag" required title="Через пробел, не более 5-ти, начинаются #"
+                   placeholder="Хештеги" value="<?= get_pure_data($post, 'hashtag'); ?>">
+            <span class="invalid-feedback"><?= get_field_validation_message($errors, 'hashtag') ?></span>
         </div>
 
+        <div class="file-field form__input-container mt-3">
+            <div class="d-flex justify-content-center">
+                <div class="btn btn-mdb-color btn-rounded float-left">
+                    <label for="userpic-file-photo">Файл с фото в формате jpg, png, svg (до 200Кб)</label>
+                    <input type="file" id="userpic-file-photo" name="userpic-file-photo"
+                           class="form__input-file <?= get_mdb_validation_classname($errors,
+                               'userpic-file-photo'); ?>"/>
+                    <?php if (!empty(get_field_validation_message($errors,
+                        'userpic-file-photo'))): ?>
+                        <span class="invalid-feedback"><?= get_field_validation_message($errors,
+                                'userpic-file-photo') ?></span>
+                    <?php endif; ?>
+                </div>
+            </div>
 
-        <div class="adding-post__input-file-container form__input-container">
-            <div class="adding-post__input-file-wrapper form__input-file-wrapper <?= get_field_validation_classname($errors,
-                'userpic-file-photo'); ?>">
-                <!--                <label class="adding-post__file-zone form__file-zone" for="userpic-file-photo">-->
-                <!--                    <span class="form__file-zone-text">Перетащите фото сюда</span>-->
-                <!--                </label>-->
-                <div class="adding-post__input-file-button form__input-file-button">
-                    <input class="adding-post__input-file form__input-file" id="userpic-file-photo" type="file"
-                           name="userpic-file-photo">
-                    <span class="adding-post__input-file-text form__input-file-text form__input">Выбрать фото</span>
-                    <svg class="adding-post__attach-icon form__attach-icon" width="10" height="20">
-                        <use xlink:href="#icon-attach"></use>
+            <div class="mb-4 form__file visually-hidden">
+                <img class="form__image" src="/img/roger.svg" width="150" height="150" alt="Предпросмотр">
+                <span class="form__file-name">dsc001.jpg</span>
+                <button class="btn btn-block btn-mdb-color form__delete-button" type="button">
+                    <span>Удалить</span>
+                    <svg class="form__delete-icon" width="12" height="12">
+                        <use xlink:href="#icon-close"></use>
                     </svg>
-                </div>
-
-                <div class="form__error-text">
-                    <h3 class="form__error-title">Ошибка при заполнении поля</h3>
-                    <p class="form__error-desc"><?= get_field_validation_message($errors, 'userpic-file-photo'); ?></p>
-                </div>
+                </button>
             </div>
-
-            <div class="adding-post__file form__file visually-hidden">
-                <div class="adding-post__image-wrapper form__image-wrapper">
-                    <img class="adding-post__image form__image" src="img/rock-adding.png" alt="Загруженное фото"
-                         width="360" height="250">
-                </div>
-                <div class="adding-post__file-data form__file-data">
-                    <span class="adding-post__file-name form__file-name">dsc-test.jpg</span>
-                    <button class="adding-post__delete-button form__delete-button button" type="button">
-                        <span>Удалить</span>
-                        <svg class="adding-post__delete-icon form__delete-icon" width="12" height="12">
-                            <use xlink:href="#icon-close"></use>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
         </div>
-        <div class="adding-post__buttons">
-            <button class="adding-post__submit button button--main" type="submit" name="publish_photo">Опубликовать
-            </button>
-            <a class="adding-post__close" href="profile.php">Закрыть</a>
+
+        <p class="text-danger">
+            <small><?= $status_text ?? ''; ?></small>
+        </p>
+
+        <div class="buttons d-flex">
+            <button class="btn btn-indigo mt-2" type="submit" name="publish_photo">Опубликовать</button>
+            <a class="btn btn-light-blue mt-2" href="profile.php">Закрыть</a>
         </div>
     </form>
 </section>

@@ -1,9 +1,7 @@
 <div class="mb-2 <?= $classname; ?>">
     <article class="card p-4">
-        <div class="card-body pt-3 px-3">
-
+        <div class="px-3">
             <?= $post_header_content ?? ''; ?>
-
             <h3 class="h3-responsive mdb-color-text"><?= get_pure_data($post, 'title'); ?></h3>
         </div>
         <div class="view overlay z-depth-1-half d-flex flex-center">
@@ -14,6 +12,5 @@
         </div>
 
         <?= $post_footer_content ?? ''; ?>
-
     </article>
 </div>

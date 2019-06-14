@@ -187,7 +187,7 @@
                 'a_classname' => $a_classname . ' ' . $classbase . TEMPLATE_NAME[$i] . ' ' . $is_active,
                 'active_tab' => $active_tab,
                 'vh' => $vh,
-                'filter_fa_mdb' => get_element(FILTER_FA_MDB, $i)
+                'filter_fa_mdb' => get_inline_svg(get_element(FILTER_FA_MDB, $i), 20, 20, "grey", "grey")
             ]);
             $content .= $item_content;
         }
@@ -387,3 +387,8 @@
         return $tag;
     }
 
+    function get_inline_svg ($svg , $width = 30, $height = 30, $fill = "white", $stroke= "white") {
+        return '<svg  stroke="' . $stroke . '" fill="' . $fill . '" width="' . $width .'" height="' . $height . '">
+                   <use xlink:href="#' . $svg . '"></use>
+                </svg>';
+    }

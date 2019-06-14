@@ -1,5 +1,4 @@
 #Однозначно, такая схема - это перебор. Но застарелые предрассудки пока победили...
-
 DROP DATABASE IF EXISTS captured;
 
 CREATE DATABASE captured DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
@@ -13,13 +12,14 @@ CREATE TABLE categories (
 );
 
 CREATE TABLE users (
-  id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  registration_date TIMESTAMP    NOT NULL        DEFAULT CURRENT_TIMESTAMP,
-  email             VARCHAR(128) NOT NULL UNIQUE DEFAULT '',
-  name              CHAR(30)     NOT NULL        DEFAULT '',
-  user_password     VARCHAR(254) NOT NULL        DEFAULT '',
-  info              TEXT         NOT NULL,
-  avatar            CHAR(32)     NOT NULL        DEFAULT ''
+  id                INT UNSIGNED     NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  registration_date TIMESTAMP        NOT NULL        DEFAULT CURRENT_TIMESTAMP,
+  email             VARCHAR(128)     NOT NULL UNIQUE DEFAULT '',
+  name              CHAR(30)         NOT NULL        DEFAULT '',
+  user_password     VARCHAR(254)     NOT NULL        DEFAULT '',
+  info              TEXT             NOT NULL,
+  avatar            CHAR(32)         NOT NULL        DEFAULT '',
+  use_mdb           TINYINT UNSIGNED NOT NULL        DEFAULT 1
 );
 
 CREATE TABLE posts (
