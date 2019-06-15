@@ -2,7 +2,7 @@
     <div class="row text-center">
         <div class="col-12 col-md-4 text-center">
             <a class="header__logo-link header__logo-link--active">
-                <img class="img-fluid" src="img/roger.svg" alt="Альтернативный логотип capured" width="100" height="100">
+                <img class="img-fluid" src="img/roger.svg" alt="Альтернативный логотип CAPTURED" width="100" height="100">
             </a>
             <h2 class="h5-responsive text-uppercase"
                 title="Основано на идее проекта Readme базового интенсива по PHP от HTML Academy">

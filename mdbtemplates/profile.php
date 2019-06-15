@@ -2,8 +2,8 @@
     <h1 class="visually-hidden">Профиль</h1>
 
     <div class="profile profile--<?= $active_tab; ?>">
-        <div class="profile__user-wrapper shadow-lg rounded my-3">
-            <div class="profile__user user container d-flex py-2 px-5 align-items-center">
+        <div class="shadow-lg rounded my-3">
+            <div class="user container d-flex py-2 px-5 align-items-center">
                 <div class="d-flex align-items-center">
                     <div>
                         <img class="rounded-circle" width="60" height="60"
@@ -39,7 +39,8 @@
 
                 <?php if (!$is_own): ?>
                     <div class="d-flex flex-column px-5 text-center profile__user-buttons user__buttons">
-                        <a class="btn btn-indigo profile__user-button user__button user__button--subscription button button--main"
+                        <a class="btn btn-indigo profile__user-button user__button user__button--subscription
+                            button button--main js-subscription-single"
                         <a <?= get_subscription_href_title(get_pure_data($user, 'user_id'),
                             'Подписаться/отписаться от автора ' . get_pure_data($user, 'username')); ?>
                             <?= set_blogger_id($user); ?>>

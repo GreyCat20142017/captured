@@ -305,11 +305,14 @@
      * @return string
      */
     function get_favicon ($url) {
-//        $host = get_pure_data(parse_url($url), 'host');
-//        $scheme = get_pure_data(parse_url($url), 'scheme');
-//        $url = str_replace($scheme . '://', '', $host);
-//        return !empty($url) ? 'https://www.google.com/s2/favicons?domain=' . $url : '';
-        return EMPTY_FILE;
+        $result = EMPTY_FILE;
+        if (TRY_GET_FAVICONS) {
+            $host = get_pure_data(parse_url($url), 'host');
+            $scheme = get_pure_data(parse_url($url), 'scheme');
+            $url = str_replace($scheme . '://', '', $host);
+            $result = !empty($url) ? 'https://www.google.com/s2/favicons?domain=' . $url : '';
+        }
+        return $result;
     }
 
     /**

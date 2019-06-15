@@ -58,3 +58,13 @@
     color: white;
     background-color: navy;
 }
+
+.pseudo-table {
+    border: 1px solid rgba(211, 211, 211, 0.3);
+}
+
+@media (max-width: 576px) {
+    .six-buttons span {
+        display: none;
+    }
+}

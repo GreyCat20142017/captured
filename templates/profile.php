@@ -36,7 +36,8 @@
 
                 <?php if (!$is_own): ?>
                     <div class="profile__user-buttons user__buttons">
-                        <a class="profile__user-button user__button user__button--subscription button button--main"
+                        <a class="profile__user-button user__button user__button--subscription button button--main
+                        js-subscription-single"
                         <a <?= get_subscription_href_title(get_pure_data($user, 'user_id'),
                             'Подписаться/отписаться от автора ' . get_pure_data($user, 'username')); ?>
                             <?= set_blogger_id($user); ?>>

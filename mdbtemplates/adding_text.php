@@ -1,57 +1,41 @@
-<section class="adding-post__text tabs__content tabs__content--active">
+<section class="section">
     <h2 class="visually-hidden">Форма добавления текста</h2>
-    <form class="adding-post__form form" action="adding.php?tab=3" method="post">
 
-        <div class="adding-post__input-wrapper form__input-wrapper <?= get_field_validation_classname($errors,
-            'text-heading'); ?>">
-            <label class="adding-post__label form__label" for="text-heading">Заголовок</label>
-            <div class="form__input-section">
-                <input class="adding-post__input form__input" id="text-heading" type="text" name="text-heading"
-                       placeholder="Введите заголовок" value="<?= get_pure_data($post, 'text-heading'); ?>">
-                <button class="form__error-button button" type="button">!<span
-                        class="visually-hidden">Информация об ошибке</span></button>
-                <div class="form__error-text">
-                    <h3 class="form__error-title">Ошибка при заполнении поля</h3>
-                    <p class="form__error-desc"><?= get_field_validation_message($errors, 'text-heading'); ?></p>
-                </div>
-            </div>
+    <form class="needs-validation mx-auto col-11 p-3 white mdb-color-text rounded shadow-lg text-center"
+          action="adding.php?tab=3" method="post">
+
+        <div class="col-12 d-flex flex-column mt-2 text-left">
+            <label for="text-heading">Заголовок</label>
+            <input class="form-control <?= get_mdb_validation_classname($errors, 'text-heading'); ?>" type="text"
+                   name="text-heading" id="text-heading" bredotmp
+                   placeholder="Заголовок" value="<?= get_pure_data($post, 'text-heading'); ?>">
+            <span class="invalid-feedback"><?= get_field_validation_message($errors, 'text-heading') ?></span>
         </div>
 
-        <div class="adding-post__input-wrapper form__input-wrapper <?= get_field_validation_classname($errors,
-            'hashtag'); ?>">
-            <label class="adding-post__label form__label" for="hashtag">Хэштеги</label>
-            <div class="form__input-section">
-                <input class="adding-post__input form__input" id="hashtag" type="text" name="hashtag"
-                       placeholder="Введите заголовок" value="<?= get_pure_data($post, 'hashtag'); ?>">
-                <button class="form__error-button button" type="button">!<span
-                        class="visually-hidden">Информация об ошибке</span></button>
-                <div class="form__error-text">
-                    <h3 class="form__error-title">Ошибка при заполнении поля</h3>
-                    <p class="form__error-desc"><?= get_field_validation_message($errors, 'hashtag'); ?></p>
-                </div>
-            </div>
+        <div class="col-12 d-flex flex-column mt-2 text-left">
+            <label for="hashtag">Хештеги</label>
+            <input class="form-control <?= get_mdb_validation_classname($errors, 'hashtag'); ?>" type="text"
+                   name="hashtag" id="hashtag" bredotmp title="Через пробел, не более 5-ти, начинаются #"
+                   placeholder="Хештеги" value="<?= get_pure_data($post, 'hashtag'); ?>">
+            <span class="invalid-feedback"><?= get_field_validation_message($errors, 'hashtag') ?></span>
         </div>
 
-        <div class="adding-post__textarea-wrapper form__textarea-wrapper <?= get_field_validation_classname($errors,
-            'post-text'); ?>">
-            <label class="adding-post__label form__label" for="post-text">Текст поста</label>
-            <div class="form__input-section">
-                <textarea class="adding-post__textarea form__textarea form__input" id="post-text"
-                          placeholder="Введите текст публикации"
-                          name="post-text"><?= get_pure_data($post, 'post-text'); ?></textarea>
-                <button class="form__error-button button" type="button">!<span
-                        class="visually-hidden">Информация об ошибке</span></button>
-                <div class="form__error-text">
-                    <h3 class="form__error-title">Ошибка при заполнении поля</h3>
-                    <p class="form__error-desc"><?= get_field_validation_message($errors, 'post-text'); ?></p>
-                </div>
-            </div>
+        <div class="col-12 d-flex flex-column mt-2 text-left">
+            <label for="post-text">Текст поста</label>
+            <textarea class="form-control  <?= get_mdb_validation_classname($errors, 'post-text'); ?>"
+                      id="post-text" name="post-text"
+                      placeholder="Введите текст публикации" bredotmp title="Введите текст публикации"
+            ><?= get_pure_data($post, 'post-text'); ?></textarea>
+            <span class="invalid-feedback"><?= get_field_validation_message($errors, 'post-text') ?></span>
         </div>
 
-        <div class="adding-post__buttons">
-            <button class="adding-post__submit button button--main" type="submit" name="publish_text">Опубликовать
-            </button>
-            <a class="adding-post__close" href="close.php">Закрыть</a>
+        <p class="text-danger">
+            <small><?= $status_text ?? ''; ?></small>
+        </p>
+
+        <div class="buttons d-flex">
+            <button class="btn btn-indigo mt-2" type="submit" name="publish_text">Опубликовать</button>
+            <a class="btn btn-light-blue mt-2" href="profile.php">Закрыть</a>
         </div>
     </form>
 </section>

@@ -1,64 +1,65 @@
-<section
-    class="<?= empty($is_search) ? 'profile__subscriptions' : 'search__user'; ?> tabs__content tabs__content--active">
+<section class="<?= empty($is_search) ? 'profile__subscriptions' : 'search__user'; ?>">
     <?php if (empty($is_search)): ?>
         <h2 class="visually-hidden">Подписки</h2>
     <?php endif; ?>
-    <ul class="profile__subscriptions-list">
+    <ul class="list-unstyled js-subscriptions-container p-4 shadow-lg">
         <?php foreach ($subscriptions as $subscription): ?>
-            <li class="post-mini post-mini--photo post user">
-                <div class="post-mini__user-info user__info">
-                    <div class="post-mini__avatar user__avatar">
-                        <a class="user__avatar-link"
-                           href="profile.php?user=<?= get_pure_data($subscription, 'blogger_id'); ?>">
-                            <img class="post-mini__picture user__picture"
+            <li class="row user align-items-center shadow-sm my-3 p-1">
+                    <div class="col-12 col-md-6 d-flex align-items-center">
+                        <a class="mr-2 p-2" href="profile.php?user=<?= get_pure_data($subscription, 'blogger_id'); ?>">
+                            <img class="rounded-circle img-fluid" height="60" width="60"
                                  src="<?= get_avatar(get_pure_data($subscription, 'avatar')); ?>"
                                  alt="Аватар пользователя">
                         </a>
+
+                        <div class="d-flex flex-column">
+                            <a class="mdb-color-text font-weight-bold"
+                               href="profile.php?user=<?= get_pure_data($subscription, 'blogger_id'); ?>">
+                                <span><?= get_pure_data($subscription, 'blogger_name'); ?></span>
+                            </a>
+                            <time class="post-mini__time user__additional" datetime="2014-03-20T20:20">
+                                <small>
+                                    <?= get_time_ago(get_pure_data($subscription, 'registration_date'),
+                                        true) . ' на сайте'; ?>
+                                </small>
+                            </time>
+                        </div>
                     </div>
-                    <div class="post-mini__name-wrapper user__name-wrapper">
-                        <a class="post-mini__name user__name"
-                           href="profile.php?user=<?= get_pure_data($subscription, 'blogger_id'); ?>">
-                            <span><?= get_pure_data($subscription, 'blogger_name'); ?></span>
-                        </a>
-                        <time class="post-mini__time user__additional"
-                              datetime="2014-03-20T20:20"><?= get_time_ago(get_pure_data($subscription,
-                                'registration_date'), true) . ' на сайте'; ?></time>
-                    </div>
-                </div>
-                <div class="post-mini__rating user__rating">
-                    <p class="post-mini__rating-item user__rating-item user__rating-item--publications">
-                        <span
-                            class="post-mini__rating-amount user__rating-amount"><?= isnull(get_pure_data($subscription,
-                                'posts_count'), 0); ?></span>
-                        <span class="post-mini__rating-text user__rating-text">
+
+                    <div class="col-12 col-md-3 d-flex justify-content-between px-3 pt-2 pseudo-table">
+                        <p class="d-flex flex-column text-center">
+                        <span class="h5-responsive indigo-text font-weight-bold">
+                            <?= isnull(get_pure_data($subscription,'posts_count'), 0); ?>
+                        </span>
+                            <span class="post-mini__rating-text user__rating-text">
                              <?= get_text_form(get_pure_data($subscription, 'posts_count'),
                                  ['публикация', 'публикации', 'публикаций']); ?>
                         </span>
-                    </p>
-                    <p class="post-mini__rating-item user__rating-item user__rating-item--subscribers">
-                        <span class="post-mini__rating-amount user__rating-amount"
+                        </p>
+                        <p class="d-flex flex-column text-center">
+                        <span class="h5-responsive indigo-text font-weight-bold"
                             <?= set_blogger_id($subscription, '-content', 'blogger_id'); ?>>
-                            <?= isnull(get_pure_data($subscription,'subscribers_count'), 0); ?>
+                            <?= isnull(get_pure_data($subscription, 'subscribers_count'), 0); ?>
                         </span>
-                        <span class="post-mini__rating-text user__rating-text">
+                            <span class="post-mini__rating-text user__rating-text">
                                <?= get_text_form(get_pure_data($subscription, 'subscribers_count'),
                                    ['подписчик', 'подписчика', 'подписчиков']); ?>
                         </span>
-                    </p>
-                </div>
+                        </p>
+                    </div>
 
-                <div class="post-mini__user-buttons user__buttons">
-                    <?php if(is_auth_user()): ?>
-                    <a <?= get_subscription_href_title(get_pure_data($subscription, 'blogger_id',
-                        'Подписаться/отписаться')); ?>
-                        class="post-mini__user-button user__button user__button--subscription button button--main"
-                        <?= set_blogger_id($subscription, '', 'blogger_id'); ?>>
-                        <?= in_array(get_pure_data($subscription, 'blogger_id'),
-                            $auth_user_subscriptions ?? []) ?
-                            'Отписаться' : 'Подписаться'; ?>
-                    </a>
-                    <?php endif; ?>
-                </div>
+                    <div class="col-12 col-md-3">
+                        <?php if (is_auth_user()): ?>
+                            <a <?= get_subscription_href_title(get_pure_data($subscription, 'blogger_id',
+                                'Подписаться/отписаться')); ?>
+                                class="btn btn-block btn-indigo user__button--subscription"
+                                <?= set_blogger_id($subscription, '', 'blogger_id'); ?>>
+                                <?= in_array(get_pure_data($subscription, 'blogger_id'),
+                                    $auth_user_subscriptions ?? []) ?
+                                    'Отписаться' : 'Подписаться'; ?>
+                            </a>
+                        <?php endif; ?>
+                    </div>
 
             </li>
         <?php endforeach; ?>

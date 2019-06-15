@@ -1,25 +1,17 @@
-<!--<div class="post-details__wrapper">-->
-<!--    <div class="post-details__main post-details__main-block" style="padding: 60px;">-->
-<!--        <blockquote>-->
-<!--            <p>-->
-<!--                --><?//= get_pure_data($post, 'text'); ?>
-<!--            </p>-->
-<!--            <cite>--><?//= get_pure_data($post, 'author'); ?><!--</cite>-->
-<!--        </blockquote>-->
-<!--    </div>-->
-<!--</div>-->
-
-<div class="post-details__wrapper">
-    <div class="post-details__main post-details__main-block" style="padding: 60px;">
-        <article class="<?= $classname; ?>__post post post-quote">
+<div class="post-details__main pt-4">
+    <div class="mb-2 <?= $classname; ?>">
+        <article class="card p-4">
             <?= $post_header_content ?? ''; ?>
-            <div class="post__main">
-                <blockquote>
+            <div
+                class="text-white text-center font-weight-bold d-flex align-items-start justify-content-center blue-gradient p-5 rounded">
+                <?= get_inline_svg('quote-left', 20, 20, "white", "white"); ?>
+                <blockquote class="mx-1">
                     <p>
                         <?= get_pure_data($post, 'text'); ?>
                     </p>
                     <cite><?= get_pure_data($post, 'author'); ?></cite>
                 </blockquote>
+                <?= get_inline_svg('quote-right', 20, 20, "white", "white"); ?>
             </div>
             <?= $post_footer_content ?? ''; ?>
         </article>

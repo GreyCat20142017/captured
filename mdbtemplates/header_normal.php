@@ -1,4 +1,4 @@
-<header style="padding-top: 80px;">
+<header style="padding-top: 88px;">
     <div class="col-sm-12 mx-auto fixed-top">
         <nav class="navbar navbar-expand-lg navbar-dark indigo">
             <div class="container mx-auto">

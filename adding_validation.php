@@ -62,7 +62,7 @@
                 'quote-author' => [
                     'description' => 'Автор',
                     'required' => true,
-                    'validation_rules' => ['check_length:0:32']
+                    'validation_rules' => ['check_length:2:32']
                 ],
                 'hashtag' => [
                     'description' => 'Хэштег',

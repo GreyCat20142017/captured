@@ -4,8 +4,8 @@
         <div
             class="text-white text-center font-weight-bold d-flex align-items-start justify-content-center blue-gradient p-5 rounded">
             <?= get_inline_svg('quote-left', 20, 20, "white", "white"); ?>
-            <blockquote class="mx-1">
-                <p>
+            <blockquote>
+                <p class="px-2">
                     <?= get_pure_data($post, 'text'); ?>
                 </p>
                 <cite><?= get_pure_data($post, 'author'); ?></cite>

@@ -8,6 +8,7 @@
     define('SORT_DATE', 'post_id');
 
     define('MDB', true);
+    define('TRY_GET_FAVICONS', false);
     define('TEMPLATE_FOLDER', MDB ? 'mdbtemplates/' : 'templates/');
 
     define('MAX_TEXT_LENGTH', 222);

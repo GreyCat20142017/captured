@@ -1,12 +1,14 @@
-<main class="page__main page__main--publication">
-    <div class="container">
-        <h1 class="page__title page__title--publication"><?= get_pure_data($post, 'title'); ?></h1>
-        <section class="post-details">
-            <h2 class="visually-hidden">Публикация</h2>
-            <div class="post-details__wrapper post-photo">
+<main class="container">
+    <section class="post-details">
+        <h2 class="visually-hidden">Детальная информация о публикации</h2>
+        <div class="row text-center">
+
+            <div class="position-relative col-12 col-lg-8 rgba-stylish-slight order-1 order-lg-0">
+
+                <h3 class="h2-responsive p-2"><?= get_pure_data($post, 'title'); ?></h3>
 
                 <?php if (intval(get_pure_data($post, 'user_id')) === intval($current_user)) : ?>
-                    <a class="post-details__close button button--close"
+                    <a class="position-absolute"
                         <?= get_delete_post_href_title($post); ?>>
                         <span class="visually-hidden">Удалить</span>
                         <svg class="button__close-icon" width="18" height="18">
@@ -15,71 +17,66 @@
                     </a>
                 <?php endif; ?>
 
-                <div class="post-details__main-block post post--details">
+                <?= $dependent_content; ?>
 
-                    <?= $dependent_content; ?>
+                <p class="text-center">
+                    <small><?= get_pure_data($post, 'hashtag'); ?></small>
+                </p>
 
-                    <p style="text-align: center;">
-                        <small><?= get_pure_data($post, 'hashtag'); ?></small>
-                    </p>
-                    <div class="post__indicators">
+                <div class="post__indicators d-flex justify-content-between align-items-center px-2 pb-3">
 
-
-                        <div class="post__buttons">
-                            <a class="post__indicator post__indicator--likes button" <?= get_like_href_title($post); ?>>
-                                <svg class="post__indicator-icon" width="20" height="17">
-                                    <use xlink:href="#icon-heart"></use>
-                                </svg>
-                                <svg class="post__indicator-icon post__indicator-icon--like-active" width="20"
-                                     height="17">
-                                    <use xlink:href="#icon-heart-active"></use>
-                                </svg>
-                                <span><?= isnull(get_pure_data($post, 'likes_count'), 0); ?></span>
-                                <span class="visually-hidden">количество лайков</span>
-                            </a>
-                            <a class="post__indicator post__indicator--comments button"
-                               href="<?= rebuild_query_string($active_script, $active_query, 'all_comments',
-                                   !($shown)); ?>"
-                               title="Комментарии">
-                                <svg class="post__indicator-icon" width="19" height="17">
-                                    <use xlink:href="#icon-comment"></use>
-                                </svg>
-                                <span><?= isnull(get_pure_data($post, 'comments_count'), 0); ?></span>
-                                <span class="visually-hidden">количество комментариев</span>
-                            </a>
-                            <a class="post__indicator post__indicator--repost button" <?= get_repost_href_title($post); ?>>
-                                <svg class="post__indicator-icon" width="19" height="17">
-                                    <use xlink:href="#icon-repost"></use>
-                                </svg>
-                                <span><?= isnull(get_pure_data($post, 'reposts_count'), 0); ?></span>
-                                <span class="visually-hidden">количество репостов</span>
-                            </a>
-                        </div>
-                        <span class="post__view"><?= $reviews_count_text; ?></span>
+                    <div class="post__buttons">
+                        <a class="post__indicator post__indicator--likes button ml-1 mdb-color-text"
+                            <?= get_like_href_title($post); ?>>
+                            <?= get_inline_svg('heart', 20, 20, 'grey', 'grey'); ?>
+                            <span><?= isnull(get_pure_data($post, 'likes_count'), 0); ?></span>
+                            <span class="visually-hidden">количество лайков</span>
+                        </a>
+                        <a class="post__indicator post__indicator--comments button ml-1 mdb-color-text"
+                           href="<?= rebuild_query_string($active_script, $active_query, 'all_comments',
+                               !($shown)); ?>"
+                           title="Комментарии">
+                            <?= get_inline_svg('comments', 20, 20, 'grey', 'grey'); ?>
+                            <span><?= isnull(get_pure_data($post, 'comments_count'), 0); ?></span>
+                            <span class="visually-hidden">количество комментариев</span>
+                        </a>
+                        <a class="post__indicator post__indicator--repost button ml-1 mdb-color-text"
+                            <?= get_repost_href_title($post); ?>>
+                            <?= get_inline_svg('sync-alt', 20, 20, 'grey', 'grey'); ?>
+                            <span><?= isnull(get_pure_data($post, 'reposts_count'), 0); ?></span>
+                            <span class="visually-hidden">количество репостов</span>
+                        </a>
                     </div>
-                    <div class="comments">
-
-                        <?= $comments_form_content; ?>
-
-                        <div class="comments__list-wrapper">
-                            <?= $comments_content; ?>
-                            <?php if ($need_more_comments): ?>
-                                <a class="comments__more-link"
-                                   href="<?= rebuild_query_string($active_script, $active_query, 'all_comments',
-                                       !($shown)); ?>">
-                                    <span><?= $shown ? 'Cкрыть больше ' . COMMENTS_PREVIEW_COUNT . ' комментариев' : 'Показать все комментарии'; ?></span>
-                                    <sup class="comments__amount"><?= isnull(get_pure_data($post, 'comments_count'),
-                                            0); ?> </sup>
-                                </a>
-                            <? endif; ?>
-                        </div>
+                    <div>
+                        <?= get_inline_svg('eye', 20, 20, 'grey', 'grey'); ?>
+                        <span class="m-1 ost__view"><?= $reviews_count_text; ?></span>
                     </div>
                 </div>
 
-                <div class="post-details__user user">
-                    <?= $user_content; ?>
+                <div class="comments">
+
+                    <?= $comments_form_content; ?>
+
+                    <div class="comments__list-wrapper p-3 mdb-color-text">
+                        <?= $comments_content; ?>
+                        <?php if ($need_more_comments): ?>
+                            <a class="comments__more-link"
+                               href="<?= rebuild_query_string($active_script, $active_query, 'all_comments',
+                                   !($shown)); ?>">
+                                <span><?= $shown ? 'Cкрыть больше ' . COMMENTS_PREVIEW_COUNT . ' комментариев' : 'Показать все комментарии'; ?></span>
+                                <sup class="comments__amount"><?= isnull(get_pure_data($post, 'comments_count'),
+                                        0); ?> </sup>
+                            </a>
+                        <? endif; ?>
+                    </div>
+
                 </div>
             </div>
-        </section>
-    </div>
+
+            <div class="post-details__user user col-12 col-lg-4">
+                <?= $user_content; ?>
+            </div>
+        </div>
+    </section>
+
 </main>

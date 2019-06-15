@@ -3,7 +3,7 @@
     <?php if (empty($is_search)): ?>
         <h2 class="visually-hidden">Подписки</h2>
     <?php endif; ?>
-    <ul class="profile__subscriptions-list">
+    <ul class="profile__subscriptions-list js-subscriptions-container">
         <?php foreach ($subscriptions as $subscription): ?>
             <li class="post-mini post-mini--photo post user">
                 <div class="post-mini__user-info user__info">

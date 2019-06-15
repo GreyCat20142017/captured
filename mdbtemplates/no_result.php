@@ -1,18 +1,14 @@
-<div class="page__main page__main--search-results">
-    <h1 class="visually-hidden">Страница результатов поиска (нет результатов)</h1>
-    <section class="search">
-        <h2 class="visually-hidden">Результаты поиска</h2>
-        <div class="search__results-wrapper">
-            <div class="search__no-results container">
-                <p class="search__no-results-info">К сожалению, ничего не найдено.</p>
-                <p class="search__no-results-desc">
-                    Попробуйте изменить поисковый запрос или просто зайти в раздел &laquo;Популярное&raquo;, там живет самый крутой контент.
-                </p>
-                <div class="search__links">
-                    <a class="search__popular-link button button--main" href="popular.php">Популярное</a>
-                    <a class="search__back-link" href="<?= $back; ?>">Вернуться назад</a>
-                </div>
-            </div>
+<section class="search">
+    <h2 class="visually-hidden">Результаты поиска</h2>
+    <div class="search__results-wrapper  container ">
+        <div class="search__no-results font-weight-bold font-italic py-3">
+            <p class="search__no-results-info">К сожалению, ничего не найдено.</p>
+            <p class="search__no-results-info">Попробуйте изменить условие запроса.</p>
+            <?= get_inline_svg('roger-white', 100, 100, 'navy', 'navy'); ?>
         </div>
-    </section>
-</div>
+        <div>
+            <a class="btn btn-indigo" href="popular.php">Популярное</a>
+            <a class="btn btn-light-blue" href="<?= $back; ?>">Вернуться назад</a>
+        </div>
+    </div>
+</section>

@@ -85,12 +85,12 @@
   if (navigator.userAgent.indexOf('Trident/') < 0) {
     var pressedButton  = null;
     var userContainer = document.querySelector('.user');
-    var subscribersContainer = document.querySelector('.profile__subscriptions-list');
+    var subscribersContainer = document.querySelector('.js-subscriptions-container');
     if (subscribersContainer) {
       subscribersContainer.addEventListener('click', onSubscribersContainerClick);
     }
 
-    var userButton = userContainer ? userContainer.querySelector('.user__button--subscription') : null;
+    var userButton = userContainer ? userContainer.querySelector('.js-subscription-single') : null;
     if (userButton) {
       userButton.addEventListener('click', onUserButtonClick);
     }
