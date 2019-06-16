@@ -79,13 +79,37 @@
                         </div>
 
                         <div class="registration__input-wrapper form__input-wrapper form__input-wrapper--oneline
+                        <?= get_field_validation_classname($errors, 'use_mdb'); ?>">
+                            <div class="form__input-section">
+                                <input class="registration__input form__input visually-hidden control"
+                                      <?= get_checked_attribute(intval(get_pure_data($user, 'use_mdb'))); ?>
+                                       type="checkbox" name="use_mdb" id="use_mdb"
+                                       value="<?= get_pure_data($user, 'use_mdb'); ?>"
+                                       title="Использовать стили MDB">
+                                <label class="registration__label form__label" for="use_mdb">
+                                    Использовать стили Material Design
+                                </label>
+
+                                <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span>
+                                </button>
+                                <div class="form__error-text">
+                                    <h3 class="form__error-title">Заголовок сообщения</h3>
+                                    <p class="form__error-desc"><?= get_field_validation_message($errors,
+                                            'delete-avatar'); ?></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="registration__input-wrapper form__input-wrapper form__input-wrapper--oneline
                         <?= get_field_validation_classname($errors, 'delete-avatar'); ?>">
                             <div class="form__input-section">
-                                <input class="registration__input form__input visually-hidden control" id="delete-avatar" type="checkbox"
+                                <input class="registration__input form__input visually-hidden control"
+                                       id="delete-avatar" type="checkbox"
                                        name="delete-avatar"
                                        value="<?= get_pure_data($user, 'delete-avatar'); ?>"
                                        title="Удалить аватар при сохранении записи в БД">
-                                <label class="registration__label form__label" for="delete-avatar">Удалить аватар (если был) при
+                                <label class="registration__label form__label" for="delete-avatar">Удалить аватар (если
+                                    был) при
                                     обновлении данных в БД</label>
 
                                 <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span>
@@ -112,9 +136,6 @@
                                            name="avatar">
                                     <span
                                         class="registration__input-file-text form__input-file-text">Выбрать фото</span>
-                                    <!--                        <svg class="registration__attach-icon form__attach-icon" width="10" height="20">-->
-                                    <!--                            <use xlink:href="#icon-attach"></use>-->
-                                    <!--                        </svg>-->
                                     <img
                                         class="registration__image--previous registration__attach-icon form__attach-icon"
                                         src="<?= get_avatar(get_pure_data($user, 'avatar')) ?>"

@@ -39,7 +39,8 @@
         'visually-hidden',
         false);
 
-    if (MDB) {
+    $use_mdb = !empty(get_auth_user_property('mdb', MDB));
+    if ($use_mdb) {
         $filters_dropdown_content = get_filters_content(
             $active_tab,
             $_SERVER['PHP_SELF'],
@@ -67,7 +68,8 @@
         'filter_value' => $active_tab,
         'search_string' => $search_string,
         'unread_count' => get_unread_count($connection, get_auth_user_property('id')),
-        'filters_content' => $filters_dropdown_content ?? $filters_content
+        'filters_content' => $filters_dropdown_content ?? $filters_content,
+        'script' => $_SERVER['PHP_SELF']
     ]);
 
     $layout_content = include_template('layout.php',

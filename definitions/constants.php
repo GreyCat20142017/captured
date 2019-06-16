@@ -9,7 +9,8 @@
 
     define('MDB', true);
     define('TRY_GET_FAVICONS', false);
-    define('TEMPLATE_FOLDER', MDB ? 'mdbtemplates/' : 'templates/');
+    define('TEMPLATE_FOLDER',  'templates/');
+    define('MDB_TEMPLATE_FOLDER', 'mdbtemplates/');
 
     define('MAX_TEXT_LENGTH', 222);
     define('SHORT_TEXT_LENGTH', 22);

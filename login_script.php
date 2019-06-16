@@ -44,10 +44,14 @@
             }
             if ($db_status_ok) {
                 $status_text = '';
+                $use_mdb = !empty(get_assoc_element($db_user, 'use_mdb'));
+                $GLOBALS['template_path'] = $use_mdb ? MDB_TEMPLATE_FOLDER : TEMPLATE_FOLDER;
+
                 $_SESSION[CAPTURED_SESSION] = [
                     'id' => get_assoc_element($db_user, 'id'),
                     'name' => get_assoc_element($db_user, 'name'),
-                    'avatar' => get_assoc_element($db_user, 'avatar')
+                    'avatar' => get_assoc_element($db_user, 'avatar'),
+                    'mdb' => $use_mdb
                 ];
                 header('Location: index.php');
             }

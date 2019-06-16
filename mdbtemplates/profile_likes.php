@@ -33,10 +33,11 @@
 
                 <div class="post-mini__preview ml-auto">
                     <a class="post-mini__link"
-                       href="post_details.php?post=<?= get_pure_data($like, 'post_id'); ?>" title="Перейти на публикацию">
+                       href="post_details.php?post=<?= get_pure_data($like, 'post_id'); ?>"
+                       title="Перейти на публикацию">
                         <div class="post-mini__image-wrapper grey lighten-5 rounded">
-<!--                            --><?//= get_post_preview_tag($like); ?>
-<!--                            --><?//= FILTER_SVG[1] ?? ''; ?>
+                            <!--                            --><? //= get_post_preview_tag($like); ?>
+                            <!--                            --><? //= FILTER_SVG[1] ?? ''; ?>
                             <?= get_inline_svg('paw', 30, 30, "navy"); ?>
                         </div>
 

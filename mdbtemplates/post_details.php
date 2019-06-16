@@ -5,15 +5,13 @@
 
             <div class="position-relative col-12 col-lg-8 rgba-stylish-slight order-1 order-lg-0">
 
-                <h3 class="h2-responsive p-2"><?= get_pure_data($post, 'title'); ?></h3>
+                <h3 class="h2-responsive py-2 px-4"><?= get_pure_data($post, 'title'); ?></h3>
 
                 <?php if (intval(get_pure_data($post, 'user_id')) === intval($current_user)) : ?>
-                    <a class="position-absolute"
+                    <a class="position-absolute" style="left: 5px; top: 5px; "
                         <?= get_delete_post_href_title($post); ?>>
                         <span class="visually-hidden">Удалить</span>
-                        <svg class="button__close-icon" width="18" height="18">
-                            <use xlink:href="#icon-close"></use>
-                        </svg>
+                        <?= get_inline_svg('times-circle', 30, 30, 'pink', 'pink'); ?>
                     </a>
                 <?php endif; ?>
 

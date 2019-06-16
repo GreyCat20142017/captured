@@ -3,7 +3,6 @@
     require_once('init.php');
 
     if (!is_auth_user()) {
-        dump(is_auth_user());
         exit();
     }
 

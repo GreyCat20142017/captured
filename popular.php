@@ -36,7 +36,9 @@
         'visually-hidden',
         false);
 
-    if (MDB) {
+    $use_mdb = !empty(get_auth_user_property('mdb', MDB));
+
+    if ($use_mdb) {
         $filters_dropdown_content = get_filters_content(
             $active_tab,
             $_SERVER['PHP_SELF'],
@@ -53,7 +55,8 @@
         'content_classname' => empty($posts) ? 'popular__posts popular__posts--no-content' : 'popular__posts',
         'active_tab' => $active_tab,
         'active_sort' => $active_sort,
-        'posts_content' => get_post_content($posts, MDB ? 'col-12 col-md-4 justify-space-between' : 'popular', true),
+        'posts_content' => get_post_content($posts,
+            $use_mdb ? 'col-12 col-md-4 justify-space-between d-flex' : 'popular', true),
         'pagination_content' => ($page_count > 1) ? $pagination_content : '',
         'filters_content' => $filters_content,
         'active_query' => $_SERVER['QUERY_STRING'],
@@ -67,7 +70,8 @@
         'filter_value' => $active_tab,
         'search_string' => $search_string,
         'unread_count' => get_unread_count($connection, get_auth_user_property('id')),
-        'filters_content' => $filters_dropdown_content ?? $filters_content
+        'filters_content' => $filters_dropdown_content ?? $filters_content,
+        'script' => $_SERVER['PHP_SELF']
     ]);
 
     $layout_content = include_template('layout.php',

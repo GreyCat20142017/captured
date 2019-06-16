@@ -262,7 +262,7 @@
      * @return array|null
      */
     function get_user_by_email ($connection, $email) {
-        $sql = 'SELECT id, email, user_password, name, avatar FROM users WHERE email="' . mysqli_real_escape_string($connection,
+        $sql = 'SELECT id, email, user_password, name, avatar, use_mdb FROM users WHERE email="' . mysqli_real_escape_string($connection,
                 $email) . '" LIMIT 1;';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные пользователя', true);
         if (!$data) {
