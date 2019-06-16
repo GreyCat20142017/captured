@@ -23,27 +23,33 @@
                     <small><?= get_pure_data($post, 'hashtag'); ?></small>
                 </p>
 
-                <div class="post__indicators d-flex justify-content-between align-items-center px-2 pb-3">
+                <div class="indicators js-posts-container d-flex justify-content-between align-items-center px-2 pb-3">
 
-                    <div class="post__buttons">
-                        <a class="post__indicator post__indicator--likes button ml-1 mdb-color-text"
+                    <div class="buttons" <?= set_post_id($post); ?>>
+                        <a class="ml-1 mdb-color-text js-indicator js-indicator--likes"
                             <?= get_like_href_title($post); ?>>
                             <?= get_inline_svg('heart', 20, 20, 'grey', 'grey'); ?>
-                            <span><?= isnull(get_pure_data($post, 'likes_count'), 0); ?></span>
+                            <span <?= set_post_id($post, '-like'); ?>>
+                                <?= isnull(get_pure_data($post, 'likes_count'), 0); ?>
+                            </span>
                             <span class="visually-hidden">количество лайков</span>
                         </a>
-                        <a class="post__indicator post__indicator--comments button ml-1 mdb-color-text"
+                        <a class="ml-1 mdb-color-text js-indicator js-indicator--comments"
                            href="<?= rebuild_query_string($active_script, $active_query, 'all_comments',
                                !($shown)); ?>"
                            title="Комментарии">
                             <?= get_inline_svg('comments', 20, 20, 'grey', 'grey'); ?>
-                            <span><?= isnull(get_pure_data($post, 'comments_count'), 0); ?></span>
+                            <span <?= set_post_id($post, '-comment'); ?>>
+                                <?= isnull(get_pure_data($post, 'comments_count'), 0); ?>
+                            </span>
                             <span class="visually-hidden">количество комментариев</span>
                         </a>
-                        <a class="post__indicator post__indicator--repost button ml-1 mdb-color-text"
+                        <a class="js-indicator js-indicator--repost ml-1 mdb-color-text"
                             <?= get_repost_href_title($post); ?>>
                             <?= get_inline_svg('sync-alt', 20, 20, 'grey', 'grey'); ?>
-                            <span><?= isnull(get_pure_data($post, 'reposts_count'), 0); ?></span>
+                            <span <?= set_post_id($post, '-repost'); ?>>
+                                <?= isnull(get_pure_data($post, 'reposts_count'), 0); ?>
+                            </span>
                             <span class="visually-hidden">количество репостов</span>
                         </a>
                     </div>
@@ -57,7 +63,7 @@
 
                     <?= $comments_form_content; ?>
 
-                    <div class="comments__list-wrapper p-3 mdb-color-text">
+                    <div class="comments__list-wrapper mt-2 p-3 mdb-color-text">
                         <?= $comments_content; ?>
                         <?php if ($need_more_comments): ?>
                             <a class="comments__more-link"

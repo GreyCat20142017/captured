@@ -19,13 +19,17 @@
   };
 
   var onChangeLikeSuccess = function (response) {
-    window.backend.getPostData(AJAX_METHODS.GET, 'api.php?get_likes_count=1&post=' + response['post'], onSuccessGetLikesCount, onError, false);
+    if (response) {
+      window.backend.getPostData(AJAX_METHODS.GET, 'api.php?get_likes_count=1&post=' + response['post'], onSuccessGetLikesCount, onError, false);
+    }
   };
 
   var onSuccessGetLikesCount = function (response) {
-    var span = linkContainer.querySelector('span[' + POST_ID  + '-like="' + response['post'] + '"]');
-    if (span) {
-      span.textContent = '' + response['likes'];
+    if (response) {
+      var span = linkContainer.querySelector('span[' + POST_ID + '-like="' + response['post'] + '"]');
+      if (span) {
+        span.textContent = '' + response['likes'];
+      }
     }
   };
 
@@ -58,20 +62,20 @@
     }
     evt.preventDefault();
 
-    while (!element['classList'] || !element.classList.contains('post__indicator') && element !== linkContainer) {
+    while (!element['classList'] || !element.classList.contains('js-indicator') && element !== linkContainer) {
       element = element.parentNode;
     }
 
-    if (element.hasAttribute('href') && element.classList.contains('post__indicator--likes') && element.parentElement.hasAttribute(POST_ID)) {
+    if (element.hasAttribute('href') && element.classList.contains('js-indicator--likes') && element.parentElement.hasAttribute(POST_ID)) {
       changeLike(element.parentElement.getAttribute(POST_ID));
       return false;
     }
-    if (element.hasAttribute('href') && element.classList.contains('post__indicator--repost') && element.parentElement.hasAttribute(POST_ID)) {
+    if (element.hasAttribute('href') && element.classList.contains('js-indicator--repost') && element.parentElement.hasAttribute(POST_ID)) {
       changeRepost(element.parentElement.getAttribute(POST_ID));
       return false;
     }
 
-    if (element.hasAttribute('href') && element.classList.contains('post__indicator--comments') && element.parentElement.hasAttribute(POST_ID)) {
+    if (element.hasAttribute('href') && element.classList.contains('js-indicator--comments') && element.parentElement.hasAttribute(POST_ID)) {
       window.location = '/' + element.getAttribute('href');
     }
 

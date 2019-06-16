@@ -1,4 +1,4 @@
-<div class="post-details__user-info user__info p-4 m-4 mx-auto rgba-stylish-slight shadow-lg">
+<div class="post-details__user-info user__info p-4 m-4 mx-auto rgba-stylish-slight shadow-lg js-user">
     <div class="d-flex justify-content-center p-2">
         <a class="post-details__avatar-link user__avatar-link mr-2"
            href="profile.php?user=<?= get_pure_data($user, 'user_id'); ?>">
@@ -7,7 +7,7 @@
                  alt="Аватар пользователя">
         </a>
 
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column text-left ml-1">
             <a class="font-weight-bold mdb-color-text" href="profile.php?user=<?= get_pure_data($user, 'user_id'); ?>">
                 <span><?= get_pure_data($user, 'username'); ?></span>
             </a>
@@ -21,8 +21,8 @@
     </div>
     <hr>
     <div class="row d-flex justify-content-between px-4 mx-auto">
-        <p class="d-flex flex-column col-6>
-        <span class=" post-details__rating-amount user__rating-amount" <?= set_blogger_id($user, '-content'); ?>>
+        <p class="d-flex flex-column col-6">
+        <span class="indigo-text h5-responsive fon-weight-bold" <?= set_blogger_id($user, '-content'); ?>>
         <?= isnull(get_pure_data($user, 'subscribers_count'), 0); ?>
         </span>
         <span class="post-details__rating-text user__rating-text">
@@ -31,7 +31,7 @@
         </span>
         </p>
         <p class="d-flex flex-column col-6">
-            <span class="post-details__rating-amount user__rating-amount"><?= get_pure_data($user,
+            <span class="indigo-text h5-responsive fon-weight-bold"><?= get_pure_data($user,
                     'posts_count'); ?></span>
             <span class="post-details__rating-text user__rating-text">
             <?= get_text_form(get_pure_data($user, 'posts_count'),

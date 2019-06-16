@@ -4,7 +4,7 @@
     <?php endif; ?>
     <ul class="list-unstyled js-subscriptions-container p-4 shadow-lg">
         <?php foreach ($subscriptions as $subscription): ?>
-            <li class="row user align-items-center shadow-sm my-3 p-1">
+            <li class="row align-items-center shadow-sm my-3 p-1">
                     <div class="col-12 col-md-6 d-flex align-items-center">
                         <a class="mr-2 p-2" href="profile.php?user=<?= get_pure_data($subscription, 'blogger_id'); ?>">
                             <img class="rounded-circle img-fluid" height="60" width="60"

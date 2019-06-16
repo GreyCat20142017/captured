@@ -1,17 +1,14 @@
 <div class="post-details__wrapper">
-    <div class="post-details__main-block" style="padding: 60px;">
-        <a class="post-link__external"
+    <div class="white shadow-sm rounded py-4 mb-2">
+        <a class="mdb-color-text mt-2"
            href="<?= get_pure_data($post, 'ref'); ?>" title="Перейти по ссылке">
             <div class="post-link__icon-wrapper">
                 <img src="<?= get_favicon(get_pure_data($post, 'ref')); ?>" alt="Иконка">
             </div>
-            <div class="post-link__info">
-                <p><?= get_pure_data($post, 'text'); ?></p>
-                <span><?= get_pure_data(parse_url(get_pure_data($post, 'ref')), 'host'); ?></span>
+            <div class="mdb-color-text p-2 mb-2 font-weight-bold">
+                <p class="p-2"><?= get_pure_data($post, 'text'); ?></p>
+                <span class="h5-responsive"><?= get_pure_data(parse_url(get_pure_data($post, 'ref')), 'host'); ?></span>
             </div>
-            <svg class="post-link__arrow" width="11" height="16">
-                <use xlink:href="#icon-arrow-right-ad"></use>
-            </svg>
         </a>
     </div>
 </div>

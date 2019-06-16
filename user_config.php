@@ -34,7 +34,8 @@
                 ],
                 'info' => ['description' => 'Информация', 'required' => false],
                 'avatar' => ['description' => 'Аватар', 'required' => false, 'validation_rules' => [FILE_RULE]],
-                'delete-avatar' => ['description' => 'Удалить аватар', 'required' => false]
+                'delete-avatar' => ['description' => 'Удалить аватар', 'required' => false],
+                'use_mdb' => ['description' => 'Использовать оформление MDB', 'required' => false]
             ];
         }
 
@@ -60,6 +61,7 @@
         if ($status_ok) {
             $upload_to = get_assoc_element(PATHS, AVATARS);
             try_upload_files($image_fields, $_FILES, $errors, $upload_to, $user);
+            $user['use_mdb'] = array_key_exists('use_mdb', $user) ? 1 : 0;
             $update_result = ($active_tab === 1) ?
                 update_user($connection, $user_id, $user, array_key_exists('delete-avatar', $user)) :
                 update_user_password($connection, $user_id, $user);

@@ -35,17 +35,25 @@
   };
 
   var onChangeSubscriptionSuccess = function (response) {
-    pressedButton.textContent = (response['subscribed']) ? UNSIGN_TEXT : SIGN_TEXT;
-    window.backend.getPostData(AJAX_METHODS.GET, 'api.php?get_subscribers_count=1&blogger=' + response['blogger'], onSuccessGetSubscriberCount, onError, false);
+    if (response) {
+      pressedButton.textContent = (response['subscribed']) ? UNSIGN_TEXT : SIGN_TEXT;
+      window.backend.getPostData(AJAX_METHODS.GET, 'api.php?get_subscribers_count=1&blogger=' + response['blogger'], onSuccessGetSubscriberCount, onError, false);
+    }
   };
 
   var onSuccessGetSubscriberCount = function (response) {
-    var span = userContainer.querySelector('span[' + BLOGGER_ID + '-content="' + response['blogger'] + '"]');
-    span = span || subscribersContainer.querySelector('span[' + BLOGGER_ID  + '-content="' + response['blogger'] + '"]');
-    if (span) {
-      span.textContent = '' + response['subscribers'];
-      span.nextElementSibling.textContent = getTextForm(parseInt(response['subscribers'], 10),
-        ['подписчик', 'подписчика', 'подписчиков']);
+    if (response) {
+      var spans = [
+        userContainer ? userContainer.querySelector('span[' + BLOGGER_ID + '-content="' + response['blogger'] + '"]') : null,
+        subscribersContainer ? subscribersContainer.querySelector('span[' + BLOGGER_ID + '-content="' + response['blogger'] + '"]') : null
+      ];
+      spans.forEach(function (span) {
+        if (span) {
+          span.textContent = '' + response['subscribers'];
+          span.nextElementSibling.textContent = getTextForm(parseInt(response['subscribers'], 10),
+            ['подписчик', 'подписчика', 'подписчиков']);
+        }
+      });
     }
   };
 
@@ -83,8 +91,8 @@
    * Если IE - то без ajax
    */
   if (navigator.userAgent.indexOf('Trident/') < 0) {
-    var pressedButton  = null;
-    var userContainer = document.querySelector('.user');
+    var pressedButton = null;
+    var userContainer = document.querySelector('.js-user');
     var subscribersContainer = document.querySelector('.js-subscriptions-container');
     if (subscribersContainer) {
       subscribersContainer.addEventListener('click', onSubscribersContainerClick);

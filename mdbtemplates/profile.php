@@ -3,7 +3,7 @@
 
     <div class="profile profile--<?= $active_tab; ?>">
         <div class="shadow-lg rounded my-3">
-            <div class="user container d-flex py-2 px-5 align-items-center">
+            <div class="js-user container d-flex py-2 px-5 align-items-center">
                 <div class="d-flex align-items-center">
                     <div>
                         <img class="rounded-circle" width="60" height="60"

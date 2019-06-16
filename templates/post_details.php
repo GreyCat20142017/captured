@@ -25,8 +25,9 @@
                     <div class="post__indicators">
 
 
-                        <div class="post__buttons">
-                            <a class="post__indicator post__indicator--likes button" <?= get_like_href_title($post); ?>>
+                        <div class="post__buttons" <?= set_post_id($post); ?>>
+                            <a class="post__indicator post__indicator--likes button js-indicator js-indicator--likes"
+                                <?= get_like_href_title($post); ?>>
                                 <svg class="post__indicator-icon" width="20" height="17">
                                     <use xlink:href="#icon-heart"></use>
                                 </svg>
@@ -37,7 +38,7 @@
                                 <span><?= isnull(get_pure_data($post, 'likes_count'), 0); ?></span>
                                 <span class="visually-hidden">количество лайков</span>
                             </a>
-                            <a class="post__indicator post__indicator--comments button"
+                            <a class="post__indicator post__indicator--comments button js-indicator js-indicator--comments"
                                href="<?= rebuild_query_string($active_script, $active_query, 'all_comments',
                                    !($shown)); ?>"
                                title="Комментарии">
@@ -47,7 +48,8 @@
                                 <span><?= isnull(get_pure_data($post, 'comments_count'), 0); ?></span>
                                 <span class="visually-hidden">количество комментариев</span>
                             </a>
-                            <a class="post__indicator post__indicator--repost button" <?= get_repost_href_title($post); ?>>
+                            <a class="post__indicator post__indicator--repost button js-indicator js-indicator--repost"
+                                <?= get_repost_href_title($post); ?>>
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-repost"></use>
                                 </svg>
@@ -76,7 +78,7 @@
                     </div>
                 </div>
 
-                <div class="post-details__user user">
+                <div class="post-details__user user js-user">
                     <?= $user_content; ?>
                 </div>
             </div>

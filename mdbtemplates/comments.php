@@ -8,7 +8,7 @@
             <li class="d-flex text-left">
                 <div class="mr-2">
                     <a class="user__avatar-link" href="profile.php?id=<?= get_pure_data($comment, 'user_id'); ?>">
-                        <img class="comments__picture rounded-circle"
+                        <img class="comments__picture rounded-circle" width="50" height="50"
                              src="<?= get_avatar(get_pure_data($comment, 'avatar')); ?>"
                              alt="Аватар пользователя">
                     </a>

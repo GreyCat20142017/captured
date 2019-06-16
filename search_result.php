@@ -103,7 +103,8 @@
             'title' => 'Readme: все',
             'is_auth' => is_auth_user(),
             'body_classname' => '',
-            'user_name' => get_auth_user_property('name')
+            'user_name' => get_auth_user_property('name'),
+            'js_scripts' => ['backend.js', 'ajax_subscriptions.js']
         ]);
 
     $_SESSION[CAPTURED_SESSION]['last_search'] = $search_string;

@@ -29,16 +29,16 @@
                     <h4>Изменение основных параметров</h4>
 
                     <div class="col-12 d-flex flex-column mt-2">
+                        <label class="text-left font-weight-bold" for="login">Логин</label>
                         <input class="form-control <?= get_mdb_validation_classname($errors, 'email'); ?>"
                                type="text"
                                name="email" id="email" required
                                placeholder="Логин" value="<?= get_pure_data($user, 'email'); ?>">
-                        <label class="visually-hidden" for="login">Логин</label>
                         <span class="invalid-feedback"><?= get_field_validation_message($errors, 'email') ?></span>
                     </div>
 
                     <div class="col-12 d-flex flex-column mt-2">
-                        <label class="text-left" for="name">Имя</label>
+                        <label class="text-left font-weight-bold" for="name">Имя</label>
                         <input class="form-control <?= get_mdb_validation_classname($errors, 'name'); ?>"
                                type="text" name="name" id="name" placeholder="Имя" required
                                value="<?= get_pure_data($user, 'name'); ?>">
@@ -47,8 +47,8 @@
 
 
                     <div class="col-12 d-flex flex-column mt-2">
-                        <label class="text-left" for="info">Информация о себе</label>
-                        <textarea class="registration__textarea form__textarea form__input"
+                        <label class="text-left font-weight-bold" for="info">Информация о себе</label>
+                        <textarea class="registration__textarea form__textarea form__input" rows="3"
                                   id="info" name="info" placeholder="Коротко о себе в свободной форме"
                         ><?= get_pure_data($user, 'info'); ?>
                             </textarea>
@@ -82,14 +82,25 @@
                         </div>
                     </div>
 
+                    <div class="form__input-container ml-4 mt-2">
+                        <div class="custom-control custom-checkbox text-left p-1 font-weight-bold">
+                            <input class="custom-control-input mdb-color"
+                                   value="<?= get_pure_data($user, 'delete-avatar'); ?>"
+                                   id="delete-avatar" type="checkbox" name="delete-avatar"
+                                   title="Удалить аватар при сохранении записи в БД">
+                            <label class="custom-control-label" for="delete-avatar">Удалить аватар при сохранении записи
+                                в БД</label>
+                        </div>
 
-                    <div class="d-flex col-12 align-items-center">
-                        <input class="form-control col-1" id="delete-avatar" type="checkbox" name="delete-avatar"
-                               value="<?= get_pure_data($user, 'delete-avatar'); ?>"
-                               title="Удалить аватар при сохранении записи в БД">
-                        <label class="ml-1 text-left" for="delete-avatar">удалить аватар (если был)</label>
+                        <div class="custom-control custom-checkbox text-left p-1 font-weight-bold">
+                            <input class="custom-control-input mdb-color"
+                                   value="<?= get_pure_data($user, 'use_mdb'); ?>"
+                                <?= get_checked_attribute(intval(get_pure_data($user, 'use_mdb'))); ?>
+                                   id="use_mdb" type="checkbox" name="use_mdb" title="Использовать оформление MDB">
+                            <label class="custom-control-label" for="use_mdb">Использовать оформление Material
+                                Design</label>
+                        </div>
                     </div>
-
 
                     <p class="text-danger">
                         <small><?= $status_text ?? ''; ?></small>

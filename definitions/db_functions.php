@@ -636,12 +636,11 @@
 
         if (empty($data)) {
 
-            $sql = 'INSERT INTO ' . $table . ' ( user_id,  post_id, counter) 
-                          VALUES (?, ?, ?)';
+            $sql = 'INSERT INTO ' . $table . ' ( user_id,  post_id) 
+                          VALUES (?, ?)';
             $stmt = db_get_prepare_stmt($connection, $sql, [
                 $user_id,
-                $post_id,
-                1
+                $post_id
             ]);
             $res = mysqli_stmt_execute($stmt);
         } else {
@@ -909,7 +908,7 @@
      */
     function get_user_basic_info ($connection, $user_id) {
         $user_id = mysqli_real_escape_string($connection, $user_id);
-        $sql = 'SELECT id as user_id, avatar, name, registration_date, info, email                     
+        $sql = 'SELECT id as user_id, avatar, name, registration_date, info, email, use_mdb                     
                 FROM users AS u                   
                 WHERE id = ' . $user_id . ';';
         $data = get_data_from_db($connection, $sql, 'Невозможно получить данные о пользователе', true);
@@ -939,12 +938,13 @@
      */
     function update_user($connection, $user_id, &$user, $delete_avatar = false) {
         $need_update_avatar = $delete_avatar || !empty(get_assoc_element($user, 'avatar'));
-        $sql = 'UPDATE users SET  email = ?, name = ?, info = ? ' .
+        $sql = 'UPDATE users SET  email = ?, name = ?, info = ? , use_mdb = ? ' .
             ($need_update_avatar ? ' , avatar = ? ' : '') . ' WHERE id = ? ;';
         $params = [
             get_assoc_element($user, 'email'),
             get_assoc_element($user, 'name'),
-            get_assoc_element($user, 'info')
+            get_assoc_element($user, 'info'),
+            intval(get_assoc_element($user, 'use_mdb'))
         ];
         if ($need_update_avatar) {
             array_push($params, $delete_avatar ? '' : get_assoc_element($user, 'avatar'));

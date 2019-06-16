@@ -7,7 +7,7 @@
 
                     <div>
                         <a class="user__avatar-link" href="profile.php?user=<?= get_pure_data($like, 'fan_id'); ?>">
-                            <img class="rounded-circle"
+                            <img class="rounded-circle" width="50" height="50"
                                  src="<?= get_avatar(get_pure_data($like, 'fan_avatar')); ?>"
                                  alt="Аватар пользователя">
                         </a>

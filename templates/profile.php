@@ -3,7 +3,7 @@
 
     <div class="profile profile--<?= $active_tab; ?>">
         <div class="profile__user-wrapper">
-            <div class="profile__user user container">
+            <div class="profile__user user container js-user">
                 <div class="profile__user-info user__info">
                     <div class="profile__avatar user__avatar">
                         <img class="profile__picture user__picture" width="60" height="60"
