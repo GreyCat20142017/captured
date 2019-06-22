@@ -391,8 +391,31 @@
         return $tag;
     }
 
+    /**
+     * Функция возвращает инлайновое svg. В параметрах можно задать размеры и цвет.
+     * @param        $svg
+     * @param int    $width
+     * @param int    $height
+     * @param string $fill
+     * @param string $stroke
+     * @return string
+     */
     function get_inline_svg ($svg , $width = 30, $height = 30, $fill = "white", $stroke= "white") {
         return '<svg  stroke="' . $stroke . '" fill="' . $fill . '" width="' . $width .'" height="' . $height . '">
                    <use xlink:href="#' . $svg . '"></use>
                 </svg>';
+    }
+
+    /**
+     * Функция возвращает svg для типа публикации
+     * @param $like
+     * @return string
+     */
+    function get_pseudo_preview ($like) {
+        $result = '';
+        $index = intval(get_pure_data($like, 'category_id'));
+        if ($index >= 0 && $index < count(FILTER_FA_MDB)) {
+            $result = get_inline_svg(FILTER_FA_MDB[$index], 25, 25, "#3f51b5", "#3f51b5");
+        }
+        return $result;
     }

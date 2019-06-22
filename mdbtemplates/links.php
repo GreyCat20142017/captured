@@ -1,5 +1,5 @@
 <div class="mb-2 <?= $classname; ?>">
-    <article class="card p-4">
+    <article class="card p-4 w-100">
         <?= $post_header_content ?? ''; ?>
 
         <div class="text-center font-weight-bold d-flex align-items-start justify-content-center grey lighten-5 p-5">

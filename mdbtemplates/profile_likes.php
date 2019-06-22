@@ -13,12 +13,12 @@
                         </a>
                     </div>
 
-                    <div class="ml-2 p-2 d-flex flex-column mdb-color-text">
-                        <a class="post-mini__name user__name"
+                    <div class="ml-2 p-2 d-flex flex-column">
+                        <a class="mdb-color-text font-weight-bold"
                            href="profile.php?user=<?= get_pure_data($like, 'fan_id'); ?>">
                             <span><?= get_pure_data($like, 'fan_name'); ?></span>
                         </a>
-                        <div class="post-mini__action">
+                        <div class="mdb-color-text">
                             <span class="post-mini__activity user__additional"><?= get_like_text($is_own); ?></span>
                             <time class="post-mini__time user__additional"
                                   title="<?= get_pure_data($like, 'creation_date'); ?>"
@@ -26,19 +26,15 @@
                                 <small><?= get_time_ago(get_pure_data($like, 'creation_date')); ?></small>
                             </time>
                         </div>
-
                     </div>
                 </div>
-
 
                 <div class="post-mini__preview ml-auto">
                     <a class="post-mini__link"
                        href="post_details.php?post=<?= get_pure_data($like, 'post_id'); ?>"
                        title="Перейти на публикацию">
-                        <div class="post-mini__image-wrapper grey lighten-5 rounded">
-                            <!--                            --><? //= get_post_preview_tag($like); ?>
-                            <!--                            --><? //= FILTER_SVG[1] ?? ''; ?>
-                            <?= get_inline_svg('paw', 30, 30, "navy"); ?>
+                        <div class="px-2">
+                            <?= get_pseudo_preview($like) ?>
                         </div>
 
                     </a>

@@ -63,6 +63,14 @@
     border: 1px solid rgba(211, 211, 211, 0.3);
 }
 
+.feed__wrapper--no-content {
+    min-height: 200px;
+    background-image: url(../img/roger.svg);
+    background-size: 150px auto;
+    background-repeat: no-repeat;
+    background-position: center
+}
+
 @media (max-width: 576px) {
     .six-buttons span {
         display: none;

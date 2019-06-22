@@ -24,7 +24,7 @@
                 <div class="btn btn-mdb-color btn-rounded float-left">
                     <label for="userpic-file-photo">Файл с фото в формате jpg, png, svg (до 200Кб)</label>
                     <input type="file" id="userpic-file-photo" name="userpic-file-photo"
-                           class="form__input-file <?= get_mdb_validation_classname($errors,
+                           class="form__input-file w-100 <?= get_mdb_validation_classname($errors,
                                'userpic-file-photo'); ?>"/>
                     <?php if (!empty(get_field_validation_message($errors,
                         'userpic-file-photo'))): ?>

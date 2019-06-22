@@ -58,7 +58,7 @@
                         <div class="d-flex justify-content-center">
                             <div class="btn btn-mdb-color btn-rounded float-left">
                                 <input type="file" id="avatar" name="avatar"
-                                       class="form__input-file <?= get_mdb_validation_classname($errors,
+                                       class="form__input-file w-100 <?= get_mdb_validation_classname($errors,
                                            'avatar'); ?>"/>
                                 <?php if (!empty(get_field_validation_message($errors,
                                     'avatar'))): ?>
@@ -99,6 +99,9 @@
                                    id="use_mdb" type="checkbox" name="use_mdb" title="Использовать оформление MDB">
                             <label class="custom-control-label" for="use_mdb">Использовать оформление Material
                                 Design</label>
+                            <p class="font-italic font-weight-normal">
+                                <small>Для IE-11 рекомендуется только Material Design! Но блокировать возможность выбора было лень...</small>
+                            </p>
                         </div>
                     </div>
 

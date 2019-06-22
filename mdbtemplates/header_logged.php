@@ -1,4 +1,4 @@
-<header style="padding-top: 88px;">
+<header class="header" style="padding-top: 88px;">
     <div class="col-sm-12 mx-auto fixed-top">
         <nav class="navbar navbar-expand-lg navbar-dark indigo">
             <div class="container mx-auto">
@@ -99,12 +99,14 @@
 
                     </ul>
 
+                    <a class="btn btn-outline rounded text-white border" href="adding.php">
+                        <?= get_inline_svg('plus', 15, 15, "white", "white"); ?>
+                        &nbsp;Пост
+                    </a>
+
                 </div>
                 <!-- Collapsible content -->
-                <a class="btn btn-outline rounded text-white border" href="adding.php">
-                    <?= get_inline_svg('plus', 15, 15, "white", "white"); ?>
-                    &nbsp;Пост
-                </a>
+
             </div>
         </nav>
     </div>

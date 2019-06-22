@@ -5,7 +5,7 @@
     <div class="adding-post container">
         <div class="adding-post__tabs-wrapper tabs">
             <div class="adding-post__tabs filters">
-                <ul class="list-unstyled d-flex justify-content-center">
+                <ul class="list-unstyled d-flex justify-content-center six-buttons">
                     <?= $filters_content; ?>
                 </ul>
             </div>
