@@ -71,7 +71,7 @@
                                 <sup class="comments__amount"><?= isnull(get_pure_data($post, 'comments_count'),
                                         0); ?> </sup>
                             </a>
-                        <? endif; ?>
+                        <?php endif; ?>
                     </div>
 
                 </div>

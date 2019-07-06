@@ -60,7 +60,7 @@
                         <sup class="comments__amount"><?= isnull(get_pure_data($post, 'comments_count'),
                                 0); ?> </sup>
                     </a>
-                <? endif; ?>
+                <?php endif; ?>
 
                 <a class="comments__button button"
                    href="<?= rebuild_query_string($active_script, $active_query, 'expand',
