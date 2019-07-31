@@ -94,7 +94,7 @@
 
                         <div class="custom-control custom-checkbox text-left p-1 font-weight-bold">
                             <input class="custom-control-input mdb-color"
-                                   value="<?= get_pure_data($user, 'use_mdb'); ?>"
+                                   value="<?= get_pure_data($user, 'use_mdb'); ?>" disabled
                                 <?= get_checked_attribute(intval(get_pure_data($user, 'use_mdb'))); ?>
                                    id="use_mdb" type="checkbox" name="use_mdb" title="Использовать оформление MDB">
                             <label class="custom-control-label" for="use_mdb">Использовать оформление Material

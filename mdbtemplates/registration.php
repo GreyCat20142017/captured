@@ -6,10 +6,10 @@
                   action="registration.php" method="post" enctype="multipart/form-data">
 
                 <div class="col-12 d-flex flex-column mt-2">
+                    <label class="text-left" for="email">E-mail</label>
                     <input class="form-control <?= get_mdb_validation_classname($errors, 'email'); ?>" type="text"
                            name="email" id="email" required
-                           placeholder="Логин" value="<?= get_pure_data($user, 'email'); ?>">
-                    <label class="visually-hidden" for="login">Логин</label>
+                           placeholder="Логин (e-mail)" value="<?= get_pure_data($user, 'email'); ?>">
                     <span class="invalid-feedback"><?= get_field_validation_message($errors, 'email') ?></span>
                 </div>
 

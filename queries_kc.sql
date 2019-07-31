@@ -36,12 +36,12 @@ VALUES ('Фото', 'photos'),
 # Добавление пользователей
 INSERT INTO users (id, name, email, user_password, avatar, registration_date, info)
 VALUES (1, 'Василий Пупкин', 'vasya@pup.ru', '$2y$10$0GYFabnO4kWUhOhvSaOQGOsT3zHGyQBsSuRcgbtlUIV19u84TEEgW',
-        'img/userpic-mark.jpg',
+        'img/dragon.jpg',
         DATE_ADD(NOW(), INTERVAL -2 MONTH), 'Любитель гор'),
        (2, 'Василиса Пупкина', 'zz@zz.zz', '$2y$10$0GYFabnO4kWUhOhvSaOQGOsT3zHGyQBsSuRcgbtlUIV19u84TEEgW',
-        'img/userpic-larisa.jpg', DATE_ADD(NOW(), INTERVAL -3 WEEK), 'Котики - наше все!'),
+        'img/cat.jpg', DATE_ADD(NOW(), INTERVAL -3 WEEK), 'Котики - наше все!'),
        (3, 'Кукушкин К.К', 'qq@qq.qq', '$2y$10$zu1owVM2wNw9m/QsBTO45OcEosAdtV1tv4cK3GSrL.RBBWch639XG',
-        'img/userpic.jpg',
+        'img/owl.jpg',
         DATE_ADD(NOW(), INTERVAL -2 WEEK), 'Любитель птиц'),
        (4, 'Варечкина В.В', 'vv@vv.vv', '$2y$10$0GYFabnO4kWUhOhvSaOQGOsT3zHGyQBsSuRcgbtlUIV19u84TEEgW', '', DATE_ADD(NOW(), INTERVAL -2 WEEK),
         'Любитель рыбок');
