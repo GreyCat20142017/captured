@@ -6,7 +6,7 @@
         <div class="col-12 d-flex flex-column mt-2 text-left">
             <label for="video-heading">Заголовок</label>
             <input class="form-control <?= get_mdb_validation_classname($errors, 'video-heading'); ?>" type="text"
-                   name="video-heading" id="video-heading" bredotmp
+                   name="video-heading" id="video-heading" required
                    placeholder="Заголовок" value="<?= get_pure_data($post, 'video-heading'); ?>">
             <span class="invalid-feedback"><?= get_field_validation_message($errors, 'video-heading') ?></span>
         </div>
@@ -14,7 +14,7 @@
         <div class="col-12 d-flex flex-column mt-2 text-left">
             <label for="hashtag">Хештеги</label>
             <input class="form-control <?= get_mdb_validation_classname($errors, 'hashtag'); ?>" type="text"
-                   name="hashtag" id="hashtag" bredotmp title="Через пробел, не более 5-ти, начинаются #"
+                   name="hashtag" id="hashtag" title="Через пробел, не более 5-ти, начинаются #"
                    placeholder="Хештеги" value="<?= get_pure_data($post, 'hashtag'); ?>">
             <span class="invalid-feedback"><?= get_field_validation_message($errors, 'hashtag') ?></span>
         </div>
@@ -22,7 +22,7 @@
         <div class="col-12 d-flex flex-column mt-2 text-left">
             <label for="video-link">Видео на youtube (yotube-id или ссылка)</label>
             <input class="form-control <?= get_mdb_validation_classname($errors, 'video-link'); ?>" type="text"
-                   name="video-link" id="hashtag" bredotmp title="Видео на youtube (yotube-id или ссылка)"
+                   name="video-link" id="hashtag" required title="Видео на youtube (yotube-id или ссылка)"
                    placeholder="Видео на youtube (yotube-id или ссылка)"
                    value="<?= get_pure_data($post, 'video-link'); ?>">
             <span class="invalid-feedback"><?= get_field_validation_message($errors, 'video-link') ?></span>

@@ -14,7 +14,7 @@
         <div class="col-12 d-flex flex-column mt-2 text-left">
             <label for="hashtag">Хештеги</label>
             <input class="form-control <?= get_mdb_validation_classname($errors, 'hashtag'); ?>" type="text"
-                   name="hashtag" id="hashtag" required title="Через пробел, не более 5-ти, начинаются #"
+                   name="hashtag" id="hashtag"  title="Через пробел, не более 5-ти, начинаются #"
                    placeholder="Хештеги" value="<?= get_pure_data($post, 'hashtag'); ?>">
             <span class="invalid-feedback"><?= get_field_validation_message($errors, 'hashtag') ?></span>
         </div>
