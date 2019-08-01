@@ -113,7 +113,7 @@
             'pages' => range(1, $page_count),
             'active_page' => $page,
             'active_query' => $_SERVER['QUERY_STRING'],
-            'active_script' => $_SERVER['PHP_SELF']
+            'active_script' => $_SERVER['SCRIPT_NAME']
         ]);
 
         $page_content = include_template('profile.php', [
@@ -122,7 +122,7 @@
             'active_tab' => $active_tab,
             'active_user' => $user,
             'active_query' => $_SERVER['QUERY_STRING'],
-            'active_script' => $_SERVER['PHP_SELF'],
+            'active_script' =>  $_SERVER['SCRIPT_NAME'],
             'is_own' => $is_own_profile,
             'auth_user_subscriptions' => $auth_user_subscriptions,
             'pagination_content' => $pagination_content ?? ''

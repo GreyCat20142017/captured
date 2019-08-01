@@ -1,7 +1,7 @@
 <section class="section">
     <h2 class="visually-hidden">Форма добавления фото</h2>
     <form class="needs-validation mx-auto col-11 p-3 white mdb-color-text rounded shadow-lg text-center"
-          action="adding.php?tab=1" method="post" enctype="multipart/form-data">
+          action="adding.php" method="post" enctype="multipart/form-data">
 
         <div class="col-12 d-flex flex-column mt-2 text-left">
             <label for="photo-heading">Заголовок</label>

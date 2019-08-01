@@ -8,7 +8,7 @@
      * @return false|string
      */
     function include_template ($name, $data) {
-        $path = $GLOBALS['template_path'] ?? MDB_TEMPLATE_FOLDER;
+        $path =  MDB_TEMPLATE_FOLDER;
         $name = $path . $name;
         if (!is_readable($name)) {
             return 'Шаблон с именем ' . $name . ' не существует или недоступен для чтения';

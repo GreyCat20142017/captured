@@ -15,7 +15,7 @@
             <li class="pt-4">
                 <a class="fab btn p-3 rounded-circle rgba-white-slight <?= get_switch_classname($active_tab, FILTER_ALL); ?>"
                    href="feed.php?filter=<?= FILTER_ALL; ?>" title="Все">
-                    <?= get_inline_svg('th', 20, 20, "white", "white"); ?>
+                    <?= get_inline_svg('th', 20, 20, "grey", "grey"); ?>
                 </a>
             </li>
             <?= $filters_content; ?>

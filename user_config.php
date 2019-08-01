@@ -69,11 +69,8 @@
                 $_SESSION[CAPTURED_SESSION]['name'] = get_assoc_element($update_result, 'name');
                 $_SESSION[CAPTURED_SESSION]['avatar'] = get_assoc_element($update_result, 'avatar');
                 $_SESSION[CAPTURED_SESSION]['mdb'] = get_assoc_element($update_result, 'use_mdb');
-
-                $GLOBALS['template_path'] = !empty(get_assoc_element($update_result,
-                    'use_mdb')) ? MDB_TEMPLATE_FOLDER : TEMPLATE_FOLDER;
-
                 header('Location: profile.php');
+
             } elseif ($update_result) {
                 header('Location: profile.php');
             }

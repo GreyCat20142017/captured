@@ -363,3 +363,13 @@
         }
         return $result;
     }
+
+    /**
+     * Функция вовзращает схему либо пустую строку по полученной в качестве параметра url
+     * @param $url
+     * @return string
+     */
+    function get_scheme($url) {
+        $scheme =  parse_url($url, PHP_URL_SCHEME);
+        return  $scheme  .  (empty($scheme) ?  ''  : '://');
+    }

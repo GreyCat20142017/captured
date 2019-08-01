@@ -49,7 +49,7 @@
                 $status_text = '';
                 $password_data = recovery_and_get_password($connection, $email);
                 if (!empty($password_data)) {
-                    send_new_password($password_data);
+                    //send_new_password($password_data);
                 }
                 header('Location: login.php');
             }

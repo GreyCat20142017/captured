@@ -57,7 +57,7 @@
   var onContainerClick = function (evt) {
 
     var element = evt.target;
-    if (CONSIDERABLE_TAGS.indexOf(element.tagName.toUpperCase()) < 0) {
+    if (CONSIDERABLE_TAGS.indexOf(element.tagName.toUpperCase()) < 0 ||  element.classList.contains('comments__button')) {
       return false;
     }
     evt.preventDefault();
@@ -74,8 +74,8 @@
       changeRepost(element.parentElement.getAttribute(POST_ID));
       return false;
     }
-
-    if (element.hasAttribute('href') && element.classList.contains('js-indicator--comments') && element.parentElement.hasAttribute(POST_ID)) {
+    if (element.hasAttribute('href') &&
+        element.classList.contains('js-indicator--comments') && element.parentElement.hasAttribute(POST_ID)) {
       window.location = '/' + element.getAttribute('href');
     }
 

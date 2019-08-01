@@ -5,6 +5,7 @@
             <h2 class="visually-hidden">Наши преимущества</h2>
             <p class="h5-responsive">Для восстановления пароля необходимо набрать существующий логин</p>
             <p class="font-weight-bold">Новый пароль будет отправлен по e-mail</p>
+            <p class="font-weight-bold danger-color">СЕЙЧАС ЭТА ВОЗМОЖНОСТЬ ВРЕМЕННО ОТКЛЮЧЕНА</p>
             <p class="font-weight-bold">Пароль рекомендуется сменить при первом удачном входе в систему</p>
         </section>
 

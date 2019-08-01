@@ -44,8 +44,7 @@
             }
             if ($db_status_ok) {
                 $status_text = '';
-                $use_mdb = !empty(get_assoc_element($db_user, 'use_mdb'));
-                $GLOBALS['template_path'] = $use_mdb ? MDB_TEMPLATE_FOLDER : TEMPLATE_FOLDER;
+                $use_mdb = MDB;
 
                 $_SESSION[CAPTURED_SESSION] = [
                     'id' => get_assoc_element($db_user, 'id'),

@@ -16,7 +16,8 @@
         'image/png',
         'image/jpeg',
         'image/svg+xml',
-        'image/svg+xmlns'
+        'image/svg+xmlns',
+        'image/svg'
     ]);
 
     define('HASH_TAG_MIN_LENGTH', 2);
