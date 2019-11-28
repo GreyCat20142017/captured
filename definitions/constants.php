@@ -13,6 +13,7 @@
     define('MDB_TEMPLATE_FOLDER', 'mdbtemplates/');
 
     define('MAX_TEXT_LENGTH', 222);
+    define('HASH_TAG_LENGTH', 255);
     define('SHORT_TEXT_LENGTH', 22);
     define('RECORDS_PER_PAGE', 6);
     define('COMMENTS_PREVIEW_COUNT', 3);
@@ -53,6 +54,10 @@
 
     define('YOUTUBE_ID_LENGTH', 11);
 
+    define('SHORT', 'https://youtu.be/');
+    define('LONG', 'https://www.youtube.com/watch?v=');
+
     define('POST_IDENTIFICATOR', 'data-post');
     define('BLOGGER_IDENTIFICATOR', 'data-blogger');
     define('SUBSCRIBER_IDENTIFICATOR', 'data-subscriber');
+

@@ -303,23 +303,34 @@
     }
 
     /**
-     * Функция по мотивам функции от HTML Academy. Проверяет, что переданная ссылка ведет на публично доступное видео с
-     * youtube
-     * @param string $youtube_url Ссылка на youtube видео
+     * Функция проверяет, содержит ли ссылка образец, соответствующий "длинной" ссылке youtube
+     * @param $url
      * @return bool
      */
-    function check_youtube_url ($youtube_url) {
+    function isLong($url) {
+        return (strpos($url, LONG) !== false);
+    }
+
+    /**
+     * Функция проверяет, содержит ли ссылка образец, соответствующий "короткой" ссылке youtube
+     * @param $url
+     * @return bool
+     */
+    function isShort($url) {
+        return (strpos($url, SHORT) !== false);
+    }
+
+    /**
+     * Функция возвращает либо 11 символов ID видео youtube, либо false
+     * @param $you_url
+     * @return bool|mixed
+     */
+    function check_youtube_url($you_url) {
         $res = false;
-        $id = extract_youtube_id($youtube_url);
-        if ($id) {
-            $api_data = ['id' => $id, 'part' => 'id, status', 'key' => 'AIzaSyDkxJIV293lh3sfvW4GEi3WRVUvEQml_Mc'];
-            $url = "https://www.googleapis.com/youtube/v3/videos?" . http_build_query($api_data);
-            $resp = file_get_contents($url);
-            if ($resp && $json = json_decode($resp, true)) {
-                $res = $json['pageInfo']['totalResults'] > 0 && $json['items'][0]['status']['privacyStatus'] == 'public';
-            }
-        }
-        return $res;
+        $youtube_url = isLong($you_url) ? stristr($you_url, '&', true) : $you_url;
+        $res = isLong($youtube_url) ? str_replace(LONG, '', $youtube_url) : $res;
+        $res = isShort($youtube_url) ? str_replace(SHORT, '', $youtube_url) : $res;
+        return mb_strlen($res) === YOUTUBE_ID_LENGTH ? $res : false;
     }
 
     /**
@@ -328,9 +339,9 @@
      * @return string
      */
     function get_youtube_validation_result ($video) {
-        $result = 'Поле должно быть либо корректным videoId yotube (длиной 11 символов) либо правильной ссылкой youtube';
+        $result = 'Поле должно быть либо корректным videoId yotube (длиной ' . YOUTUBE_ID_LENGTH . ' символов) либо правильной ссылкой youtube';
         $youtube_url = $video;
-        if (mb_strlen(trim($video), 'utf-8') === 11) {
+        if (mb_strlen(trim($video), 'utf-8') === YOUTUBE_ID_LENGTH) {
             $youtube_url = 'https://www.youtube.com/watch?v=' . $video;
         }
         return (filter_var($youtube_url, FILTER_VALIDATE_URL) && check_youtube_url($youtube_url)) ? '' : $result;
@@ -369,8 +380,8 @@
                 add_if_not_exist($tags_errors, COMMON_TAG_RULES[TOO_MANY_TAGS] ?? 'ошибка');
             }
 
-            if (mb_strlen($hashtag, 'utf-8') > 255) {
-                add_if_not_exist($tags_errors, 'Длина хештега не должна превышать 255 символов');
+            if (mb_strlen($hashtag, 'utf-8') > HASH_TAG_LENGTH) {
+                add_if_not_exist($tags_errors, 'Длина хештега не должна превышать ' . HASH_TAG_LENGTH . ' символов');
             }
 
             if (count($tags_errors) > 0) {
