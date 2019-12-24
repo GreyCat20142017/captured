@@ -53,7 +53,8 @@
 
     $page_content = include_template('feed.php', [
         'user' => $user,
-        'posts_content' => get_post_content($posts, 'feed'),
+        'posts_content' => count($posts) > 0 ? get_post_content($posts, 'feed') :
+            include_template('no_content.php', []),
         'promo_content' => get_various_content($banners, 'promo.php', 'banner'),
         'pagination_content' => ($page_count > 1) ? $pagination_content : '',
         'active_tab' => empty($active_tab) ? FILTER_ALL : $active_tab,

@@ -53,7 +53,6 @@
     define('TRANCATED_COUNT', mb_strlen(uniqid(UI_START, true)) + 1);
 
     define('YOUTUBE_ID_LENGTH', 11);
-
     define('SHORT', 'https://youtu.be/');
     define('LONG', 'https://www.youtube.com/watch?v=');
 

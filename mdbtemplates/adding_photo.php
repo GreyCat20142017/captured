@@ -34,6 +34,8 @@
                 </div>
             </div>
 
+            <p class="mdb-color-text"><small>Загружаемый файл должен быть изображением в формате jpeg, png, svg и размером не более 200Кб</small></p>
+
             <div class="mb-4 form__file visually-hidden">
                 <img class="form__image" src="/img/roger.svg" width="150" height="150" alt="Предпросмотр">
                 <span class="form__file-name">dsc001.jpg</span>
@@ -51,7 +53,7 @@
         </p>
 
         <div class="buttons d-flex">
-            <button class="btn btn-indigo mt-2" type="submit" name="publish_photo">Опубликовать</button>
+            <button class="btn btn-mdb-color mt-2" type="submit" name="publish_photo">Опубликовать</button>
             <a class="btn btn-light-blue mt-2" href="profile.php">Закрыть</a>
         </div>
     </form>

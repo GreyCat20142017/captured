@@ -9,7 +9,7 @@
                 <p class="font-weight-bold m-0 p-0 mr-2 d-none d-md-block">Сортировка:</p>
                 <ul class="d-flex list-unstyled btn-group">
                     <li class="sorting__item sorting__item--popular">
-                        <a class="btn btn-light-blue form-check-label  <?= get_mdb_active($active_sort,
+                        <a class="btn btn-mdb-color form-check-label  <?= get_mdb_active($active_sort,
                             SORT_COMMENTS, 'sorting__link'); ?>"
                            style="max-height: 50px;"
                            href="<?= rebuild_query_string($active_script, $active_query, 'sort', SORT_COMMENTS); ?>"
@@ -21,7 +21,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="btn btn-light-blue form-check-label  <?= get_mdb_active($active_sort,
+                        <a class="btn btn-mdb-color form-check-label  <?= get_mdb_active($active_sort,
                             SORT_LIKES, 'sorting__link'); ?>"
                            style="max-height: 50px;"
                            href="<?= rebuild_query_string($active_script, $active_query, 'sort', SORT_LIKES); ?>"
@@ -33,7 +33,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="btn btn-light-blue form-check-label <?= get_mdb_active($active_sort,
+                        <a class="btn btn-mdb-color form-check-label <?= get_mdb_active($active_sort,
                             SORT_DATE, 'sorting__link'); ?>"
                            style="max-height: 50px;"
                            href="<?= rebuild_query_string($active_script, $active_query, 'sort', SORT_DATE); ?>"

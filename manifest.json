@@ -1,0 +1,18 @@
+{
+  "short_name": "captured",
+  "name": "Captured",
+  "icons": [
+    { "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "favicon.ico",
+      "sizes": "48x48 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }],
+  "start_url": "",
+  "display": "standalone",
+  "theme_color": "#3949AB",
+  "background_color": "#ffffff"
+}

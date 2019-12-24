@@ -28,7 +28,7 @@
 
                 <div class="col-12 col-md-3 d-flex justify-content-between px-3 pt-2 pseudo-table">
                     <p class="d-flex flex-column text-center">
-                        <span class="h5-responsive indigo-text font-weight-bold">
+                        <span class="h5-responsive mdb-color-textfont-weight-bold">
                             <?= isnull(get_pure_data($subscription, 'posts_count'), 0); ?>
                         </span>
                         <span class="post-mini__rating-text user__rating-text">
@@ -37,7 +37,7 @@
                         </span>
                     </p>
                     <p class="d-flex flex-column text-center">
-                        <span class="h5-responsive indigo-text font-weight-bold"
+                        <span class="h5-responsive mdb-color-textfont-weight-bold"
                             <?= set_blogger_id($subscription, '-content', 'blogger_id'); ?>>
                             <?= isnull(get_pure_data($subscription, 'subscribers_count'), 0); ?>
                         </span>
@@ -57,7 +57,7 @@
                     <?php elseif (is_auth_user()): ?>
                         <a <?= get_subscription_href_title(get_pure_data($subscription, 'blogger_id',
                             'Подписаться/отписаться')); ?>
-                            class="btn btn-block btn-indigo user__button--subscription"
+                            class="btn btn-block btn-mdb-color user__button--subscription"
                             <?= set_blogger_id($subscription, '', 'blogger_id'); ?>>
                             <?= in_array(get_pure_data($subscription, 'blogger_id'),
                                 $auth_user_subscriptions ?? []) ?

@@ -3,7 +3,7 @@
 (function () {
   var FILE_TYPES = ['jpg', 'jpeg', 'png', 'svg'];
   var HIDDEN_CLASSNAME = 'visually-hidden';
-  var MAX_SIZE = 200000;
+  var MAX_SIZE = 204800;
 
 
   var getElementBySelector = function (parentObject, selector) {

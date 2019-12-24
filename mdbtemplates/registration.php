@@ -79,7 +79,7 @@
                 <p class="text-danger"><small><?= $status_text ?? ''; ?></small></p>
 
 
-                <button class="btn btn-indigo mt-2" type="submit">Зарегистрироваться</button>
+                <button class="btn btn-mdb-color mt-2" type="submit">Зарегистрироваться</button>
 
             </form>
         </section>

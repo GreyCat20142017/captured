@@ -1,78 +1,118 @@
 .body {
-    font-family: "Arial", sans-serif;
+  font-family: "Arial", sans-serif;
+}
+
+small {
+font-size: 12px!important;
 }
 
 .fab {
-    min-width: 53px;
-    min-height: 53px;
-    border-radius: 50%;
+  min-width: 53px;
+  min-height: 53px;
+  border-radius: 50%;
 }
 
 .fab i {
-    color: grey;
+  color: grey;
 }
 
 .filters__button--active i {
-    color: hsla(255, 100%, 100%, 0.9);
+  color: hsla(255, 100%, 100%, 0.9);
 }
 
 .filters__button--active {
-    background-color: hsl(216, 100%, 55%);
+  background-color: #59698d;
 }
 
 .filters__button--active svg {
-    fill: hsla(255, 100%, 100%, 0.9);
-    stroke: hsla(255, 100%, 100%, 0.9);
-    color: hsla(255, 100%, 100%, 0.9);
+  fill: hsla(255, 100%, 100%, 0.9);
+  stroke: hsla(255, 100%, 100%, 0.9);
+  color: hsla(255, 100%, 100%, 0.9);
 }
 
 .filters__button span {
-    display: block;
-    padding: 2px 0;
-    min-width: 52px;
+  display: block;
+  padding: 2px 0;
+  min-width: 52px;
 }
 
 .filters__button--active span {
-    color: white;
+  color: white;
 }
 
 .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    border: 0;
-    padding: 0;
-    white-space: nowrap;
-    -webkit-clip-path: inset(100%);
-    clip-path: inset(100%);
-    clip: rect(0 0 0 0);
-    overflow: hidden;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  -webkit-clip-path: inset(100%);
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
 }
 
 .dropdown-menu {
-    min-width: 6.5rem !important;
+  min-width: 6.5rem !important;
 }
 
 .messages__contacts-tab.active * {
-    color: white;
-    background-color: navy;
+  color: white;
+  background-color: navy;
 }
 
 .pseudo-table {
-    border: 1px solid rgba(211, 211, 211, 0.3);
+  border: 1px solid rgba(211, 211, 211, 0.3);
 }
 
 .feed__wrapper--no-content {
-    min-height: 200px;
-    background-image: url(../img/roger.svg);
-    background-size: 150px auto;
-    background-repeat: no-repeat;
-    background-position: center
+  min-height: 300px;
+  background-image: url(../img/roger.svg);
+  background-size: 150px auto;
+  background-repeat: no-repeat;
+  background-position: center
+}
+
+.video-preview {
+  min-height: 300px;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-preview.video-title {
+  display: block;
+  max-width: 80%;
+}
+
+.video-preview.video-iframe {
+  display: none;
+}
+
+.video-play.video-title {
+  display: none;
+}
+
+.video-play.video-iframe {
+  display: block;
+  min-height: 300px;
+  max-width: 100%;
+  width: 100%;
+}
+
+.colorized {
+  color: plum!important;
+}
+
+.mdb-gradient {
+  background-image: linear-gradient(-135deg, #334b67, #88aacc)!important;
 }
 
 @media (max-width: 576px) {
-    .six-buttons span {
-        display: none;
-    }
+  .six-buttons span {
+    display: none;
+  }
 }

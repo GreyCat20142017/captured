@@ -17,7 +17,7 @@
                 </p>
                 <ul class="list-unstyled">
                     <li>
-                        <a class="btn btn-indigo"
+                        <a class="btn btn-mdb-color"
                            href="registration.php">Регистрация</a>
                     </li>
                 </ul>

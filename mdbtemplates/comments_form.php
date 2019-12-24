@@ -11,7 +11,7 @@
                           placeholder="Ваш комментарий..."></textarea>
             </div>
         </div>
-        <button class="btn btn-indigo comments__submit" type="submit" name="add_comment">
+        <button class="btn btn-mdb-color comments__submit" type="submit" name="add_comment">
             Отправить
         </button>
     </form>

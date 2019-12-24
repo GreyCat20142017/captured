@@ -43,7 +43,7 @@
     <div class="post-details__user-buttons user__buttons d-flex flex-column">
         <?php if (!empty($current_user)): ?>
             <?php if (intval(get_pure_data($user, 'user_id')) !== intval($current_user)) : ?>
-                <a class="btn btn-indigo js-subscription-single"
+                <a class="btn btn-mdb-color js-subscription-single"
                     <?= set_blogger_id($user); ?>
                     <?= get_subscription_href_title(get_pure_data($user, 'user_id'), 'Подписаться/отписаться'); ?>>
                     <?= in_array(get_pure_data($user, 'user_id'),

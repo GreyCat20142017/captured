@@ -1,6 +1,6 @@
 <header class="header" style="padding-top: 88px;">
     <div class="col-sm-12 mx-auto fixed-top">
-        <nav class="navbar navbar-expand-lg navbar-dark indigo">
+        <nav class="navbar navbar-expand-lg navbar-dark mdb-color">
             <div class="container mx-auto">
 
                 <a class="navbar-brand" href="index.php" title="Трофейно-контрафактный Readme:-)">

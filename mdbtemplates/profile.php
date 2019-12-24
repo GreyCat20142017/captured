@@ -39,7 +39,7 @@
 
                 <?php if (!$is_own): ?>
                     <div class="d-flex flex-column px-5 text-center profile__user-buttons user__buttons">
-                        <a class="btn btn-indigo profile__user-button user__button user__button--subscription
+                        <a class="btn btn-mdb-color profile__user-button user__button user__button--subscription
                             button button--main js-subscription-single"
                         <a <?= get_subscription_href_title(get_pure_data($user, 'user_id'),
                             'Подписаться/отписаться от автора ' . get_pure_data($user, 'username')); ?>
@@ -58,19 +58,19 @@
 
         <div class="container">
             <div class="btn-group" role="group" aria-label="Показать:">
-                <a class="btn btn-indigo btn-rounded <?= get_mdb_active($active_tab,
+                <a class="btn btn-mdb-color btn-rounded <?= get_mdb_active($active_tab,
                     POSTS); ?>"
                    href="<?= rebuild_query_string($active_script, $active_query, 'tab', 1); ?>">
                     <?= get_inline_svg('th', 15, 15, "white", "white"); ?>
                     <span class="ml-2">Посты</span>
                 </a>
-                <a class="btn btn-indigo btn-rounded <?= get_mdb_active($active_tab,
+                <a class="btn btn-mdb-color btn-rounded <?= get_mdb_active($active_tab,
                     LIKES); ?>"
                    href="<?= rebuild_query_string($active_script, $active_query, 'tab', 2); ?>">
                     <?= get_inline_svg('heart', 15, 15, "white", "white"); ?>
                     <span class="ml-2">Лайки</span>
                 </a>
-                <a class="btn btn-indigo btn-rounded <?= get_mdb_active($active_tab,
+                <a class="btn btn-mdb-color btn-rounded <?= get_mdb_active($active_tab,
                     SUBSCRIPTIONS); ?>"
                    href="<?= rebuild_query_string($active_script, $active_query, 'tab', 3); ?>">
                     <?= get_inline_svg('address-card', 15, 15, "white", "white"); ?>

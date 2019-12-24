@@ -64,7 +64,7 @@
   var onSubscribersContainerClick = function (evt) {
 
     var element = evt.target;
-    if (element.tagName.toUpperCase() !== 'A') {
+    if (!element['tagName'] || element.tagName.toUpperCase() !== 'A') {
       return false;
     }
 

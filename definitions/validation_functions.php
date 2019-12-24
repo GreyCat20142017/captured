@@ -228,7 +228,7 @@
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $file_type = finfo_file($finfo, $tmp_name);
             $is_ok = in_array($file_type, VALID_FILE_TYPES) && ($file_size <= MAX_FILE_SIZE);
-            return $is_ok ? '' : 'Загружаемый файл должен быть в формате jpeg, png, txt или pdf и размером не более 200Кб';
+            return $is_ok ? '' : 'Загружаемый файл должен быть в формате jpeg, png, svg и размером не более 200Кб';
         }
         return $is_required ? 'Необходимо загрузить файл в формате jpeg, png  (не более 200Кб)' : '';
     }
@@ -327,11 +327,12 @@
      */
     function check_youtube_url($you_url) {
         $res = false;
-        $youtube_url = isLong($you_url) ? stristr($you_url, '&', true) : $you_url;
+        $youtube_url = stristr($you_url, '&', true);
+        $youtube_url = empty($youtube_url) ? $you_url : $youtube_url;
         $res = isLong($youtube_url) ? str_replace(LONG, '', $youtube_url) : $res;
         $res = isShort($youtube_url) ? str_replace(SHORT, '', $youtube_url) : $res;
-        return mb_strlen($res) === YOUTUBE_ID_LENGTH ? $res : false;
-    }
+        return mb_strlen($res) === YOUTUBE_ID_LENGTH ? $res : 'false';
+    };
 
     /**
      * Функция возвращает результат валидации ссылки youtube

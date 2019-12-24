@@ -7,7 +7,7 @@
             Предыдущая страница
         </span>
         <?php else: ?>
-            <a class="btn btn-indigo"
+            <a class="btn btn-mdb-color"
                href="<?= rebuild_query_string($active_script, $active_query, 'page', $active_page - 1); ?>">
                 Предыдущая страница
             </a>
@@ -20,7 +20,7 @@
         <?php if ($active_page >= $page_count): ?>
             <span class="btn" title="Нет страниц после текущей"> Следующая страница</span>
         <?php else: ?>
-            <a class="btn btn-indigo"
+            <a class="btn btn-mdb-color"
                href="<?= rebuild_query_string($active_script, $active_query, 'page', $active_page + 1); ?>">
                 Следующая страница
             </a>

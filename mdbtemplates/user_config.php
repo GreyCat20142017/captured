@@ -5,12 +5,12 @@
         <h2 class="py-3">Изменение параметров пользователя</h2>
 
         <div class="btn-group" role="group" aria-label="Показать:">
-            <a class="btn btn-indigo btn-rounded <?= get_mdb_active($active, 1); ?>"
+            <a class="btn btn-mdb-color btn-rounded <?= get_mdb_active($active, 1); ?>"
                href="user_config.php?section=1">
                 <?= get_inline_svg('th', 15, 15, "white", "white"); ?>
                 <span class="ml-2">Основные настройки</span>
             </a>
-            <a class="btn btn-indigo btn-rounded <?= get_mdb_active($active, 2); ?>"
+            <a class="btn btn-mdb-color btn-rounded <?= get_mdb_active($active, 2); ?>"
                href="user_config.php?section=2">
                 <?= get_inline_svg('th', 15, 15, "white", "white"); ?>
                 <span class="ml-2">Изменение пароля</span>
@@ -109,7 +109,7 @@
                         <small><?= $status_text ?? ''; ?></small>
                     </p>
 
-                    <button class="btn btn-indigo mt-2" type="submit" name="change_base"> Изменить параметры
+                    <button class="btn btn-mdb-color mt-2" type="submit" name="change_base"> Изменить параметры
                     </button>
 
                 </form>
@@ -145,7 +145,7 @@
                 <p class="text-danger">
                     <small><?= $status_text ?? ''; ?></small>
                 </p>
-                <button class="btn btn-indigo mt-2" type="submit" name="change_password"> Изменить пароль</button>
+                <button class="btn btn-mdb-color mt-2" type="submit" name="change_password"> Изменить пароль</button>
 
                 </form>
 

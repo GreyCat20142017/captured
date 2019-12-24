@@ -5,10 +5,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="theme-color" content="#3949AB">
+    <meta name="description" content="Автор: -, назначение: баловство">
+    <link rel="shortcut icon" href="favicon.png">
+    <link rel="manifest" href="manifest.json">
     <title>Captured on MDB</title>
-    <link href="mdbcss/bootstrap.min.css" rel="stylesheet">
-    <link href="mdbcss/mdb.min.css" rel="stylesheet">
-    <link href="mdbcss/style.css" rel="stylesheet">
+    <link href="mdbcss/min/bootstrap.min.css" rel="stylesheet">
+    <link href="mdbcss/min/mdb.min.css" rel="stylesheet">
+    <link href="mdbcss/min/style.css" rel="stylesheet">
     <style>
         .visually-hidden {
             position: absolute;
@@ -145,7 +149,7 @@
     <?= $header_content; ?>
     <?= $page_content; ?>
 
-    <footer class="page-footer font-small indigo p-4 mt-auto text-center">
+    <footer class="page-footer font-small mdb-color p-4 mt-auto text-center">
 
         <!-- Footer Links -->
         <div class="container text-center text-md-left mt-auto">
@@ -157,21 +161,21 @@
                 <div class="col-12 col-md-10 mt-md-0 mt-3">
 
                     <!-- Content -->
-                    <h6>Идея проекта подсмотрена у <a class="text-white-50" href="https://htmlacademy.ru">HTML
-                            Academy</a></h6>
-                    <p>
+                    <p><small>Идея проекта подсмотрена у <a class="font-italic" href="https://htmlacademy.ru">HTML
+                                Academy</a></small></p>
+                    <p class="p-0 m-0">
                         <small>Использована только идея и визуальный скелет проекта. Выполнено по принципу: "Что вижу -
                             то пою!"
                         </small>
                     </p>
+                    <p class="p-0 m-0"><small>Контент изменен. Все совпадения с ТЗ случайны.</small></p>
                     <p>
-                        <small>Контент изменен. Все совпадения с ТЗ случайны. Оригинальная верстка заменена на верстку с
-                            использованием
+                        <small>Оригинальная верстка заменена на верстку с использованием
+                            <a class="font-italic"
+                               href="https://mdbootstrap.com/previews/free-templates/blog/home-page.html">
+                                Material Design Bootstrap
+                            </a>
                         </small>
-                        <a class="text-white-50"
-                           href="https://mdbootstrap.com/previews/free-templates/blog/home-page.html">
-                            Material Design Bootstrap
-                        </a>
                     </p>
                 </div>
 
@@ -179,20 +183,20 @@
                     <ul class="list-unstyled d-flex flex-row flex-md-column">
                         <li class="p-2">
                             <a href="popular.php" title="Популярные">
-                                <?= get_inline_svg('star', 20, 20, "white", "white"); ?>
-                                <span class="ml-2">Популярные</span>
+                                <?= get_inline_svg('star', 16, 16, "white", "white"); ?>
+                                <span class="ml-2"><small>Популярные</small></span>
                             </a>
                         </li>
                         <li class="p-2">
                             <a href="feed.php" title="Моя лента">
-                                <?= get_inline_svg('photo-video', 20, 20, "white", "white"); ?>
-                                <span class="ml-2">Моя лента</span>
+                                <?= get_inline_svg('photo-video', 16, 16, "white", "white"); ?>
+                                <span class="ml-2"><small>Моя лента</small></span>
                             </a>
                         </li>
                         <li class="p-2">
                             <a href="messages.php" title="Сообщения">
-                                <?= get_inline_svg('comments', 20, 20, "white", "white"); ?>
-                                <span class="ml-2">Сообщения</span>
+                                <?= get_inline_svg('comments', 16, 16, "white", "white"); ?>
+                                <span class="ml-2"><small>Сообщения</small></span>
                             </a>
                         </li>
                     </ul>
@@ -204,10 +208,10 @@
 
 <?php if (!empty($js_scripts)): ?>
     <?php foreach ($js_scripts as $js_script): ?>
-        <script src="../js/<?= $js_script; ?>"></script>
+        <script src="../js/min/<?= $js_script; ?>"></script>
     <?php endforeach; ?>
 <?php endif; ?>
-<script src="../js/header.js"></script>
+<script src="../js/min/header.js"></script>
 </body>
 
 </html>

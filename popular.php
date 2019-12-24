@@ -31,7 +31,7 @@
         $active_tab,
         $_SERVER['PHP_SELF'],
         $_SERVER['QUERY_STRING'],
-        'popular__filters-item filters__item',
+        'popular__filters-item filters__item dropdown-item',
         'filters__button button ',
         'visually-hidden',
         false);

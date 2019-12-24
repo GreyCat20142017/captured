@@ -7,7 +7,7 @@
             <?= get_inline_svg('roger-white', 100, 100, 'navy', 'navy'); ?>
         </div>
         <div>
-            <a class="btn btn-indigo" href="popular.php">Популярное</a>
+            <a class="btn btn-mdb-color" href="popular.php">Популярное</a>
             <a class="btn btn-light-blue" href="<?= $back; ?>">Вернуться назад</a>
         </div>
     </div>

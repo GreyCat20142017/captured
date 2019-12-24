@@ -28,3 +28,4 @@ templates/
 fonts/
 css/
 
+/node_modules/

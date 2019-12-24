@@ -52,10 +52,16 @@
     }
   };
 
+  var needSkip = function (element) {
+    return !element['tagName'] || !element['classList'];
+  };
+
   var onContainerClick = function (evt) {
 
     var element = evt.target;
-    if (CONSIDERABLE_TAGS.indexOf(element.tagName.toUpperCase()) < 0 || element.classList.contains(DROPDOWN_ITEM_CLASSNAME)) {
+
+
+    if (needSkip(element) || CONSIDERABLE_TAGS.indexOf(element.tagName.toUpperCase()) < 0 || element.classList.contains(DROPDOWN_ITEM_CLASSNAME)) {
       return false;
     }
 

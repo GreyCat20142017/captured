@@ -4,7 +4,7 @@
         <?php if (intval(get_pure_data($post, 'comments_count')) === 0): ?>
             <span class="btn comments__button button"> Комментариев нет</span>
         <?php else: ?>
-            <a class="btn btn-indigo comments__button button"
+            <a class="btn btn-mdb-color comments__button button"
                href="<?= rebuild_query_string($active_script, $active_query, 'expand',
                    intval(get_pure_data($post, 'post_id'))); ?>">
                 Показать комментарии
@@ -62,7 +62,7 @@
                     </a>
                 <?php endif; ?>
 
-                <a class="btn btn-indigo comments__button button"
+                <a class="btn btn-mdb-color comments__button button"
                    href="<?= rebuild_query_string($active_script, $active_query, 'expand',
                        0); ?>">
                     Скрыть комментарии

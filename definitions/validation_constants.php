@@ -6,7 +6,7 @@
     define('EMPTY_ITEM', 'Выберите элемент');
     define('FILE_RULE', 'file_validation');
     define('HASH_RULE', 'hashtag_validation');
-    define('MAX_FILE_SIZE', 200000);
+    define('MAX_FILE_SIZE', 204800);
 
     define('PHOTOS', 'photos');
     define('VIDEOS', 'videos');

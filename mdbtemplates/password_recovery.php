@@ -1,4 +1,4 @@
-<main class="container p-5 shadow-lg mt-2 indigo text-white rounded">
+<main class="container p-5 shadow-lg mt-2 mdb-color text-white rounded">
     <h1 class="visually-hidden">Главная страница сайта Captured</h1>
     <div class="row">
         <section class="col-12 col-md-6 text-center py-3">
@@ -21,7 +21,7 @@
                     <span class="invalid-feedback"><?= get_field_validation_message($errors, 'email') ?></span>
                 </div>
                 <div>
-                    <button class="btn btn-indigo" type="submit">Восстановить пароль</button>
+                    <button class="btn btn-mdb-color" type="submit">Восстановить пароль</button>
                 </div>
             </form>
         </section>
