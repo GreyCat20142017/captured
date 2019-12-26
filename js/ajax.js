@@ -57,13 +57,31 @@
     console.log(errorMessage);
   };
 
-  var createVideo = function (id) {
+  var createIframe = function (id) {
     var video = document.createElement('iframe');
-    var ref = 'https://www.youtube.com/embed/' + id + '?autoplay=0';
-    video.setAttribute('src', ref);
-    video.setAttribute('id', id);
+    var ref = 'https://www.youtube.com/embed/' + id + '?autoplay=0' + (notIE ? '' : '&wmode=transparent');
+    video.src = ref;
+    video.id = id;
     video.setAttribute('class', 'video-play video-iframe');
+    if (!notIE) {
+      video.setAttribute('wmode', 'opaque');
+    }
     return video;
+  };
+
+  var createA = function (id) {
+    var video = document.createElement('a');
+    var ref = 'https://www.youtube.com/watch?v=' + id + '?autoplay=0';
+    video.textContent = 'IE-11 непобедим! Перейти на yotube для просмотра видео...';
+    video.title = 'Перейти по ссылке: ' + ref;
+    video.href = ref;
+    video.target = '_blank';
+    video.setAttribute('class', 'video-ie');
+    return video;
+  };
+
+  var createVideo = function (id) {
+    return notIE ? createIframe(id) : createA(id);
   };
 
   var setPlayer = function (id, element, videoContainer) {
@@ -81,7 +99,7 @@
 
     var element = evt.target;
 
-    if (CONSIDERABLE_TAGS.indexOf(needSkip(element)|| element.tagName.toUpperCase()) < 0 || element.classList.contains('comments__button')) {
+    if (!needSkip(element) && (CONSIDERABLE_TAGS.indexOf(element.tagName.toUpperCase()) < 0 || element.classList.contains('comments__button'))) {
       return false;
     }
 

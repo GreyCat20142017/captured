@@ -60,8 +60,7 @@
 
     var element = evt.target;
 
-
-    if (needSkip(element) || CONSIDERABLE_TAGS.indexOf(element.tagName.toUpperCase()) < 0 || element.classList.contains(DROPDOWN_ITEM_CLASSNAME)) {
+    if (!needSkip(element) && (CONSIDERABLE_TAGS.indexOf(element.tagName.toUpperCase()) < 0 || element.classList.contains('comments__button'))) {
       return false;
     }
 

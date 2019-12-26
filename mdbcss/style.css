@@ -81,6 +81,7 @@ font-size: 12px!important;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px;
 }
 
 .video-preview.video-title {
@@ -101,6 +102,17 @@ font-size: 12px!important;
   min-height: 300px;
   max-width: 100%;
   width: 100%;
+}
+
+.video-ie {
+  display: block;
+  min-height: 300px;
+  max-width: 100%;
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  color: #0d47a1;
 }
 
 .colorized {
