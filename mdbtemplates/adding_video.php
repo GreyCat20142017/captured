@@ -20,7 +20,7 @@
         </div>
 
         <div class="col-12 d-flex flex-column mt-2 text-left">
-            <label for="video-link">Видео на youtube (yotube-id или ссылка)</label>
+            <label for="video-link">Видео на youtube <small>(id или ссылка)</small></label>
             <input class="form-control <?= get_mdb_validation_classname($errors, 'video-link'); ?>" type="text"
                    name="video-link" id="hashtag" required title="Видео на youtube (yotube-id или ссылка)"
                    placeholder="Видео на youtube (yotube-id или ссылка)"
@@ -55,9 +55,9 @@
             <small><?= $status_text ?? ''; ?></small>
         </p>
 
-        <div class="buttons d-flex">
-            <button class="btn btn-mdb-color mt-2" type="submit" name="publish_video">Опубликовать</button>
-            <a class="btn btn-light-blue mt-2" href="profile.php">Закрыть</a>
+        <div class="buttons d-flex flex-wrap">
+            <button class="btn btn-sm btn-mdb-color mt-2" type="submit" name="publish_video">Опубликовать</button>
+            <a class="btn btn-sm btn-light-blue mt-2" href="profile.php">Закрыть</a>
         </div>
     </form>
 </section>

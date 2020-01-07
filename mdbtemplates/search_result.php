@@ -15,7 +15,7 @@
                         <ul class="list-unstyled d-flex justify-content-center six-buttons">
 
                             <li class="search__tabs-item filters__item tabs__item">
-                                <a class="fab btn p-3 rounded-circle rgba-white-slight search__tabs-link
+                                <a class="fab btn p-2 rounded-circle rgba-white-slight search__tabs-link
                                 filters__button button filters__button--video  waves-effect waves-light
                                 <?= get_switch_classname($active_tab, FILTER_ALL); ?>"
                                    href="<?= rebuild_query_string($active_script, $active_query, 'filter',

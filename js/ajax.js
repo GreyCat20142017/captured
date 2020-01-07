@@ -81,7 +81,7 @@
   };
 
   var createVideo = function (id) {
-    return notIE ? createIframe(id) : createA(id);
+    return createIframe(id);
   };
 
   var setPlayer = function (id, element, videoContainer) {

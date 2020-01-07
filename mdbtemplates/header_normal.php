@@ -17,10 +17,10 @@
                         </a>
 
 
-                        <ul class="col-1 list-unstyled dropdown-menu dropdown-primary" id="filters_ul"
+                        <ul class="col-1 list-unstyled dropdown-menu dropdown-primary text-center py-3" id="filters_ul"
                             aria-labelledby="filters">
-                            <li class="dropdown-item pt-4">
-                                <a class="filters__button fab btn p-3 rounded-circle rgba-white-slight <?= get_switch_classname($filter_value ?? FILTER_ALL,
+                            <li class="dropdown-item">
+                                <a class="filters__button fab btn p-2 rounded-circle rgba-white-slight <?= get_switch_classname($filter_value ?? FILTER_ALL,
                                     FILTER_ALL); ?>"
                                    href="<?= empty($script) ? '' : $script . '?filter= ' . FILTER_ALL; ?>" title="Все">
                                     <?= get_inline_svg('th', 20, 20, "grey", "grey"); ?>

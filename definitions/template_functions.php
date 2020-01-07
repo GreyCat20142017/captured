@@ -188,7 +188,7 @@
                 'a_classname' => $a_classname . ' ' . $classbase . TEMPLATE_NAME[$i] . ' ' . $is_active,
                 'active_tab' => $active_tab,
                 'vh' => $vh,
-                'filter_fa_mdb' => get_inline_svg(get_element(FILTER_FA_MDB, $i), 20, 20, "grey", "grey")
+                'filter_fa_mdb' => get_inline_svg(get_element(FILTER_FA_MDB, $i), 18, 18, "grey", "grey")
             ]);
             $content .= $item_content;
         }
@@ -204,7 +204,7 @@
         $author_id = get_pure_data($post, 'user_id');
         if (is_auth_user()) {
             $result = intval($author_id) === intval(get_auth_user_property('id')) ? 'title ="Собственный пост нельзя лайкнуть"' :
-                'href="like.php?post=' . get_pure_data($post, 'post_id') . '&user=' . get_auth_user_property('id') . '" 
+                'href="like.php?post=' . get_pure_data($post, 'post_id') . '&user=' . get_auth_user_property('id') . '"
              title="Лайк/дизлайк"';
         } else {
             $result = ' title="Необходимо залогиниться ..." ';
@@ -221,7 +221,7 @@
         $author_id = get_pure_data($post, 'user_id');
         if (is_auth_user()) {
             $result = intval($author_id) === intval(get_auth_user_property('id')) ? 'title ="Собственный пост нельзя зарепостить"' :
-                'href="repost.php?post=' . get_pure_data($post, 'post_id') . '&user=' . get_auth_user_property('id') . '" 
+                'href="repost.php?post=' . get_pure_data($post, 'post_id') . '&user=' . get_auth_user_property('id') . '"
              title="Репост"';
         } else {
             $result = ' title="Необходимо залогиниться ..." ';
@@ -238,7 +238,7 @@
         $subscriber_id = get_auth_user_property('id');
         if (is_auth_user()) {
             $result = intval($blogger_id) === intval($subscriber_id) ? 'title="Нельзя подписаться на самого себя"' :
-                'href="subscription.php?subscriber=' . $subscriber_id . '&blogger=' . $blogger_id . '" 
+                'href="subscription.php?subscriber=' . $subscriber_id . '&blogger=' . $blogger_id . '"
              title="' . $title . '"';
         } else {
             $result = ' title="Необходимо залогиниться ..." ';
@@ -377,7 +377,7 @@
                 }
             case 2:
                 {
-                    $tag = '<iframe class="post-video__preview" 
+                    $tag = '<iframe class="post-video__preview"
                                 id="rzJhacp9z9I" width="109" height="109" src="http://www.youtube.com/embed/rzJhacp9z9I?autoplay=0">
                             </iframe>';
                     break;

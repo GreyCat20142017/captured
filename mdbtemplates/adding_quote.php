@@ -42,9 +42,9 @@
             <small><?= $status_text ?? ''; ?></small>
         </p>
 
-        <div class="buttons d-flex">
-            <button class="btn btn-mdb-color mt-2" type="submit" name="publish_quote">Опубликовать</button>
-            <a class="btn btn-light-blue mt-2" href="profile.php">Закрыть</a>
+        <div class="buttons d-flex flex-wrap">
+            <button class="btn btn-sm btn-mdb-color mt-2" type="submit" name="publish_quote">Опубликовать</button>
+            <a class="btn btn-sm btn-light-blue mt-2" href="profile.php">Закрыть</a>
         </div>
     </form>
 </section>

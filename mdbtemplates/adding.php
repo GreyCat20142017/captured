@@ -1,6 +1,6 @@
 <main class="page__main page__main--adding-post">
     <div class="container">
-        <h1 class="text-center">Добавить публикацию</h1>
+        <h1 class="text-center h3-responsive my-lg-3">Добавить публикацию</h1>
     </div>
     <div class="adding-post container">
         <div class="adding-post__tabs-wrapper tabs">
